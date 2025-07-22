@@ -8,19 +8,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup SSH key
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add SSH to known_hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+
       - name: Deploy to DigitalOcean Droplet
         uses: appleboy/ssh-action@master
         with:
-          host: ${{secrets.DROPLET_IP}}
-          username: ${{secrets.DROPLET_USERNAME}}
-          key: ${{secrets.SSH_PRIVATE_KEY}}
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd --
-            cd ..
-            cd ..
-            cd var
-            cd www
-            cd digitaldevops.com.mx
+            cd /var/www/digitaldevops.com.mx
             rm -rf demos_poc
             git clone git@github.com:DigitalDevopsMaster/demos_poc.git
 
