@@ -1,0 +1,2163 @@
+
+
+
+
+
+
+<!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Main container with sidebar and content area -->
+<div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
+  
+  <!-- Sidebar navigation -->
+  <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
+    <!-- Logo and brand -->
+    <div style="padding:20px; text-align:center;">
+      <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
+      <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
+    </div>
+    
+    <!-- Navigation links -->
+    <nav>
+      <ul style="list-style:none; padding:0; margin:0;">
+        <li class="nav-item active" data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
+        </li>
+        <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
+          <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
+        </li>
+        <!-- <li class="nav-item" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
+        </li> -->
+        <!-- <li class="nav-item" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
+        </li>
+        <li class="nav-item" data-page="reports" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-chart-bar" style="margin-right:10px;"></i> Reportes
+        </li>
+        <li class="nav-item" data-page="appointments" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-calendar-alt" style="margin-right:10px;"></i> Citas
+        </li>
+        <li class="nav-item" data-page="campaigns" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-bullhorn" style="margin-right:10px;"></i> Campañas
+        </li>
+        <li class="nav-item" data-page="settings" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-cog" style="margin-right:10px;"></i> Configuración
+        </li> -->
+      </ul>
+    </nav>
+  </div>
+  
+  <!-- Main content area -->
+  <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
+    
+    <!-- CRM Visual Page Content -->
+    <div id="crmPage" class="content-page">
+      <div style="height:calc(100vh - 80px);">
+        <!-- Search and filters -->
+        <div style="background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05); padding:15px; margin-bottom:20px;">
+          <div style="display:flex; gap:20px; align-items:center; flex-wrap: wrap;">
+            <div style="position:relative; flex:1; min-width: 200px;">
+              <input id="searchInput" type="text" placeholder="Buscar contacto..." style="width:100%; padding:10px 15px 10px 35px; border-radius:4px; border:1px solid #e2e8f0; font-size:14px;">
+              <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#a0aec0;"></i>
+            </div>
+            
+            <div style="display:flex; gap:5px; flex-wrap: wrap;">
+              <button id="todosBtn" class="filter-btn" style="padding:8px 12px; border:none; background:#f7fafc; border-radius:4px; font-size:13px; color:#4a5568; cursor:pointer;">Todos</button>
+              <button id="activosBtn" class="filter-btn active" style="padding:8px 12px; border:none; background:#ebf8ff; border-radius:4px; font-size:13px; color:#3182ce; font-weight:bold; cursor:pointer;">Activos</button>
+              <button id="inactivosBtn" class="filter-btn" style="padding:8px 12px; border:none; background:#f7fafc; border-radius:4px; font-size:13px; color:#4a5568; cursor:pointer;">Inactivos</button>
+            </div>
+          </div>
+          
+          <!-- Intelligent Filters -->
+          <div style="margin-top: 15px; display: flex; gap: 15px; flex-wrap: wrap;">
+            <!-- Assistant Filter -->
+            <div style="min-width: 200px;">
+              <label style="font-size: 13px; color: #718096; display: block; margin-bottom: 5px;">Asistente</label>
+              <select id="assistantFilter" style="width: 100%; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 14px; color: #4a5568;">
+                <option value="">Todos los asistentes</option>
+              </select>
+            </div>
+            
+            <!-- Intent Filter -->
+            <div style="min-width: 150px;">
+              <label style="font-size: 13px; color: #718096; display: block; margin-bottom: 5px;">Intención</label>
+              <select id="intentFilter" style="width: 100%; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 14px; color: #4a5568;">
+                <option value="">Todas</option>
+                <option value="Descubrimiento">Descubrimiento</option>
+                <option value="Consideracion">Consideracion</option>
+                <option value="Objecion">Objecion</option>
+                <option value="Cierre potencial">Cierre potencial</option>
+                <option value="Alta intencion">Alta intencion</option>
+              </select>
+            </div>
+            
+            <!-- Channel Filter -->
+            <div style="min-width: 150px;">
+              <label style="font-size: 13px; color: #718096; display: block; margin-bottom: 5px;">Canal</label>
+              <select id="channelFilter" style="width: 100%; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 14px; color: #4a5568;">
+                <option value="">Todos</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Web">Web</option>
+                <option value="Email">Email</option>
+              </select>
+            </div>
+            
+            <!-- Temperature Filter -->
+            <div style="min-width: 150px;">
+              <label style="font-size: 13px; color: #718096; display: block; margin-bottom: 5px;">Temperatura</label>
+              <select id="temperatureFilter" style="width: 100%; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 14px; color: #4a5568;">
+                <option value="">Todas</option>
+                <option value="hot">Caliente 🔥</option>
+                <option value="warm">Templado 🔆</option>
+                <option value="cold">Frío ❄️</option>
+              </select>
+            </div>
+            
+            <!-- Priority Filter -->
+            <div style="min-width: 150px;">
+              <label style="font-size: 13px; color: #718096; display: block; margin-bottom: 5px;">Prioridad</label>
+              <select id="priorityFilter" style="width: 100%; padding: 8px 10px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 14px; color: #4a5568;">
+                <option value="">Todas</option>
+                <option value="1">Nivel 1</option>
+                <option value="2">Nivel 2</option>
+                <option value="3">Nivel 3+</option>
+              </select>
+            </div>
+            
+            <!-- Filter Clear Button -->
+            <div style="min-width: 100px; display: flex; align-items: flex-end;">
+              <button id="clearFiltersBtn" style="width: 100%; padding: 8px 10px; border: 1px solid #e2e8f0; background: white; border-radius: 4px; font-size: 13px; color: #4a5568; cursor: pointer;">
+                <i class="fas fa-times-circle" style="margin-right: 5px;"></i>Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Kanban Board -->
+        <div id="kanbanBoardCtn" style="display:flex; gap:20px; overflow-x:auto; padding-bottom:20px; height:calc(100% - 160px);">
+          <!-- Kanban columns will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lead details modal -->
+<div id="leadDetailsCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div id="leadDetailsModal" style="background:white; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); width:800px; max-width:90%; max-height:90%; overflow:hidden; display:flex; flex-direction:column; gap:20px; padding:20px; position:relative;">
+    <!-- Lead details will be dynamically inserted here -->
+  </div>
+</div>
+
+<!-- Change note modal -->
+<div id="changeNoteModalCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1500; justify-content:center; align-items:center;">
+  <div id="changeNoteModal" style="background:white; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15); width:500px; max-width:90%; padding:20px;">
+    <h3 style="margin-top:0; color:#2d3748;">Nota de cambio</h3>
+    <p style="color:#718096; font-size:14px; margin-bottom:15px;">Agregue una nota opcional para explicar los cambios realizados (opcional).</p>
+    <textarea id="changeNoteTextarea" style="width:100%; min-height:100px; padding:10px; border-radius:4px; border:1px solid #e2e8f0; font-size:14px; margin-bottom:15px; resize:vertical;" placeholder="Escriba aquí una descripción de los cambios realizados..."></textarea>
+    <div style="display:flex; justify-content:flex-end; gap:10px;">
+      <button id="cancelChangeNoteBtn" class="action-button secondary-button">Cancelar</button>
+      <button id="saveWithNoteBtn" class="action-button primary-button">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- Style for the enhanced timeline and modal components -->
+<style>
+  /* Stage change dropdown */
+  .stage-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 0;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 15px;
+  }
+  
+  .stage-selector select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    font-size: 14px;
+    color: #4a5568;
+    cursor: pointer;
+    flex-grow: 1;
+  }
+  
+  .stage-selector button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3182ce;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .stage-selector button:hover {
+    background-color: #2c5282;
+  }
+  
+  /* Action buttons group */
+  .action-buttons-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  
+  .action-button {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+  }
+  
+  .primary-button {
+    background-color: #3182ce;
+    color: white;
+    border: none;
+  }
+  
+  .primary-button:hover {
+    background-color: #2c5282;
+  }
+  
+  .secondary-button {
+    background: none;
+    border: 1px solid #e2e8f0;
+    color: #4a5568;
+  }
+  
+  .secondary-button:hover {
+    background-color: #f7fafc;
+  }
+  
+  .danger-button {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+  }
+  
+  .danger-button:hover {
+    background-color: #c53030;
+  }
+  
+  /* Status selector */
+  .status-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto;
+  }
+  
+  .status-selector select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    font-size: 14px;
+    color: #4a5568;
+    cursor: pointer;
+  }
+  
+  /* Comment section styling */
+  .comment-section {
+    background: white;
+    border-radius: 8px;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
+  
+  .comment-section h3 {
+    padding-left: 20px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: #4a5568;
+  }
+  
+  .comment-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
+    margin-bottom: 20px;
+    resize: vertical;
+  }
+  
+  .comment-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .comment-save-btn {
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    background-color: #3182ce;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .comment-save-btn:hover {
+    background-color: #2c5282;
+  }
+  
+  /* Modal content layout */
+  .modal-content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-height: 100%;
+    overflow: auto;
+  }
+  
+  .modal-main-content {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100%;
+    gap: 20px;
+  }
+  
+  .modal-timeline-section {
+    flex: 1;
+    min-width: 250px;
+    height: 100%;
+    position: sticky;
+    top: 0;
+  }
+  
+  /* Timeline styling */
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  
+  .timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    width: 2px;
+    background: #e2e8f0;
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+  
+  .timeline-item:last-child {
+    border-bottom: none;
+  }
+  
+  .timeline-item:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #3182ce;
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px #e2e8f0;
+    z-index: 1;
+  }
+  
+  .timeline-time {
+    font-size: 12px;
+    color: #718096;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  
+  .timeline-title {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 4px;
+  }
+  
+  .timeline-description {
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.4;
+  }
+  
+  /* Different colors for different types of timeline events */
+  .timeline-item.temperature:before {
+    background: #dd6b20;
+  }
+  
+  .timeline-item.intent:before {
+    background: #3182ce;
+  }
+  
+  .timeline-item.note:before {
+    background: #38a169;
+  }
+  
+  .timeline-item.appointment:before {
+    background: #805ad5;
+  }
+  
+
+  /* Temperature evolution chart */
+  .temperature-chart {
+    margin-top: 8px;
+    height: 4px;
+    background: #edf2f7;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .temperature-indicator {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, #3182ce 0%, #dd6b20 50%, #e53e3e 100%);
+  }
+  
+  /* Pending change indicator (small red asterisk) */
+  .pending-change-indicator {
+    color: #e53e3e;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  
+  /* Animation for notification */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+  }
+  
+  /* Notification styling */
+  .export-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #38a169;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    z-index: 2000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s, fadeOut 0.3s 2s forwards;
+  }
+  
+  /* Editable field styling */
+  .editable-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .editable-field:hover .edit-icon {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .edit-icon {
+    margin-left: 5px;
+    color: #718096;
+    font-size: 12px;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s, opacity 0.2s;
+  }
+  
+  .editable-content {
+    font-size: 15px;
+    color: #2d3748;
+  }
+  
+  .editable-input {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+    font-size: 15px;
+    width: 100%;
+    min-width: 150px;
+  }
+</style>
+
+<!-- JavaScript for tab navigation and CRM functionality -->
+<script>
+  // Get all navigation items
+  const navItems = document.querySelectorAll('.nav-item');
+  
+  // Add click event to each navigation item
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Redirect to index.html
+      window.location.href = `${item.getAttribute(`data-page`)}.html`;
+    });
+  });
+
+  // Sample assistant data
+  const assistants = [
+    {
+      id: 1,
+      name: "Ventas Pro",
+      responseStyle: "Formal y profesional",
+      masterPrompt: "Soy un asistente especializado en ventas B2B con enfoque consultivo...",
+      funnels: ["Primer contacto", "Seguimiento", "Esperando accion del lead", "Cerrado"],
+      channels: ["WhatsApp", "Email"]
+    },
+    {
+      id: 2,
+      name: "Soporte Amigable",
+      responseStyle: "Casual y cercano",
+      masterPrompt: "Soy un asistente amigable de soporte técnico que explica todo de manera sencilla...",
+      funnels: ["Consulta inicial", "Diagnóstico", "Resolución", "Seguimiento post-soporte"],
+      channels: ["WhatsApp", "Web"]
+    },
+    {
+      id: 3,
+      name: "Educador Paciente",
+      responseStyle: "Didáctico y detallado",
+      masterPrompt: "Soy un asistente educativo que explica conceptos paso a paso...",
+      funnels: ["Consulta", "Explicación", "Ejercicios prácticos", "Evaluación"],
+      channels: ["Instagram", "Email", "Web"]
+    }
+  ];
+
+  // Sample lead data
+  const leads = [
+    {
+      id: 1,
+      name: "Juan Pérez",
+      lastMessage: "Interesado en plan Premium",
+      lastMessageTime: "10:25 AM",
+      temperature: "hot", // hot, warm, cold
+      channel: "WhatsApp",
+      intent: "Descubrimiento",
+      status: "activo",
+      isNew: true,
+      phone: "+52 55 1234 5678",
+      email: "juan.perez@example.com",
+      source: "Campaña Facebook",
+      assignedTo: "Asistente Ventas",
+      createdDate: "12 Ago 2023",
+      temperatureValue: 85,
+      priority: 0, // Added priority property
+      generalComment: "", // Added general comment property
+      avgDuration: "3.5 min", // Added avg duration
+      numMessages: 8, // Added number of messages
+      reactivityRate: "85%", // Added reactivity rate
+      timeline: [
+        { time: "Hoy 10:25 AM", title: "Contacto vía WhatsApp", description: "Primera interacción con el asistente" },
+        { time: "Hoy 10:28 AM", title: "Intención detectada: Descubrimiento", description: "Interesado en plan Premium" },
+        { time: "Hoy 10:32 AM", title: "Temperatura aumentada", description: "De templado a caliente" },
+        { time: "Hoy 10:45 AM", title: "Cita agendada", description: "Hoy a las 15:30" }
+      ],
+      stage: "Primer contacto", // Modified stage property for Kanban columns
+      assistantId: 1 // Assigned to Ventas Pro assistant
+    },
+    {
+      id: 2,
+      name: "María González",
+      lastMessage: "Pregunta sobre características",
+      lastMessageTime: "Ayer",
+      temperature: "warm", // hot, warm, cold
+      channel: "Instagram",
+      intent: "Consideracion",
+      status: "activo",
+      isNew: true,
+      phone: "+52 55 9876 5432",
+      email: "maria.gonzalez@example.com",
+      source: "Anuncio Instagram",
+      assignedTo: "Asistente Ventas",
+      createdDate: "11 Ago 2023",
+      temperatureValue: 50,
+      priority: 0, // Added priority property
+      generalComment: "", // Added general comment property
+      avgDuration: "2.1 min", // Added avg duration
+      numMessages: 5, // Added number of messages
+      reactivityRate: "70%", // Added reactivity rate
+      timeline: [
+        { time: "Ayer 14:20", title: "Contacto vía Instagram", description: "Primera interacción con el asistente" },
+        { time: "Ayer 14:28", title: "Intención detectada: Consideracion", description: "Pregunta sobre características" }
+      ],
+      stage: "Primer contacto", // Added stage property for Kanban columns
+      assistantId: 3 // Assigned to Educador Paciente assistant
+    },
+    {
+      id: 3,
+      name: "Carlos Rodríguez",
+      lastMessage: "Objeción de precio",
+      lastMessageTime: "12/08",
+      temperature: "cold", // hot, warm, cold
+      channel: "Web",
+      intent: "Objecion",
+      status: "activo",
+      isNew: false,
+      phone: "+52 55 5555 5555",
+      email: "carlos.rodriguez@example.com",
+      source: "Formulario Web",
+      assignedTo: "Asistente Ventas",
+      createdDate: "10 Ago 2023",
+      temperatureValue: 25,
+      priority: 0, // Added priority property
+      generalComment: "", // Added general comment property
+      avgDuration: "1.8 min", // Added avg duration
+      numMessages: 4, // Added number of messages
+      reactivityRate: "45%", // Added reactivity rate
+      timeline: [
+        { time: "12/08 09:15", title: "Contacto vía Web", description: "Primera interacción con el asistente" },
+        { time: "12/08 09:22", title: "Intención detectada: Objecion", description: "Objeción de precio" }
+      ],
+      stage: "Seguimiento", // Added stage property for Kanban columns
+      assistantId: 2 // Assigned to Soporte Amigable assistant
+    },
+    {
+      id: 4,
+      name: "Ana Martínez",
+      lastMessage: "Solicitud de demo",
+      lastMessageTime: "11/08",
+      temperature: "hot", // hot, warm, cold
+      channel: "Email",
+      intent: "Cierre potencial",
+      status: "activo",
+      isNew: false,
+      phone: "+52 55 2222 3333",
+      email: "ana.martinez@example.com",
+      source: "Referido",
+      assignedTo: "Asistente Ventas",
+      createdDate: "09 Ago 2023",
+      temperatureValue: 80,
+      priority: 0, // Added priority property
+      generalComment: "", // Added general comment property
+      avgDuration: "4.2 min", // Added avg duration
+      numMessages: 10, // Added number of messages
+      reactivityRate: "90%", // Added reactivity rate
+      timeline: [
+        { time: "11/08 11:30", title: "Contacto vía Email", description: "Primera interacción con el asistente" },
+        { time: "11/08 11:35", title: "Intención detectada: Cierre potencial", description: "Solicitud de demo" }
+      ],
+      stage: "Seguimiento", // Added stage property for Kanban columns
+      assistantId: 1 // Assigned to Ventas Pro assistant
+    },
+    {
+      id: 5,
+      name: "Roberto Sánchez",
+      lastMessage: "Esperando documentación",
+      lastMessageTime: "Hoy",
+      temperature: "warm", // hot, warm, cold
+      channel: "WhatsApp",
+      intent: "Alta intencion",
+      status: "activo",
+      isNew: false,
+      phone: "+52 55 7777 8888",
+      email: "roberto.sanchez@example.com",
+      source: "Campaña Email",
+      assignedTo: "Asistente Ventas",
+      createdDate: "08 Ago 2023",
+      temperatureValue: 65,
+      priority: 1, // Added priority property
+      generalComment: "Cliente interesado pero esperando que envíe documentación", // Added general comment property
+      avgDuration: "2.8 min", // Added avg duration
+      numMessages: 7, // Added number of messages
+      reactivityRate: "75%", // Added reactivity rate
+      timeline: [
+        { time: "10/08 15:20", title: "Contacto vía WhatsApp", description: "Primera interacción con el asistente" },
+        { time: "10/08 15:28", title: "Intención detectada: Alta intencion", description: "Interesado en plan Business" },
+        { time: "Hoy 09:15", title: "Solicitada documentación", description: "Se solicitó identificación y comprobante de domicilio" }
+      ],
+      stage: "Esperando accion del lead", // Added stage property for Kanban columns
+      assistantId: 1 // Assigned to Ventas Pro assistant
+    }
+  ];
+
+  // Current filter state
+  let currentFilter = "activo";
+  let searchQuery = "";
+  let selectedLeadId = null;
+  let draggedLeadId = null;
+  let pendingChanges = {}; // To store changes before saving
+  
+  // Additional filter states
+  let intentFilter = "";
+  let channelFilter = "";
+  let temperatureFilter = "";
+  let priorityFilter = "";
+  let assistantFilterValue = ""; // Changed from assistantFilter to avoid conflicts
+
+  // Function to update the channel filter dropdown based on selected assistant
+  function updateChannelFilter() {
+    const channelFilterEl = document.getElementById('channelFilter');
+    channelFilterEl.innerHTML = '<option value="">Todos</option>'; // Reset dropdown
+    
+    // If no assistant is selected, show all unique channels
+    if (!assistantFilterValue) {
+      const allChannels = [];
+      assistants.forEach(assistant => {
+        assistant.channels.forEach(channel => {
+          if (!allChannels.includes(channel)) {
+            allChannels.push(channel);
+          }
+        });
+      });
+      
+      allChannels.forEach(channel => {
+        const option = document.createElement('option');
+        option.value = channel;
+        option.textContent = channel;
+        channelFilterEl.appendChild(option);
+      });
+    } else {
+      // Show only channels for the selected assistant
+      const assistant = assistants.find(a => a.id.toString() === assistantFilterValue);
+      if (assistant) {
+        assistant.channels.forEach(channel => {
+          const option = document.createElement('option');
+          option.value = channel;
+          option.textContent = channel;
+          channelFilterEl.appendChild(option);
+        });
+      }
+    }
+  }
+
+  // Function to get dynamic columns (funnels) based on selected assistant
+  function getDynamicColumns() {
+    // If no assistant is selected, show default columns or combine all assistants' funnels
+    if (!assistantFilterValue) {
+      // Get unique funnels from all assistants
+      const allFunnels = [];
+      assistants.forEach(assistant => {
+        assistant.funnels.forEach(funnel => {
+          if (!allFunnels.find(f => f.title === funnel)) {
+            // Generate an ID from the funnel name
+            const id = funnel.toLowerCase().replace(/\s+/g, '-');
+            allFunnels.push({ 
+              id, 
+              title: funnel, 
+              color: getFunnelColor(funnel), 
+              textColor: getFunnelTextColor(funnel)
+            });
+          }
+        });
+      });
+      return allFunnels;
+    } else {
+      // Show only the selected assistant's funnels
+      const assistant = assistants.find(a => a.id.toString() === assistantFilterValue);
+      if (assistant) {
+        return assistant.funnels.map(funnel => {
+          const id = funnel.toLowerCase().replace(/\s+/g, '-');
+          return { 
+            id, 
+            title: funnel, 
+            color: getFunnelColor(funnel), 
+            textColor: getFunnelTextColor(funnel)
+          };
+        });
+      }
+      return [];
+    }
+  }
+
+  // Helper function to get color for funnel
+  function getFunnelColor(funnel) {
+    const colors = {
+      "Primer contacto": "#bee3f8",
+      "Seguimiento": "#fed7d7",
+      "Esperando accion del lead": "#feebc8",
+      "Cerrado": "#c6f6d5",
+      "Consulta inicial": "#e9d8fd",
+      "Diagnóstico": "#fefcbf",
+      "Resolución": "#b2f5ea",
+      "Seguimiento post-soporte": "#fbd38d",
+      "Consulta": "#e9d8fd",
+      "Explicación": "#fed7d7",
+      "Ejercicios prácticos": "#fefcbf",
+      "Evaluación": "#c6f6d5"
+    };
+    
+    return colors[funnel] || "#f7fafc";
+  }
+
+  // Helper function to get text color for funnel
+  function getFunnelTextColor(funnel) {
+    const colors = {
+      "Primer contacto": "#3182ce",
+      "Seguimiento": "#e53e3e",
+      "Esperando accion del lead": "#dd6b20",
+      "Cerrado": "#38a169",
+      "Consulta inicial": "#805ad5",
+      "Diagnóstico": "#744210",
+      "Resolución": "#2c7a7b",
+      "Seguimiento post-soporte": "#c05621",
+      "Consulta": "#805ad5",
+      "Explicación": "#e53e3e",
+      "Ejercicios prácticos": "#744210",
+      "Evaluación": "#38a169"
+    };
+    
+    return colors[funnel] || "#4a5568";
+  }
+
+  // Function to render the Kanban board
+  function renderKanbanBoard() {
+    const kanbanBoardCtn = document.getElementById('kanbanBoardCtn');
+    kanbanBoardCtn.innerHTML = '';
+
+    // Get dynamic columns based on selected assistant
+    const kanbanColumns = getDynamicColumns();
+
+    // Filter leads based on current filter and search query
+    const filteredLeads = leads.filter(lead => {
+      // Apply status filter
+      let statusMatch = false;
+      
+      if (currentFilter === "inactivo") {
+        statusMatch = lead.status === "inactivo";
+      } else if (currentFilter === "todos") {
+        statusMatch = true; // Show all leads in 'Todos'
+      } else {
+        statusMatch = lead.status === currentFilter;
+      }
+      
+      // Apply search filter
+      const searchMatch = lead.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          lead.lastMessage.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      // Apply intelligent filters
+      const intentMatch = intentFilter ? lead.intent.toLowerCase() === intentFilter.toLowerCase() : true;
+      const channelMatch = channelFilter ? lead.channel === channelFilter : true;
+      const temperatureMatch = temperatureFilter ? lead.temperature === temperatureFilter : true;
+      const priorityMatch = priorityFilter ? 
+                           (priorityFilter === "3" ? lead.priority >= 3 : lead.priority == parseInt(priorityFilter)) : true;
+      
+      // Apply assistant filter
+      const assistantMatch = assistantFilterValue ? lead.assistantId.toString() === assistantFilterValue : true;
+      
+      return statusMatch && searchMatch && intentMatch && channelMatch && temperatureMatch && priorityMatch && assistantMatch;
+    });
+
+    // Create columns for each funnel
+    kanbanColumns.forEach(column => {
+      const columnEl = document.createElement('div');
+      columnEl.className = 'kanban-column';
+      columnEl.setAttribute('data-column-id', column.id);
+      columnEl.style.cssText = `
+        min-width:300px; 
+        width:300px; 
+        flex-shrink:0; 
+        background:white; 
+        border-radius:8px; 
+        box-shadow:0 2px 4px rgba(0,0,0,0.05); 
+        display:flex; 
+        flex-direction:column; 
+        height:100%;
+      `;
+      
+      // Column header
+      const columnHeader = document.createElement('div');
+      columnHeader.style.cssText = `
+        padding:15px; 
+        border-bottom:1px solid #e2e8f0; 
+        display:flex; 
+        justify-content:space-between; 
+        align-items:center;
+      `;
+      
+      // Column title with colored badge
+      columnHeader.innerHTML = `
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="background:${column.color}; color:${column.textColor}; padding:3px 8px; border-radius:4px; font-size:14px; font-weight:500;">${column.title}</span>
+        </div>
+        <div style="width:24px; height:24px; border-radius:50%; background:#f7fafc; display:flex; justify-content:center; align-items:center; color:#718096; font-size:14px;" id="${column.id}-count">0</div>
+      `;
+      
+      // Column content - cards container
+      const cardsContainer = document.createElement('div');
+      cardsContainer.className = 'cards-container';
+      cardsContainer.setAttribute('data-column-id', column.id);
+      cardsContainer.style.cssText = `flex:1; overflow-y:auto; padding:10px;`;
+      
+      // Make the container a drop target
+      cardsContainer.addEventListener('dragover', (e) => {
+        e.preventDefault(); // Allow drop
+        e.dataTransfer.dropEffect = 'move';
+        cardsContainer.style.backgroundColor = '#f0f4f8';
+      });
+      
+      cardsContainer.addEventListener('dragleave', () => {
+        cardsContainer.style.backgroundColor = '';
+      });
+      
+      cardsContainer.addEventListener('drop', (e) => {
+        e.preventDefault();
+        cardsContainer.style.backgroundColor = '';
+        
+        const leadId = parseInt(e.dataTransfer.getData('text/plain'), 10);
+        const lead = leads.find(l => l.id === leadId);
+        
+        if (lead) {
+          // Update the lead's stage based on which column it was dropped in
+          lead.stage = column.title;
+          
+          // Add a timeline entry for the stage change
+          const now = new Date();
+          const timeString = now.getHours() + ':' + 
+                            (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+          
+          lead.timeline.unshift({
+            time: `Hoy ${timeString}`,
+            title: `Embudo actualizado a: ${column.title}`,
+            description: `Lead movido al embudo ${column.title}`
+          });
+          
+          // Re-render the board to reflect changes
+          renderKanbanBoard();
+          
+          // If this lead was selected, update the details modal
+          if (selectedLeadId === leadId) {
+            renderLeadDetails(leadId);
+          }
+        }
+      });
+      
+      // Add cards to this column
+      let cardCount = 0;
+      // Get leads for this column and sort them by priority (higher priority first)
+      const columnLeads = filteredLeads
+        .filter(lead => lead.stage === column.title)
+        .sort((a, b) => b.priority - a.priority);
+      
+      columnLeads.forEach(lead => {
+        cardCount++;
+        const card = createLeadCard(lead);
+        cardsContainer.appendChild(card);
+      });
+      
+      // Update count in header
+      columnEl.appendChild(columnHeader);
+      columnEl.appendChild(cardsContainer);
+      kanbanBoardCtn.appendChild(columnEl);
+      
+      // Set the count
+      document.getElementById(`${column.id}-count`).textContent = cardCount;
+    });
+  }
+
+  // Function to create a lead card
+  function createLeadCard(lead) {
+    const card = document.createElement('div');
+    card.className = 'lead-card';
+    card.setAttribute('data-id', lead.id);
+    card.draggable = true; // Make card draggable
+    card.style.cssText = `
+      background:white; 
+      border:1px solid #e2e8f0; 
+      border-radius:6px; 
+      padding:12px; 
+      margin-bottom:10px; 
+      cursor:pointer;
+      box-shadow:0 1px 3px rgba(0,0,0,0.05);
+      transition:transform 0.2s, box-shadow 0.2s;
+    `;
+    
+    // Highlight card if it has high priority
+    if (lead.priority > 0) {
+      card.style.borderLeft = `3px solid #38a169`;
+      card.style.borderLeftWidth = `${Math.min(lead.priority * 2, 8)}px`;
+    }
+    
+    // Drag and drop functionality
+    card.addEventListener('dragstart', (e) => {
+      draggedLeadId = lead.id;
+      e.dataTransfer.setData('text/plain', lead.id);
+      // Add a small delay to make the drag visual effect better
+      setTimeout(() => {
+        card.style.opacity = '0.4';
+      }, 0);
+    });
+    
+    card.addEventListener('dragend', () => {
+      card.style.opacity = '1';
+    });
+    
+    // Hover effect
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-2px)';
+      card.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+      card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+    });
+    
+    const temperatureEmoji = lead.temperature === "hot" ? "🔥" : 
+                            lead.temperature === "warm" ? "🔆" : "❄️";
+    
+    // Get assistant name
+    const assistant = assistants.find(a => a.id === lead.assistantId);
+    const assistantName = assistant ? assistant.name : "Sin asistente";
+    
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+        <div style="font-weight:600; color:#2d3748;">${lead.name}</div>
+        <div style="font-size:12px; color:#718096;">${lead.lastMessageTime}</div>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <div style="font-size:13px; color:#718096; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;">${lead.lastMessage}</div>
+        <div>${temperatureEmoji}</div>
+      </div>
+      <div style="display:flex; gap:5px; margin-top:5px; flex-wrap: wrap;">
+        <span style="background:${getChannelColor(lead.channel)}; padding:2px 6px; border-radius:4px; font-size:11px;">${lead.channel}</span>
+        <span style="background:${getIntentColor(lead.intent)}; padding:2px 6px; border-radius:4px; font-size:11px;">${lead.intent}</span>
+        ${lead.isNew ? '<span style="background:#c6f6d5; color:#38a169; padding:2px 6px; border-radius:4px; font-size:11px;">Nuevo</span>' : ''}
+        ${lead.priority > 0 ? `<span style="background:#feebc8; color:#dd6b20; padding:2px 6px; border-radius:4px; font-size:11px;">Prioridad ${lead.priority}</span>` : ''}
+      </div>
+      <div style="margin-top:5px; font-size:11px; color:#4a5568;">
+        <i class="fas fa-robot" style="margin-right:3px;"></i> ${assistantName}
+      </div>
+    `;
+    
+    // Add click event to select lead
+    card.addEventListener('click', () => {
+      selectLead(lead.id);
+    });
+    
+    return card;
+  }
+
+  // Function to get channel color
+  function getChannelColor(channel) {
+    const colors = {
+      "WhatsApp": "#ebf8ff; color:#3182ce",
+      "Instagram": "#e9d8fd; color:#805ad5",
+      "Web": "#c6f6d5; color:#38a169",
+      "Email": "#feedde; color:#dd6b20"
+    };
+    
+    return colors[channel] || "#f7fafc; color:#4a5568";
+  }
+
+  // Function to get intent color
+  function getIntentColor(intent) {
+    const colors = {
+      "Descubrimiento": "#bee3f8; color:#3182ce",
+      "Consideracion": "#c6f6d5; color:#38a169",
+      "Objecion": "#fed7d7; color:#e53e3e",
+      "Cierre potencial": "#feebcb; color:#dd6b20",
+      "Alta intencion": "#e9d8fd; color:#805ad5"
+    };
+    
+    return colors[intent] || "#f7fafc; color:#4a5568";
+  }
+
+  // Function to prioritize a lead
+  function priorizarLead(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      pendingChanges[leadId].priority = (lead.priority || 0) + 1;
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to reduce the priority of a lead
+  function reducirPrioridadLead(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead && (lead.priority > 0 || (pendingChanges[leadId]?.priority || 0) > 0)) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      
+      const currentPriority = pendingChanges[leadId]?.priority !== undefined ? 
+                             pendingChanges[leadId].priority : lead.priority;
+                             
+      pendingChanges[leadId].priority = Math.max(0, currentPriority - 1);
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to toggle status of a lead
+  function toggleArchiveStatus(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      
+      // Toggle the status
+      const currentStatus = pendingChanges[leadId]?.status || lead.status;
+      pendingChanges[leadId].status = currentStatus === "inactivo" ? "activo" : "inactivo";
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to change lead status
+  function changeLeadStatus(leadId, newStatus) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      pendingChanges[leadId].status = newStatus;
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to update general comment
+  function updateGeneralComment(leadId, comment) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      pendingChanges[leadId].generalComment = comment;
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to increase temperature
+  function increaseTemperature(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      
+      // Calculate new temperature value (max 100)
+      const currentTemp = pendingChanges[leadId]?.temperatureValue !== undefined ? 
+                         pendingChanges[leadId].temperatureValue : lead.temperatureValue;
+      pendingChanges[leadId].temperatureValue = Math.min(100, currentTemp + 5);
+      
+      // Update temperature category based on new value
+      if (pendingChanges[leadId].temperatureValue >= 70) {
+        pendingChanges[leadId].temperature = "hot";
+      } else if (pendingChanges[leadId].temperatureValue >= 40) {
+        pendingChanges[leadId].temperature = "warm";
+      } else {
+        pendingChanges[leadId].temperature = "cold";
+      }
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to decrease temperature
+  function decreaseTemperature(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      
+      // Calculate new temperature value (min 0)
+      const currentTemp = pendingChanges[leadId]?.temperatureValue !== undefined ? 
+                         pendingChanges[leadId].temperatureValue : lead.temperatureValue;
+      pendingChanges[leadId].temperatureValue = Math.max(0, currentTemp - 5);
+      
+      // Update temperature category based on new value
+      if (pendingChanges[leadId].temperatureValue >= 70) {
+        pendingChanges[leadId].temperature = "hot";
+      } else if (pendingChanges[leadId].temperatureValue >= 40) {
+        pendingChanges[leadId].temperature = "warm";
+      } else {
+        pendingChanges[leadId].temperature = "cold";
+      }
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to send a message (redirect to inbox.html)
+  function enviarMensaje() {
+    window.location.href = 'inbox.html';
+  }
+
+  // Function to open change note modal
+  function openChangeNoteModal(leadId) {
+    const changeNoteModalCtn = document.getElementById('changeNoteModalCtn');
+    const cancelChangeNoteBtn = document.getElementById('cancelChangeNoteBtn');
+    const saveWithNoteBtn = document.getElementById('saveWithNoteBtn');
+    const changeNoteTextarea = document.getElementById('changeNoteTextarea');
+    
+    // Clear previous note
+    changeNoteTextarea.value = '';
+    
+    // Set up event listeners
+    cancelChangeNoteBtn.onclick = () => {
+      changeNoteModalCtn.style.display = 'none';
+    };
+    
+    saveWithNoteBtn.onclick = () => {
+      const note = changeNoteTextarea.value.trim();
+      saveAllChanges(leadId, note);
+      changeNoteModalCtn.style.display = 'none';
+    };
+    
+    // Show modal
+    changeNoteModalCtn.style.display = 'flex';
+  }
+
+  // Function to update lead name
+  function updateLeadName(leadId, newName) {
+    if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+    pendingChanges[leadId].name = newName;
+    renderLeadDetails(leadId);
+  }
+
+  // Function to update lead email
+  function updateLeadEmail(leadId, newEmail) {
+    if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+    pendingChanges[leadId].email = newEmail;
+    renderLeadDetails(leadId);
+  }
+
+  // Function to update lead phone
+  function updateLeadPhone(leadId, newPhone) {
+    if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+    pendingChanges[leadId].phone = newPhone;
+    renderLeadDetails(leadId);
+  }
+
+  // Function to save all pending changes
+  function saveAllChanges(leadId, changeNote = '') {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead && pendingChanges[leadId]) {
+      const changes = pendingChanges[leadId];
+      const now = new Date();
+      const timeString = now.getHours() + ':' + 
+                        (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+      
+      // Process name change
+      if (changes.name && changes.name !== lead.name) {
+        const oldName = lead.name;
+        lead.name = changes.name;
+        
+        // Add timeline entry for the name change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Nombre actualizado`,
+          description: `Nombre cambiado de "${oldName}" a "${changes.name}"`
+        });
+      }
+      
+      // Process email change
+      if (changes.email && changes.email !== lead.email) {
+        const oldEmail = lead.email;
+        lead.email = changes.email;
+        
+        // Add timeline entry for the email change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Email actualizado`,
+          description: `Email cambiado de "${oldEmail}" a "${changes.email}"`
+        });
+      }
+      
+      // Process phone change
+      if (changes.phone && changes.phone !== lead.phone) {
+        const oldPhone = lead.phone;
+        lead.phone = changes.phone;
+        
+        // Add timeline entry for the phone change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Teléfono actualizado`,
+          description: `Teléfono cambiado de "${oldPhone}" a "${changes.phone}"`
+        });
+      }
+      
+      // Process stage change
+      if (changes.stage && changes.stage !== lead.stage) {
+        // Update the lead's stage
+        lead.stage = changes.stage;
+        
+        // Add timeline entry for the stage change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Embudo cambiado a: ${changes.stage}`,
+          description: `Lead movido al embudo ${changes.stage}`
+        });
+      }
+      
+      // Process intent change
+      if (changes.intent && changes.intent !== lead.intent) {
+        // Update the lead's intent
+        lead.intent = changes.intent;
+        
+        // Add timeline entry for the intent change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Intención cambiada a: ${changes.intent}`,
+          description: `La intención del lead ha sido actualizada`
+        });
+      }
+      
+      // Process priority change
+      if (changes.priority !== undefined && changes.priority !== lead.priority) {
+        const oldPriority = lead.priority;
+        lead.priority = changes.priority;
+        
+        // Add timeline entry
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Prioridad ${changes.priority > oldPriority ? 'aumentada' : 'reducida'}`,
+          description: `Prioridad ${changes.priority > oldPriority ? 'aumentada' : 'reducida'} a ${changes.priority}`
+        });
+      }
+      
+      // Process status change
+      if (changes.status && changes.status !== lead.status) {
+        const oldStatus = lead.status;
+        lead.status = changes.status;
+        
+        // Add timeline entry
+        if (changes.status === "inactivo") {
+          lead.timeline.unshift({
+            time: `Hoy ${timeString}`,
+            title: `Lead inactivado`,
+            description: `El lead ha sido inactivado`
+          });
+        } else if (oldStatus === "inactivo") {
+          lead.timeline.unshift({
+            time: `Hoy ${timeString}`,
+            title: `Lead activado`,
+            description: `El lead ha sido activado y marcado como ${changes.status}`
+          });
+        } else {
+          lead.timeline.unshift({
+            time: `Hoy ${timeString}`,
+            title: `Estado cambiado a: ${changes.status}`,
+            description: `El lead ha pasado de ${oldStatus} a ${changes.status}`
+          });
+        }
+      }
+      
+      // Process temperature change
+      if (changes.temperatureValue !== undefined && changes.temperatureValue !== lead.temperatureValue) {
+        const oldTempValue = lead.temperatureValue;
+        const oldTemp = lead.temperature;
+        lead.temperatureValue = changes.temperatureValue;
+        lead.temperature = changes.temperature || lead.temperature; // Update temperature category if changed
+        
+        // Add timeline entry
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Temperatura ${changes.temperatureValue > oldTempValue ? 'aumentada' : 'reducida'}`,
+          description: `Temperatura ${changes.temperatureValue > oldTempValue ? 'aumentada' : 'reducida'} de ${oldTempValue} a ${changes.temperatureValue}`
+        });
+      }
+      
+      // Process general comment change
+      if (changes.generalComment !== undefined && changes.generalComment !== lead.generalComment) {
+        lead.generalComment = changes.generalComment;
+        
+        // Add timeline entry for comment update
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Comentario general actualizado`,
+          description: `El comentario general ha sido actualizado`
+        });
+      }
+      
+      // Process assistant change
+      if (changes.assistantId !== undefined && changes.assistantId !== lead.assistantId) {
+        const oldAssistant = assistants.find(a => a.id === lead.assistantId);
+        const newAssistant = assistants.find(a => a.id === changes.assistantId);
+        
+        lead.assistantId = changes.assistantId;
+        
+        // Add timeline entry for assistant change
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Asistente cambiado`,
+          description: `El asistente ha sido cambiado de ${oldAssistant ? oldAssistant.name : 'Sin asistente'} a ${newAssistant ? newAssistant.name : 'Sin asistente'}`
+        });
+      }
+      
+      // Add change note to timeline if provided
+      if (changeNote) {
+        lead.timeline.unshift({
+          time: `Hoy ${timeString}`,
+          title: `Nota de cambio`,
+          description: changeNote
+        });
+      }
+      
+      // Clear pending changes for this lead
+      delete pendingChanges[leadId];
+      
+      // Re-render the board
+      renderKanbanBoard();
+      
+      // Close the modal after saving changes
+      // leadDetailsCtn.style.display = 'none';
+      selectLead(leadId)
+    }
+  }
+
+  // Function to track stage change
+  function trackStageChange(leadId, newStage) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Get the column information based on the stage ID
+      const kanbanColumns = getDynamicColumns();
+      const column = kanbanColumns.find(col => col.id === newStage);
+      
+      if (column) {
+        // Store change in pending changes
+        if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+        pendingChanges[leadId].stage = column.title;
+        
+        // Update UI to reflect pending change
+        renderLeadDetails(leadId);
+      }
+    }
+  }
+
+  // Function to change assistant
+  function changeAssistant(leadId, newAssistantId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (lead) {
+      // Store changes in pending changes
+      if (!pendingChanges[leadId]) pendingChanges[leadId] = {};
+      pendingChanges[leadId].assistantId = parseInt(newAssistantId);
+      
+      // Update UI to reflect pending change
+      renderLeadDetails(leadId);
+    }
+  }
+
+  // Function to create editable field
+  function createEditableField(label, value, fieldType, onChange) {
+    const fieldContainer = document.createElement('div');
+    fieldContainer.className = 'editable-field-container';
+    
+    // Create the field
+    const field = document.createElement('div');
+    field.className = 'editable-field';
+    field.innerHTML = `
+      <div class="editable-content">${value}</div>
+      <i class="fas fa-pencil-alt edit-icon"></i>
+    `;
+    
+    // Label
+    const labelEl = document.createElement('div');
+    labelEl.style.cssText = "font-size:13px; color:#718096; margin-bottom:5px;";
+    labelEl.textContent = label;
+    
+    // Add event listener to make it editable
+    field.addEventListener('click', () => {
+      const content = field.querySelector('.editable-content');
+      const currentValue = content.textContent;
+      
+      // Replace with input
+      content.innerHTML = `<input type="${fieldType}" class="editable-input" value="${currentValue}">`;
+      const input = content.querySelector('input');
+      input.focus();
+      
+      // Handle outside click to save
+      const handleSave = (e) => {
+        if (!content.contains(e.target) && e.target !== content) {
+          const newValue = input.value.trim();
+          content.textContent = newValue;
+          onChange(newValue);
+          document.removeEventListener('click', handleSave);
+        }
+      };
+      
+      // Handle enter key to save
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const newValue = input.value.trim();
+          content.textContent = newValue;
+          onChange(newValue);
+          document.removeEventListener('click', handleSave);
+        }
+      });
+      
+      // Add listener with slight delay to prevent immediate trigger
+      setTimeout(() => {
+        document.addEventListener('click', handleSave);
+      }, 100);
+    });
+    
+    fieldContainer.appendChild(labelEl);
+    fieldContainer.appendChild(field);
+    
+    return fieldContainer;
+  }
+
+  // Global variable to track comment editing state
+  let isEditingComment = false;
+
+  // Document click handler for comment editing
+  document.addEventListener('click', (e) => {
+    if (isEditingComment) {
+      const commentEditArea = document.getElementById('commentEditArea');
+      const commentDisplayArea = document.getElementById('commentDisplayArea');
+      
+      // Check if click is outside the edit area
+      if (commentEditArea && !commentEditArea.contains(e.target) && e.target !== commentDisplayArea) {
+        // Get the comment text
+        const commentText = document.getElementById('generalCommentTextarea').value;
+        
+        // Find the current lead ID
+        if (selectedLeadId !== null) {
+          // Save the comment
+          updateGeneralComment(selectedLeadId, commentText);
+          
+          // Update display and toggle visibility
+          commentDisplayArea.innerHTML = commentText || '<span style="color:#a0aec0;">Haga clic para agregar un comentario</span>';
+          commentDisplayArea.style.display = 'block';
+          commentEditArea.style.display = 'none';
+          
+          // Reset editing state
+          isEditingComment = false;
+        }
+      }
+    }
+  });
+
+  // Function to render lead details
+  function renderLeadDetails(leadId) {
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+    
+    // Get pending changes for this lead
+    const changes = pendingChanges[leadId] || {};
+    
+    // Use either pending change or current value
+    const currentName = changes.name || lead.name;
+    const currentEmail = changes.email || lead.email;
+    const currentPhone = changes.phone || lead.phone;
+    const currentStage = changes.stage || lead.stage;
+    const currentIntent = changes.intent || lead.intent;
+    const currentPriority = changes.priority !== undefined ? changes.priority : lead.priority;
+    const currentStatus = changes.status || lead.status;
+    const currentGeneralComment = changes.generalComment !== undefined ? changes.generalComment : lead.generalComment;
+    const currentTemperatureValue = changes.temperatureValue !== undefined ? changes.temperatureValue : lead.temperatureValue;
+    const currentTemperature = changes.temperature !== undefined ? changes.temperature : lead.temperature;
+    const currentAssistantId = changes.assistantId !== undefined ? changes.assistantId : lead.assistantId;
+    
+    // Get current assistant
+    const currentAssistant = assistants.find(a => a.id === currentAssistantId);
+    
+    // Check if there are any pending changes
+    const hasPendingChanges = Object.keys(changes).length > 0;
+    
+    const leadDetailsModal = document.getElementById('leadDetailsModal');
+    
+    // Render lead header
+    const temperatureEmoji = currentTemperature === "hot" ? "🔥" : 
+                            currentTemperature === "warm" ? "🔆" : "❄️";
+    
+    // Determine status button text based on current status
+    const isInactive = currentStatus === "inactivo";
+    const archiveButtonText = isInactive ? "Activar" : "Inactivar";
+    const archiveButtonIcon = isInactive ? "fas fa-check-circle" : "fas fa-times-circle";
+    const archiveButtonClass = isInactive ? "secondary-button" : "secondary-button";
+    
+    // Get available funnels based on the current assistant
+    const availableFunnels = currentAssistant ? currentAssistant.funnels : 
+                           assistants.flatMap(a => a.funnels).filter((v, i, a) => a.indexOf(v) === i);
+    
+    leadDetailsModal.innerHTML = `
+      <div class="modal-content-wrapper">
+        <!-- Main content section -->
+        <div class="modal-main-content">
+          <!-- First row: Lead name, priority, priority buttons -->
+          <div style="background:white; padding:20px; padding-bottom: 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div id="leadNameEditableCtn">
+                <div class="editable-field">
+                  <h2 style="margin:0; font-size:20px; color:#2d3748;">${currentName}</h2>
+                  <i class="fas fa-pencil-alt edit-icon"></i>
+                  ${changes.name ? '<span class="pending-change-indicator">*</span>' : ''}
+                </div>
+              </div>
+              
+              <div style="display:flex; align-items:center; gap:15px;">
+                ${currentPriority > 0 ? `
+                <div style="display:flex; align-items:center; gap:5px;">
+                  <div style="color:#dd6b20; font-weight:bold; font-size:16px;">Nivel ${currentPriority}</div>
+                  <i class="fas fa-star" style="color:#dd6b20;"></i>
+                  ${currentPriority !== lead.priority ? '<span class="pending-change-indicator">*</span>' : ''}
+                </div>
+                ` : '<div style="color:#718096; font-size:14px;">Sin prioridad</div>'}
+                
+                <div style="display:flex; align-items:center; gap:5px;">
+                  <button id="aumentarPrioridadBtn" class="action-button secondary-button" title="Aumentar prioridad">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-arrow-up"></i>
+                  </button>
+                  <button id="reducirPrioridadBtn" class="action-button secondary-button" title="Reducir prioridad">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-arrow-down"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Second row: Status, funnel and assistant selection -->
+          <div style="background:white; border-bottom: 2px rgba(0,0,0,0.05) solid ; padding: 20px; padding-top:0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
+              <div class="status-selector">
+                <label style="font-size:14px; color:#4a5568;">Estado:</label>
+                <select id="statusSelect">
+                  <option value="activo" ${currentStatus === "activo" ? "selected" : ""}>Activo</option>
+                  <option value="inactivo" ${currentStatus === "inactivo" ? "selected" : ""}>Inactivo</option>
+                </select>
+                ${changes.status ? '<span class="pending-change-indicator">*</span>' : ''}
+              </div>
+              
+              <!-- Assistant selector -->
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="font-size:14px; color:#4a5568; font-weight:500;">Asistente:</div>
+                <select id="assistantSelect" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; background-color:white; font-size:14px; color:#4a5568;">
+                  ${assistants.map(assistant => `
+                    <option value="${assistant.id}" ${currentAssistantId === assistant.id ? 'selected' : ''}>
+                      ${assistant.name}
+                    </option>
+                  `).join('')}
+                </select>
+                ${changes.assistantId ? '<span class="pending-change-indicator">*</span>' : ''}
+              </div>
+              
+              <!-- Funnel selector (formerly stage) -->
+              <div class="stage-selector" style="border-top:none; margin-top:0; padding:0;">
+                <div style="font-size:14px; color:#4a5568; font-weight:500;">Embudo:</div>
+                <select id="stageSelect" style="flex:1;">
+                  ${availableFunnels.map(funnel => {
+                    const funnelId = funnel.toLowerCase().replace(/\s+/g, '-');
+                    return `<option value="${funnelId}" ${currentStage === funnel ? 'selected' : ''} 
+                            style="background:${getFunnelColor(funnel)}; color:${getFunnelTextColor(funnel)};">
+                      ${funnel}
+                    </option>`;
+                  }).join('')}
+                </select>
+                ${changes.stage ? '<span class="pending-change-indicator">*</span>' : ''}
+              </div>
+              
+              <!-- Intent selector -->
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="font-size:14px; color:#4a5568; font-weight:500;">Intención:</div>
+                <select id="intentSelect" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; background-color:white; font-size:14px; color:#4a5568;">
+                  <option value="Descubrimiento" ${currentIntent === "Descubrimiento" ? 'selected' : ''}>Descubrimiento</option>
+                  <option value="Consideracion" ${currentIntent === "Consideracion" ? 'selected' : ''}>Consideracion</option>
+                  <option value="Objecion" ${currentIntent === "Objecion" ? 'selected' : ''}>Objecion</option>
+                  <option value="Cierre potencial" ${currentIntent === "Cierre potencial" ? 'selected' : ''}>Cierre potencial</option>
+                  <option value="Alta intencion" ${currentIntent === "Alta intencion" ? 'selected' : ''}>Alta intencion</option>
+                </select>
+                ${changes.intent ? '<span class="pending-change-indicator">*</span>' : ''}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Lead information -->
+          <div style="background:white;  border-bottom: 2px rgba(0,0,0,0.05) solid ; padding:20px;">
+            <div style="display:flex; flex-wrap: wrap; margin-bottom:15px; gap:30px;">
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Teléfono</div>
+                <div class="editable-field">
+                  <div class="editable-content">${currentPhone}</div>
+                  <i class="fas fa-pencil-alt edit-icon"></i>
+                  ${changes.phone ? '<span class="pending-change-indicator">*</span>' : ''}
+                </div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Email</div>
+                <div class="editable-field">
+                  <div class="editable-content">${currentEmail}</div>
+                  <i class="fas fa-pencil-alt edit-icon"></i>
+                  ${changes.email ? '<span class="pending-change-indicator">*</span>' : ''}
+                </div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Origen</div>
+                <div style="font-size:15px; color:#2d3748;">${lead.source}</div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Asignado a</div>
+                <div style="font-size:15px; color:#2d3748;">${currentAssistant ? currentAssistant.name : 'Sin asistente'}</div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Creado</div>
+                <div style="font-size:15px; color:#2d3748;">${lead.createdDate}</div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Duración Promedio</div>
+                <div style="font-size:15px; color:#2d3748;">${lead.avgDuration || 'N/A'}</div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Número de Mensajes</div>
+                <div style="font-size:15px; color:#2d3748;">${lead.numMessages || '0'}</div>
+              </div>
+              <div>
+                <div style="font-size:13px; color:#718096; margin-bottom:5px;">Tasa de Reactividad</div>
+                <div style="font-size:15px; color:#2d3748;">${lead.reactivityRate || 'N/A'}</div>
+              </div>
+            </div>
+            
+            <div>
+              <div style="font-size:13px; color:#718096; margin-bottom:5px;">Temperatura del Lead</div>
+              <div style="display:flex; align-items:center; gap:15px;">
+                <div style="flex:1; height:8px; background:#edf2f7; border-radius:4px; position:relative;">
+                  <div style="position:absolute; top:0; left:0; height:100%; width:${currentTemperatureValue}%; background:linear-gradient(90deg, #3182ce 0%, #dd6b20 50%, #e53e3e 100%); border-radius:4px;"></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:5px;">
+                  <button id="decreaseTemperatureBtn" class="action-button secondary-button" style="padding:2px 8px;" title="Disminuir temperatura">-</button>
+                  <div style="font-size:24px;">${temperatureEmoji}</div>
+                  <button id="increaseTemperatureBtn" class="action-button secondary-button" style="padding:2px 8px;" title="Aumentar temperatura">+</button>
+                </div>
+                ${changes.temperatureValue !== undefined ? '<span class="pending-change-indicator">*</span>' : ''}
+              </div>
+            </div>
+          </div>
+                   
+          <!-- General comment section -->
+          <div class="comment-section" id="commentSection">
+            <h3>Notas: </h3>
+            <div id="commentDisplayArea" style="cursor:pointer; padding: 20px; border-radius:4px; background:#f7fafc;">
+              ${currentGeneralComment ? currentGeneralComment : '<span style="color:#a0aec0;">Haga clic para agregar un comentario</span>'}
+            </div>
+            <div id="commentEditArea" style="display:none;">
+              <textarea id="generalCommentTextarea" class="comment-textarea" placeholder="Escriba aquí un comentario general sobre este lead...">${currentGeneralComment}</textarea>
+              <div class="comment-actions">
+                <button id="saveCommentBtn" class="comment-save-btn">Guardar Comentario</button>
+              </div>
+            </div>
+            ${changes.generalComment !== undefined ? '<div style="font-size:12px; color:#718096; margin-top:5px; text-align:right;"><span class="pending-change-indicator">*</span> Cambio pendiente</div>' : ''}
+          </div>
+        </div>
+        
+        <!-- Timeline section (to the right) -->
+        <div class="modal-timeline-section">
+          <div style="background:white; border-radius:8px; padding:20px; height:100%; overflow-y:auto;">
+            <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Línea de Tiempo</h3>
+            
+            <div class="timeline">
+              ${lead.timeline.map((item, index) => {
+                // Determine the type of timeline item
+                let itemType = 'default';
+                if (item.title.toLowerCase().includes('temperatura')) itemType = 'temperature';
+                else if (item.title.toLowerCase().includes('intención') || 
+                         item.title.toLowerCase().includes('embudo') || 
+                         item.title.toLowerCase().includes('etapa')) itemType = 'intent';
+                else if (item.title.toLowerCase().includes('nota') || item.title.toLowerCase().includes('comentario')) itemType = 'note';
+                else if (item.title.toLowerCase().includes('cita')) itemType = 'appointment';
+                
+                // For temperature changes, extract the value if available
+                let temperatureValue = currentTemperatureValue || 50; // Default
+                
+                return `
+                  <div class="timeline-item ${itemType}">
+                    <div class="timeline-time">${item.time}</div>
+                    <div class="timeline-title">${item.title}</div>
+                    <div class="timeline-description">${item.description}</div>
+                    ${itemType === 'temperature' ? `
+                      <div class="temperature-chart">
+                        <div class="temperature-indicator" style="width:${temperatureValue}%;"></div>
+                      </div>
+                    ` : ''}
+
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bottom row: Action buttons -->
+      <div style="background:white; gap:8px; border-radius:8px; display:flex; justify-content:flex-end;">
+        <button id="archivarBtn" class="action-button ${archiveButtonClass}">
+          <i class="${archiveButtonIcon}"></i> ${archiveButtonText}
+        </button>
+          
+        <button id="enviarMensajeBtn" class="action-button primary-button">
+          <i class="fas fa-paper-plane"></i> Enviar mensaje
+        </button>
+        
+        ${hasPendingChanges ? `
+        <button id="saveChangesBtn" class="action-button primary-button">
+          <i class="fas fa-save"></i> Guardar Cambios
+        </button>
+        ` : '<div></div>'}
+      </div>
+    `;
+    
+    // Add event listeners to buttons
+    document.getElementById('aumentarPrioridadBtn').addEventListener('click', () => priorizarLead(lead.id));
+    document.getElementById('reducirPrioridadBtn').addEventListener('click', () => reducirPrioridadLead(lead.id));
+    document.getElementById('archivarBtn').addEventListener('click', () => toggleArchiveStatus(lead.id));
+    document.getElementById('enviarMensajeBtn').addEventListener('click', enviarMensaje);
+    document.getElementById('increaseTemperatureBtn').addEventListener('click', () => increaseTemperature(lead.id));
+    document.getElementById('decreaseTemperatureBtn').addEventListener('click', () => decreaseTemperature(lead.id));
+    
+    // Setup for comment editing
+    const commentDisplayArea = document.getElementById('commentDisplayArea');
+    const commentEditArea = document.getElementById('commentEditArea');
+
+    // Show edit area when display area is clicked
+    commentDisplayArea.addEventListener('click', (e) => {
+      commentDisplayArea.style.display = 'none';
+      commentEditArea.style.display = 'block';
+      document.getElementById('generalCommentTextarea').focus();
+      isEditingComment = true;
+      e.stopPropagation();
+    });
+
+    // Save comment when save button is clicked
+    document.getElementById('saveCommentBtn').addEventListener('click', (e) => {
+      const commentText = document.getElementById('generalCommentTextarea').value;
+      updateGeneralComment(lead.id, commentText);
+      commentDisplayArea.innerHTML = commentText || '<span style="color:#a0aec0;">Haga clic para agregar un comentario</span>';
+      commentDisplayArea.style.display = 'block';
+      commentEditArea.style.display = 'none';
+      isEditingComment = false;
+      e.stopPropagation();
+    });
+    
+    // Add event listener for status change
+    document.getElementById('statusSelect').addEventListener('change', (e) => {
+      changeLeadStatus(lead.id, e.target.value);
+    });
+    
+    // Add event listener for stage change
+    document.getElementById('stageSelect').addEventListener('change', (e) => {
+      trackStageChange(lead.id, e.target.value);
+    });
+    
+    // Add event listener for intent change
+    document.getElementById('intentSelect').addEventListener('change', (e) => {
+      if (!pendingChanges[lead.id]) pendingChanges[lead.id] = {};
+      pendingChanges[lead.id].intent = e.target.value;
+      renderLeadDetails(lead.id);
+    });
+    
+    // Add event listener for assistant change
+    document.getElementById('assistantSelect').addEventListener('change', (e) => {
+      changeAssistant(lead.id, e.target.value);
+    });
+    
+    // Add event listener for save button if present
+    if (hasPendingChanges) {
+      document.getElementById('saveChangesBtn').addEventListener('click', () => {
+        openChangeNoteModal(lead.id);
+      });
+    }
+    
+    // Setup editable fields for name, email, and phone
+    
+    // Name field
+    const nameField = document.querySelector('#leadNameEditableCtn .editable-field');
+    nameField.addEventListener('click', () => {
+      const nameContent = nameField.querySelector('h2');
+      const currentValue = nameContent.textContent;
+      
+      // Replace with input
+      nameContent.innerHTML = `<input type="text" class="editable-input" value="${currentValue}" style="font-size:20px; font-weight:bold;">`;
+      const input = nameContent.querySelector('input');
+      input.focus();
+      
+      // Handle outside click to save
+      const handleSave = (e) => {
+        if (!nameContent.contains(e.target) && e.target !== nameContent) {
+          const newValue = input.value.trim();
+          nameContent.textContent = newValue;
+          updateLeadName(lead.id, newValue);
+          document.removeEventListener('click', handleSave);
+        }
+      };
+      
+      // Handle enter key to save
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const newValue = input.value.trim();
+          nameContent.textContent = newValue;
+          updateLeadName(lead.id, newValue);
+          document.removeEventListener('click', handleSave);
+        }
+      });
+      
+      // Add listener with slight delay to prevent immediate trigger
+      setTimeout(() => {
+        document.addEventListener('click', handleSave);
+      }, 100);
+    });
+    
+    // Email field
+    const emailFields = document.querySelectorAll('.editable-field');
+    emailFields.forEach(field => {
+      if (field.querySelector('.editable-content') && field.querySelector('.editable-content').textContent === currentEmail) {
+        field.addEventListener('click', () => {
+          const content = field.querySelector('.editable-content');
+          const currentValue = content.textContent;
+          
+          // Replace with input
+          content.innerHTML = `<input type="email" class="editable-input" value="${currentValue}">`;
+          const input = content.querySelector('input');
+          input.focus();
+          
+          // Handle outside click to save
+          const handleSave = (e) => {
+            if (!content.contains(e.target) && e.target !== content) {
+              const newValue = input.value.trim();
+              content.textContent = newValue;
+              updateLeadEmail(lead.id, newValue);
+              document.removeEventListener('click', handleSave);
+            }
+          };
+          
+          // Handle enter key to save
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+              const newValue = input.value.trim();
+              content.textContent = newValue;
+              updateLeadEmail(lead.id, newValue);
+              document.removeEventListener('click', handleSave);
+            }
+          });
+          
+          // Add listener with slight delay to prevent immediate trigger
+          setTimeout(() => {
+            document.addEventListener('click', handleSave);
+          }, 100);
+        });
+      }
+    });
+    
+    // Phone field
+    const phoneFields = document.querySelectorAll('.editable-field');
+    phoneFields.forEach(field => {
+      if (field.querySelector('.editable-content') && field.querySelector('.editable-content').textContent === currentPhone) {
+        field.addEventListener('click', () => {
+          const content = field.querySelector('.editable-content');
+          const currentValue = content.textContent;
+          
+          // Replace with input
+          content.innerHTML = `<input type="tel" class="editable-input" value="${currentValue}">`;
+          const input = content.querySelector('input');
+          input.focus();
+          
+          // Handle outside click to save
+          const handleSave = (e) => {
+            if (!content.contains(e.target) && e.target !== content) {
+              const newValue = input.value.trim();
+              content.textContent = newValue;
+              updateLeadPhone(lead.id, newValue);
+              document.removeEventListener('click', handleSave);
+            }
+          };
+          
+          // Handle enter key to save
+          input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+              const newValue = input.value.trim();
+              content.textContent = newValue;
+              updateLeadPhone(lead.id, newValue);
+              document.removeEventListener('click', handleSave);
+            }
+          });
+          
+          // Add listener with slight delay to prevent immediate trigger
+          setTimeout(() => {
+            document.addEventListener('click', handleSave);
+          }, 100);
+        });
+      }
+    });
+  }
+
+  // Function to select a lead
+  function selectLead(leadId) {
+    selectedLeadId = leadId;
+    renderLeadDetails(leadId);
+    
+    // Show the modal
+    leadDetailsCtn.style.display = 'flex';
+  }
+
+  // Event listener to close modal when clicking outside
+  document.addEventListener('click', function(event) {
+    if (event.target === leadDetailsCtn) {
+      leadDetailsCtn.style.display = 'none';
+      isEditingComment = false;
+    }
+    if (event.target === changeNoteModalCtn) {
+      changeNoteModalCtn.style.display = 'none';
+    }
+  });
+
+  // Initialize filter buttons
+  function initFilterButtons() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button styling
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.style.background = '#f7fafc';
+          b.style.color = '#4a5568';
+          b.style.fontWeight = 'normal';
+        });
+        
+        btn.classList.add('active');
+        btn.style.background = '#ebf8ff';
+        btn.style.color = '#3182ce';
+        btn.style.fontWeight = 'bold';
+        
+        // Update filter
+        switch(btn.id) {
+          case 'todosBtn':
+            currentFilter = 'todos';
+            break;
+          case 'activosBtn':
+            currentFilter = 'activo';
+            break;
+          case 'inactivosBtn':
+            currentFilter = 'inactivo';
+            break;
+        }
+        
+        // Re-render Kanban board
+        renderKanbanBoard();
+      });
+    });
+  }
+
+  // Initialize search input
+  function initSearchInput() {
+    const searchInput = document.getElementById('searchInput');
+    
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value.trim();
+      renderKanbanBoard();
+    });
+  }
+  
+  // Initialize intelligent filters
+  function initIntelligentFilters() {
+    // Populate assistants dropdown
+    const assistantFilterEl = document.getElementById('assistantFilter');
+    assistants.forEach(assistant => {
+      const option = document.createElement('option');
+      option.value = assistant.id;
+      option.textContent = assistant.name;
+      assistantFilterEl.appendChild(option);
+    });
+    
+    // Assistant filter
+    assistantFilterEl.addEventListener('change', (e) => {
+      assistantFilterValue = e.target.value;
+      updateChannelFilter(); // Update channel options based on selected assistant
+      renderKanbanBoard();
+    });
+    
+    // Intent filter
+    document.getElementById('intentFilter').addEventListener('change', (e) => {
+      intentFilter = e.target.value;
+      renderKanbanBoard();
+    });
+    
+    // Channel filter
+    document.getElementById('channelFilter').addEventListener('change', (e) => {
+      channelFilter = e.target.value;
+      renderKanbanBoard();
+    });
+    
+    // Temperature filter
+    document.getElementById('temperatureFilter').addEventListener('change', (e) => {
+      temperatureFilter = e.target.value;
+      renderKanbanBoard();
+    });
+    
+    // Priority filter
+    document.getElementById('priorityFilter').addEventListener('change', (e) => {
+      priorityFilter = e.target.value;
+      renderKanbanBoard();
+    });
+    
+    // Clear filters button
+    document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+      document.getElementById('assistantFilter').value = '';
+      document.getElementById('intentFilter').value = '';
+      document.getElementById('channelFilter').value = '';
+      document.getElementById('temperatureFilter').value = '';
+      document.getElementById('priorityFilter').value = '';
+      
+      assistantFilterValue = '';
+      intentFilter = '';
+      channelFilter = '';
+      temperatureFilter = '';
+      priorityFilter = '';
+      
+      updateChannelFilter(); // Reset channel filter dropdown
+      renderKanbanBoard();
+    });
+  }
+
+  // Initialize the app
+  function init() {
+    // Initialize filter buttons
+    initFilterButtons();
+    
+    // Initialize search input
+    initSearchInput();
+    
+    // Initialize intelligent filters
+    initIntelligentFilters();
+    
+    // Initialize channel filter
+    updateChannelFilter();
+    
+    // Render Kanban board
+    renderKanbanBoard();
+  }
+
+  // Initialize the app
+  init();
+</script>
+

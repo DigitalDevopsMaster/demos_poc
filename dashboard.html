@@ -1,0 +1,1015 @@
+
+
+
+<!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- Include Chart.js for dashboard charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Main container with sidebar and content area -->
+<div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
+  
+  <!-- Sidebar navigation -->
+  <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
+    <!-- Logo and brand -->
+    <div style="padding:20px; text-align:center;">
+      <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
+      <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
+    </div>
+    
+    <!-- Navigation links -->
+    <nav>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li class="nav-item active" data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
+            <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
+          </li>
+          <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
+          </li>
+          <!-- <li class="nav-item" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
+          </li> -->
+          <!-- <li class="nav-item" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
+          </li>
+          <li class="nav-item" data-page="reports" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-chart-bar" style="margin-right:10px;"></i> Reportes
+          </li>
+          <li class="nav-item" data-page="appointments" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-calendar-alt" style="margin-right:10px;"></i> Citas
+          </li>
+          <li class="nav-item" data-page="campaigns" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-bullhorn" style="margin-right:10px;"></i> Campañas
+          </li>
+          <li class="nav-item" data-page="settings" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-cog" style="margin-right:10px;"></i> Configuración
+          </li> -->
+        </ul>
+    </nav>
+  </div>
+  
+  <!-- Main content area -->
+  <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
+    
+    <!-- Dashboard Page Content -->
+    <div id="dashboardPage" class="content-page">
+      <!-- Filters Section -->
+      <div class="filters-section" style="background:white; padding:15px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+        <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Canal</label>
+            <select id="channelFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="all">Todos los canales</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="instagram">Instagram</option>
+              <option value="tiktok">TikTok</option>
+              <option value="web">Web</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Asistente</label>
+            <select id="assistantFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="all">Todos</option>
+              <option value="ventas">Ventas</option>
+              <option value="soporte">Soporte</option>
+              <option value="onboarding">Onboarding</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Periodo</label>
+            <select id="periodFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="today">Hoy</option>
+              <option value="week">Esta semana</option>
+              <option value="month" selected>Este mes</option>
+              <option value="custom">Personalizado</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Flujo</label>
+            <select id="flowFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="all">Todos</option>
+              <option value="ventas">Ventas</option>
+              <option value="captacion">Captación</option>
+              <option value="reactivacion">Reactivación</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Intención</label>
+            <select id="intentionFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="all">Todas</option>
+              <option value="compra">Compra</option>
+              <option value="duda">Duda</option>
+              <option value="objecion">Objeción</option>
+              <option value="reclamo">Reclamo</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display:block; font-size:12px; margin-bottom:5px; color:#718096;">Temperatura</label>
+            <select id="temperatureFilter" class="filter-select" style="padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; width:150px;">
+              <option value="all">Todas</option>
+              <option value="frio">Frío</option>
+              <option value="templado">Templado</option>
+              <option value="caliente">Caliente</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Metrics Cards -->
+      <div class="metrics-section" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px; margin-bottom:20px;">
+        <!-- Conversations by Channel -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Conversaciones por Canal</h3>
+          <div style="display:flex; justify-content:space-between;">
+            <div style="text-align:center; flex:1;">
+              <div id="whatsappCount" style="font-size:24px; font-weight:bold; color:#38b2ac;">152</div>
+              <div style="font-size:12px; color:#718096;">WhatsApp</div>
+            </div>
+            <div style="text-align:center; flex:1;">
+              <div id="instagramCount" style="font-size:24px; font-weight:bold; color:#4299e1;">87</div>
+              <div style="font-size:12px; color:#718096;">Instagram</div>
+            </div>
+            <div style="text-align:center; flex:1;">
+              <div id="tiktokCount" style="font-size:24px; font-weight:bold; color:#ed8936;">43</div>
+              <div style="font-size:12px; color:#718096;">TikTok</div>
+            </div>
+            <div style="text-align:center; flex:1;">
+              <div id="webCount" style="font-size:24px; font-weight:bold; color:#667eea;">61</div>
+              <div style="font-size:12px; color:#718096;">Web</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- New Conversations -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Conversaciones Nuevas</h3>
+          <div style="display:flex; justify-content:space-between;">
+            <div style="text-align:center; flex:1;">
+              <div id="todayCount" style="font-size:24px; font-weight:bold; color:#38a169;">24</div>
+              <div style="font-size:12px; color:#718096;">Hoy</div>
+            </div>
+            <div style="text-align:center; flex:1;">
+              <div id="weekCount" style="font-size:24px; font-weight:bold; color:#38a169;">168</div>
+              <div style="font-size:12px; color:#718096;">Semana</div>
+            </div>
+            <div style="text-align:center; flex:1;">
+              <div id="monthCount" style="font-size:24px; font-weight:bold; color:#38a169;">743</div>
+              <div style="font-size:12px; color:#718096;">Mes</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Conversion Rate -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Tasa de Conversión</h3>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="text-align:center; flex:1;">
+              <div id="generalConversion" style="font-size:28px; font-weight:bold; color:#3182ce;">24.8%</div>
+              <div style="font-size:12px; color:#718096;">General</div>
+            </div>
+            <div style="height:60px; width:1px; background:#e2e8f0;"></div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:12px; color:#718096;">Captación</span>
+                <span id="captacionConversion" style="font-size:12px; font-weight:bold; color:#3182ce;">18.2%</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:12px; color:#718096;">Ventas</span>
+                <span id="ventasConversion" style="font-size:12px; font-weight:bold; color:#3182ce;">32.5%</span>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span style="font-size:12px; color:#718096;">Reactivación</span>
+                <span id="reactivacionConversion" style="font-size:12px; font-weight:bold; color:#3182ce;">21.6%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Lead Temperature -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Temperatura de Leads</h3>
+          <div style="display:flex; align-items:center; justify-content:center; gap:15px;">
+            <div style="text-align:center;">
+              <div id="frioPercentage" style="font-size:24px; font-weight:bold; color:#3182ce;">38%</div>
+              <div style="font-size:32px;">❄️</div>
+              <div style="font-size:12px; color:#718096;">Frío</div>
+            </div>
+            <div style="text-align:center;">
+              <div id="templadoPercentage" style="font-size:24px; font-weight:bold; color:#dd6b20;">42%</div>
+              <div style="font-size:32px;">🔆</div>
+              <div style="font-size:12px; color:#718096;">Templado</div>
+            </div>
+            <div style="text-align:center;">
+              <div id="calientePercentage" style="font-size:24px; font-weight:bold; color:#e53e3e;">20%</div>
+              <div style="font-size:32px;">🔥</div>
+              <div style="font-size:12px; color:#718096;">Caliente</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Leads by Intention -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Leads por Intención</h3>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Compra</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="compraBar" style="height:8px; width:65%; background:#38a169; border-radius:4px;"></div>
+              </div>
+              <span id="compraPercentage" style="font-size:14px; font-weight:bold; color:#38a169;">65%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Duda</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="dudaBar" style="height:8px; width:20%; background:#4299e1; border-radius:4px;"></div>
+              </div>
+              <span id="dudaPercentage" style="font-size:14px; font-weight:bold; color:#4299e1;">20%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Objeción</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="objecionBar" style="height:8px; width:10%; background:#f6ad55; border-radius:4px;"></div>
+              </div>
+              <span id="objecionPercentage" style="font-size:14px; font-weight:bold; color:#f6ad55;">10%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Reclamo</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="reclamoBar" style="height:8px; width:3%; background:#e53e3e; border-radius:4px;"></div>
+              </div>
+              <span id="reclamoPercentage" style="font-size:14px; font-weight:bold; color:#e53e3e;">3%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Spam</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="spamBar" style="height:8px; width:2%; background:#a0aec0; border-radius:4px;"></div>
+              </div>
+              <span id="spamPercentage" style="font-size:14px; font-weight:bold; color:#a0aec0;">2%</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Human Transfers -->
+        <div class="metric-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Transferencias a Humanos</h3>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Solicitud compleja</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="complejaBar" style="height:8px; width:45%; background:#4299e1; border-radius:4px;"></div>
+              </div>
+              <span id="complejaPercentage" style="font-size:14px; font-weight:bold; color:#4299e1;">45%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Solicitud explícita</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="explicitaBar" style="height:8px; width:30%; background:#4299e1; border-radius:4px;"></div>
+              </div>
+              <span id="explicitaPercentage" style="font-size:14px; font-weight:bold; color:#4299e1;">30%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Fallo IA</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="falloBar" style="height:8px; width:15%; background:#4299e1; border-radius:4px;"></div>
+              </div>
+              <span id="falloPercentage" style="font-size:14px; font-weight:bold; color:#4299e1;">15%</span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:14px; color:#718096;">Lead caliente</span>
+              <div style="flex:1; margin:0 10px;">
+                <div id="leadCalienteBar" style="height:8px; width:10%; background:#4299e1; border-radius:4px;"></div>
+              </div>
+              <span id="leadCalientePercentage" style="font-size:14px; font-weight:bold; color:#4299e1;">10%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Charts Section -->
+      <div class="charts-section" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:20px; margin-bottom:20px;">
+        <!-- Most Profitable Funnels -->
+        <div class="chart-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Embudos más Rentables</h3>
+          <canvas id="funnelsChartEl" style="width:100%; height:250px;"></canvas>
+        </div>
+        
+        <!-- Most Frequent Objections -->
+        <div class="chart-card" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Objeciones más Frecuentes</h3>
+          <canvas id="objectionsChartEl" style="width:100%; height:250px;"></canvas>
+        </div>
+      </div>
+      
+      <!-- Assistant Metrics Table -->
+      <div class="table-section" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05); margin-bottom:20px;">
+        <h3 style="margin:0 0 15px; font-size:16px; color:#4a5568;">Métricas por Asistente</h3>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Asistente</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Conversaciones</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Cierres</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Tasa Conv.</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Tiempo Resp.</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Satisfacción</th>
+            </tr>
+          </thead>
+          <tbody id="assistantTableBody">
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Ventas</td>
+              <td style="text-align:center; padding:12px 15px;">324</td>
+              <td style="text-align:center; padding:12px 15px;">98</td>
+              <td style="text-align:center; padding:12px 15px; color:#38a169;">30.2%</td>
+              <td style="text-align:center; padding:12px 15px;">14s</td>
+              <td style="text-align:center; padding:12px 15px;">⭐⭐⭐⭐</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Soporte</td>
+              <td style="text-align:center; padding:12px 15px;">218</td>
+              <td style="text-align:center; padding:12px 15px;">42</td>
+              <td style="text-align:center; padding:12px 15px; color:#dd6b20;">19.3%</td>
+              <td style="text-align:center; padding:12px 15px;">8s</td>
+              <td style="text-align:center; padding:12px 15px;">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Onboarding</td>
+              <td style="text-align:center; padding:12px 15px;">201</td>
+              <td style="text-align:center; padding:12px 15px;">54</td>
+              <td style="text-align:center; padding:12px 15px; color:#38a169;">26.9%</td>
+              <td style="text-align:center; padding:12px 15px;">11s</td>
+              <td style="text-align:center; padding:12px 15px;">⭐⭐⭐⭐</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Scheduled Appointments Card -->
+      <div class="appointments-section" style="background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+        <h3 style="margin:0 0 15px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:16px; color:#4a5568;">Citas Agendadas</span>
+          <span style="font-size:14px; color:#4a5568;">
+            <span id="appointmentsScheduled" style="color:#38a169; font-weight:bold;">42</span> agendadas / 
+            <span id="appointmentsMissed" style="color:#e53e3e; font-weight:bold;">8</span> no concretadas
+          </span>
+        </h3>
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Cliente</th>
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Fecha</th>
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Hora</th>
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Asistente</th>
+              <th style="text-align:left; padding:12px 15px; font-weight:600; color:#4a5568;">Canal</th>
+              <th style="text-align:center; padding:12px 15px; font-weight:600; color:#4a5568;">Estatus</th>
+            </tr>
+          </thead>
+          <tbody id="appointmentsTableBody">
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px;">Juan Pérez</td>
+              <td style="text-align:left; padding:12px 15px;">Hoy</td>
+              <td style="text-align:left; padding:12px 15px;">15:30</td>
+              <td style="text-align:left; padding:12px 15px;">Ventas</td>
+              <td style="text-align:left; padding:12px 15px;">WhatsApp</td>
+              <td style="text-align:center; padding:12px 15px;"><span style="background:#c6f6d5; color:#38a169; padding:4px 8px; border-radius:4px; font-size:12px;">Confirmada</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px;">María González</td>
+              <td style="text-align:left; padding:12px 15px;">Mañana</td>
+              <td style="text-align:left; padding:12px 15px;">10:00</td>
+              <td style="text-align:left; padding:12px 15px;">Onboarding</td>
+              <td style="text-align:left; padding:12px 15px;">Instagram</td>
+              <td style="text-align:center; padding:12px 15px;"><span style="background:#fed7d7; color:#e53e3e; padding:4px 8px; border-radius:4px; font-size:12px;">Pendiente</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="text-align:left; padding:12px 15px;">Carlos Rodríguez</td>
+              <td style="text-align:left; padding:12px 15px;">15/08</td>
+              <td style="text-align:left; padding:12px 15px;">16:45</td>
+              <td style="text-align:left; padding:12px 15px;">Ventas</td>
+              <td style="text-align:left; padding:12px 15px;">Web</td>
+              <td style="text-align:center; padding:12px 15px;"><span style="background:#c6f6d5; color:#38a169; padding:4px 8px; border-radius:4px; font-size:12px;">Confirmada</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for dashboard charts and filter functionality -->
+<script>
+  // Fictitious conversation data
+  const conversations = [
+    // WhatsApp conversations
+    ...Array(152).fill().map((_, i) => ({
+      id: `wa-${i+1}`,
+      channel: 'whatsapp',
+      assistant: ['ventas', 'soporte', 'onboarding'][Math.floor(Math.random() * 3)],
+      date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000), // Random date in the last 30 days
+      flow: ['ventas', 'captacion', 'reactivacion'][Math.floor(Math.random() * 3)],
+      intention: ['compra', 'duda', 'objecion', 'reclamo', 'spam'][Math.floor(Math.random() * 5)],
+      temperature: ['frio', 'templado', 'caliente'][Math.floor(Math.random() * 3)],
+      converted: Math.random() < 0.3, // 30% conversion rate
+      timeToRespond: Math.floor(Math.random() * 20) + 5, // 5-25 seconds
+      customerSatisfaction: Math.floor(Math.random() * 5) + 1, // 1-5 stars
+      transferred: Math.random() < 0.25, // 25% transfer rate
+      transferReason: ['compleja', 'explicita', 'fallo', 'leadCaliente'][Math.floor(Math.random() * 4)]
+    })),
+    
+    // Instagram conversations
+    ...Array(87).fill().map((_, i) => ({
+      id: `ig-${i+1}`,
+      channel: 'instagram',
+      assistant: ['ventas', 'soporte', 'onboarding'][Math.floor(Math.random() * 3)],
+      date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
+      flow: ['ventas', 'captacion', 'reactivacion'][Math.floor(Math.random() * 3)],
+      intention: ['compra', 'duda', 'objecion', 'reclamo', 'spam'][Math.floor(Math.random() * 5)],
+      temperature: ['frio', 'templado', 'caliente'][Math.floor(Math.random() * 3)],
+      converted: Math.random() < 0.25, // 25% conversion rate
+      timeToRespond: Math.floor(Math.random() * 20) + 5,
+      customerSatisfaction: Math.floor(Math.random() * 5) + 1,
+      transferred: Math.random() < 0.25,
+      transferReason: ['compleja', 'explicita', 'fallo', 'leadCaliente'][Math.floor(Math.random() * 4)]
+    })),
+    
+    // TikTok conversations
+    ...Array(43).fill().map((_, i) => ({
+      id: `tt-${i+1}`,
+      channel: 'tiktok',
+      assistant: ['ventas', 'soporte', 'onboarding'][Math.floor(Math.random() * 3)],
+      date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
+      flow: ['ventas', 'captacion', 'reactivacion'][Math.floor(Math.random() * 3)],
+      intention: ['compra', 'duda', 'objecion', 'reclamo', 'spam'][Math.floor(Math.random() * 5)],
+      temperature: ['frio', 'templado', 'caliente'][Math.floor(Math.random() * 3)],
+      converted: Math.random() < 0.2, // 20% conversion rate
+      timeToRespond: Math.floor(Math.random() * 20) + 5,
+      customerSatisfaction: Math.floor(Math.random() * 5) + 1,
+      transferred: Math.random() < 0.25,
+      transferReason: ['compleja', 'explicita', 'fallo', 'leadCaliente'][Math.floor(Math.random() * 4)]
+    })),
+    
+    // Web conversations
+    ...Array(61).fill().map((_, i) => ({
+      id: `web-${i+1}`,
+      channel: 'web',
+      assistant: ['ventas', 'soporte', 'onboarding'][Math.floor(Math.random() * 3)],
+      date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000),
+      flow: ['ventas', 'captacion', 'reactivacion'][Math.floor(Math.random() * 3)],
+      intention: ['compra', 'duda', 'objecion', 'reclamo', 'spam'][Math.floor(Math.random() * 5)],
+      temperature: ['frio', 'templado', 'caliente'][Math.floor(Math.random() * 3)],
+      converted: Math.random() < 0.22, // 22% conversion rate
+      timeToRespond: Math.floor(Math.random() * 20) + 5,
+      customerSatisfaction: Math.floor(Math.random() * 5) + 1,
+      transferred: Math.random() < 0.25,
+      transferReason: ['compleja', 'explicita', 'fallo', 'leadCaliente'][Math.floor(Math.random() * 4)]
+    }))
+  ];
+  
+  // Fictitious appointments data
+  const appointments = [
+    { name: 'Juan Pérez', date: 'Hoy', time: '15:30', assistant: 'Ventas', channel: 'WhatsApp', status: 'confirmed' },
+    { name: 'María González', date: 'Mañana', time: '10:00', assistant: 'Onboarding', channel: 'Instagram', status: 'pending' },
+    { name: 'Carlos Rodríguez', date: '15/08', time: '16:45', assistant: 'Ventas', channel: 'Web', status: 'confirmed' },
+    { name: 'Ana López', date: '16/08', time: '12:15', assistant: 'Soporte', channel: 'WhatsApp', status: 'confirmed' },
+    { name: 'Luis Morales', date: '18/08', time: '09:30', assistant: 'Ventas', channel: 'TikTok', status: 'pending' },
+    { name: 'Patricia Sánchez', date: '20/08', time: '14:00', assistant: 'Onboarding', channel: 'Instagram', status: 'confirmed' },
+  ];
+  
+  // Current filter state
+  let currentFilters = {
+    channel: 'all',
+    assistant: 'all',
+    period: 'month',
+    flow: 'all',
+    intention: 'all',
+    temperature: 'all'
+  };
+  
+  // Filter conversation data based on current filters
+  function filterConversations() {
+    let filtered = [...conversations];
+    
+    // Apply channel filter
+    if (currentFilters.channel !== 'all') {
+      filtered = filtered.filter(conv => conv.channel === currentFilters.channel);
+    }
+    
+    // Apply assistant filter
+    if (currentFilters.assistant !== 'all') {
+      filtered = filtered.filter(conv => conv.assistant === currentFilters.assistant);
+    }
+    
+    // Apply period filter
+    const now = new Date();
+    if (currentFilters.period === 'today') {
+      filtered = filtered.filter(conv => {
+        return conv.date.getDate() === now.getDate() && 
+               conv.date.getMonth() === now.getMonth() && 
+               conv.date.getFullYear() === now.getFullYear();
+      });
+    } else if (currentFilters.period === 'week') {
+      const weekStart = new Date(now);
+      weekStart.setDate(now.getDate() - now.getDay());
+      weekStart.setHours(0, 0, 0, 0);
+      filtered = filtered.filter(conv => conv.date >= weekStart);
+    } else if (currentFilters.period === 'month') {
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      filtered = filtered.filter(conv => conv.date >= monthStart);
+    }
+    // For 'custom' period, we would need date pickers, which is not implemented in this example
+    
+    // Apply flow filter
+    if (currentFilters.flow !== 'all') {
+      filtered = filtered.filter(conv => conv.flow === currentFilters.flow);
+    }
+    
+    // Apply intention filter
+    if (currentFilters.intention !== 'all') {
+      filtered = filtered.filter(conv => conv.intention === currentFilters.intention);
+    }
+    
+    // Apply temperature filter
+    if (currentFilters.temperature !== 'all') {
+      filtered = filtered.filter(conv => conv.temperature === currentFilters.temperature);
+    }
+    
+    return filtered;
+  }
+  
+  // Update dashboard with filtered data
+  function updateDashboard() {
+    const filteredData = filterConversations();
+    
+    // Update channel metrics
+    const channelCounts = {
+      whatsapp: filteredData.filter(conv => conv.channel === 'whatsapp').length,
+      instagram: filteredData.filter(conv => conv.channel === 'instagram').length,
+      tiktok: filteredData.filter(conv => conv.channel === 'tiktok').length,
+      web: filteredData.filter(conv => conv.channel === 'web').length
+    };
+    
+    whatsappCount.textContent = channelCounts.whatsapp;
+    instagramCount.textContent = channelCounts.instagram;
+    tiktokCount.textContent = channelCounts.tiktok;
+    webCount.textContent = channelCounts.web;
+    
+    // Update new conversations (period metrics)
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    const todayConvs = filteredData.filter(conv => conv.date >= todayStart).length;
+    const weekConvs = filteredData.filter(conv => conv.date >= weekStart).length;
+    const monthConvs = filteredData.filter(conv => conv.date >= monthStart).length;
+    
+    todayCount.textContent = todayConvs;
+    weekCount.textContent = weekConvs;
+    monthCount.textContent = monthConvs;
+    
+    // Update conversion rates
+    const allConvs = filteredData.length;
+    const convertedConvs = filteredData.filter(conv => conv.converted).length;
+    const conversionRate = allConvs > 0 ? (convertedConvs / allConvs * 100).toFixed(1) : '0.0';
+    
+    // Flow-specific conversion rates
+    const flowData = {
+      captacion: filteredData.filter(conv => conv.flow === 'captacion'),
+      ventas: filteredData.filter(conv => conv.flow === 'ventas'),
+      reactivacion: filteredData.filter(conv => conv.flow === 'reactivacion')
+    };
+    
+    const flowRates = {
+      captacion: flowData.captacion.length > 0 ? 
+        (flowData.captacion.filter(conv => conv.converted).length / flowData.captacion.length * 100).toFixed(1) : '0.0',
+      ventas: flowData.ventas.length > 0 ? 
+        (flowData.ventas.filter(conv => conv.converted).length / flowData.ventas.length * 100).toFixed(1) : '0.0',
+      reactivacion: flowData.reactivacion.length > 0 ? 
+        (flowData.reactivacion.filter(conv => conv.converted).length / flowData.reactivacion.length * 100).toFixed(1) : '0.0'
+    };
+    
+    generalConversion.textContent = conversionRate + '%';
+    captacionConversion.textContent = flowRates.captacion + '%';
+    ventasConversion.textContent = flowRates.ventas + '%';
+    reactivacionConversion.textContent = flowRates.reactivacion + '%';
+    
+    // Update temperature percentages
+    const tempCounts = {
+      frio: filteredData.filter(conv => conv.temperature === 'frio').length,
+      templado: filteredData.filter(conv => conv.temperature === 'templado').length,
+      caliente: filteredData.filter(conv => conv.temperature === 'caliente').length
+    };
+    
+    const totalTemp = tempCounts.frio + tempCounts.templado + tempCounts.caliente;
+    const tempPercentages = {
+      frio: totalTemp > 0 ? Math.round(tempCounts.frio / totalTemp * 100) : 0,
+      templado: totalTemp > 0 ? Math.round(tempCounts.templado / totalTemp * 100) : 0,
+      caliente: totalTemp > 0 ? Math.round(tempCounts.caliente / totalTemp * 100) : 0
+    };
+    
+    frioPercentage.textContent = tempPercentages.frio + '%';
+    templadoPercentage.textContent = tempPercentages.templado + '%';
+    calientePercentage.textContent = tempPercentages.caliente + '%';
+    
+    // Update intention metrics
+    const intentionCounts = {
+      compra: filteredData.filter(conv => conv.intention === 'compra').length,
+      duda: filteredData.filter(conv => conv.intention === 'duda').length,
+      objecion: filteredData.filter(conv => conv.intention === 'objecion').length,
+      reclamo: filteredData.filter(conv => conv.intention === 'reclamo').length,
+      spam: filteredData.filter(conv => conv.intention === 'spam').length
+    };
+    
+    const totalIntentions = Object.values(intentionCounts).reduce((a, b) => a + b, 0);
+    const intentionPercentages = {
+      compra: totalIntentions > 0 ? Math.round(intentionCounts.compra / totalIntentions * 100) : 0,
+      duda: totalIntentions > 0 ? Math.round(intentionCounts.duda / totalIntentions * 100) : 0,
+      objecion: totalIntentions > 0 ? Math.round(intentionCounts.objecion / totalIntentions * 100) : 0,
+      reclamo: totalIntentions > 0 ? Math.round(intentionCounts.reclamo / totalIntentions * 100) : 0,
+      spam: totalIntentions > 0 ? Math.round(intentionCounts.spam / totalIntentions * 100) : 0
+    };
+    
+    compraBar.style.width = intentionPercentages.compra + '%';
+    compraPercentage.textContent = intentionPercentages.compra + '%';
+    
+    dudaBar.style.width = intentionPercentages.duda + '%';
+    dudaPercentage.textContent = intentionPercentages.duda + '%';
+    
+    objecionBar.style.width = intentionPercentages.objecion + '%';
+    objecionPercentage.textContent = intentionPercentages.objecion + '%';
+    
+    reclamoBar.style.width = intentionPercentages.reclamo + '%';
+    reclamoPercentage.textContent = intentionPercentages.reclamo + '%';
+    
+    spamBar.style.width = intentionPercentages.spam + '%';
+    spamPercentage.textContent = intentionPercentages.spam + '%';
+    
+    // Update transfer metrics
+    const transferCounts = {
+      compleja: filteredData.filter(conv => conv.transferred && conv.transferReason === 'compleja').length,
+      explicita: filteredData.filter(conv => conv.transferred && conv.transferReason === 'explicita').length,
+      fallo: filteredData.filter(conv => conv.transferred && conv.transferReason === 'fallo').length,
+      leadCaliente: filteredData.filter(conv => conv.transferred && conv.transferReason === 'leadCaliente').length
+    };
+    
+    const totalTransfers = Object.values(transferCounts).reduce((a, b) => a + b, 0);
+    const transferPercentages = {
+      compleja: totalTransfers > 0 ? Math.round(transferCounts.compleja / totalTransfers * 100) : 0,
+      explicita: totalTransfers > 0 ? Math.round(transferCounts.explicita / totalTransfers * 100) : 0,
+      fallo: totalTransfers > 0 ? Math.round(transferCounts.fallo / totalTransfers * 100) : 0,
+      leadCaliente: totalTransfers > 0 ? Math.round(transferCounts.leadCaliente / totalTransfers * 100) : 0
+    };
+    
+    complejaBar.style.width = transferPercentages.compleja + '%';
+    complejaPercentage.textContent = transferPercentages.compleja + '%';
+    
+    explicitaBar.style.width = transferPercentages.explicita + '%';
+    explicitaPercentage.textContent = transferPercentages.explicita + '%';
+    
+    falloBar.style.width = transferPercentages.fallo + '%';
+    falloPercentage.textContent = transferPercentages.fallo + '%';
+    
+    leadCalienteBar.style.width = transferPercentages.leadCaliente + '%';
+    leadCalientePercentage.textContent = transferPercentages.leadCaliente + '%';
+    
+    // Update assistant metrics table
+    const assistantData = {
+      ventas: filteredData.filter(conv => conv.assistant === 'ventas'),
+      soporte: filteredData.filter(conv => conv.assistant === 'soporte'),
+      onboarding: filteredData.filter(conv => conv.assistant === 'onboarding')
+    };
+    
+    const assistantMetrics = {
+      ventas: {
+        convs: assistantData.ventas.length,
+        closures: assistantData.ventas.filter(conv => conv.converted).length,
+        rate: assistantData.ventas.length > 0 ? 
+          (assistantData.ventas.filter(conv => conv.converted).length / assistantData.ventas.length * 100).toFixed(1) : '0.0',
+        time: assistantData.ventas.length > 0 ? 
+          Math.round(assistantData.ventas.reduce((sum, conv) => sum + conv.timeToRespond, 0) / assistantData.ventas.length) : 0,
+        satisfaction: assistantData.ventas.length > 0 ? 
+          Math.round(assistantData.ventas.reduce((sum, conv) => sum + conv.customerSatisfaction, 0) / assistantData.ventas.length) : 0
+      },
+      soporte: {
+        convs: assistantData.soporte.length,
+        closures: assistantData.soporte.filter(conv => conv.converted).length,
+        rate: assistantData.soporte.length > 0 ? 
+          (assistantData.soporte.filter(conv => conv.converted).length / assistantData.soporte.length * 100).toFixed(1) : '0.0',
+        time: assistantData.soporte.length > 0 ? 
+          Math.round(assistantData.soporte.reduce((sum, conv) => sum + conv.timeToRespond, 0) / assistantData.soporte.length) : 0,
+        satisfaction: assistantData.soporte.length > 0 ? 
+          Math.round(assistantData.soporte.reduce((sum, conv) => sum + conv.customerSatisfaction, 0) / assistantData.soporte.length) : 0
+      },
+      onboarding: {
+        convs: assistantData.onboarding.length,
+        closures: assistantData.onboarding.filter(conv => conv.converted).length,
+        rate: assistantData.onboarding.length > 0 ? 
+          (assistantData.onboarding.filter(conv => conv.converted).length / assistantData.onboarding.length * 100).toFixed(1) : '0.0',
+        time: assistantData.onboarding.length > 0 ? 
+          Math.round(assistantData.onboarding.reduce((sum, conv) => sum + conv.timeToRespond, 0) / assistantData.onboarding.length) : 0,
+        satisfaction: assistantData.onboarding.length > 0 ? 
+          Math.round(assistantData.onboarding.reduce((sum, conv) => sum + conv.customerSatisfaction, 0) / assistantData.onboarding.length) : 0
+      }
+    };
+    
+    // Generate star ratings
+    const generateStars = (count) => '⭐'.repeat(count);
+    
+    // Update assistant table
+    assistantTableBody.innerHTML = '';
+    
+    // Ventas row
+    const ventasRow = document.createElement('tr');
+    ventasRow.style.borderBottom = '1px solid #e2e8f0';
+    ventasRow.innerHTML = `
+      <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Ventas</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.ventas.convs}</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.ventas.closures}</td>
+      <td style="text-align:center; padding:12px 15px; color:#38a169;">${assistantMetrics.ventas.rate}%</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.ventas.time}s</td>
+      <td style="text-align:center; padding:12px 15px;">${generateStars(assistantMetrics.ventas.satisfaction)}</td>
+    `;
+    assistantTableBody.appendChild(ventasRow);
+    
+    // Soporte row
+    const soporteRow = document.createElement('tr');
+    soporteRow.style.borderBottom = '1px solid #e2e8f0';
+    soporteRow.innerHTML = `
+      <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Soporte</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.soporte.convs}</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.soporte.closures}</td>
+      <td style="text-align:center; padding:12px 15px; color:#dd6b20;">${assistantMetrics.soporte.rate}%</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.soporte.time}s</td>
+      <td style="text-align:center; padding:12px 15px;">${generateStars(assistantMetrics.soporte.satisfaction)}</td>
+    `;
+    assistantTableBody.appendChild(soporteRow);
+    
+    // Onboarding row
+    const onboardingRow = document.createElement('tr');
+    onboardingRow.style.borderBottom = '1px solid #e2e8f0';
+    onboardingRow.innerHTML = `
+      <td style="text-align:left; padding:12px 15px; font-weight:500;">Asistente Onboarding</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.onboarding.convs}</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.onboarding.closures}</td>
+      <td style="text-align:center; padding:12px 15px; color:#38a169;">${assistantMetrics.onboarding.rate}%</td>
+      <td style="text-align:center; padding:12px 15px;">${assistantMetrics.onboarding.time}s</td>
+      <td style="text-align:center; padding:12px 15px;">${generateStars(assistantMetrics.onboarding.satisfaction)}</td>
+    `;
+    assistantTableBody.appendChild(onboardingRow);
+    
+    // Filter appointments based on current filters
+    let filteredAppointments = [...appointments];
+    if (currentFilters.channel !== 'all') {
+      filteredAppointments = filteredAppointments.filter(app => 
+        app.channel.toLowerCase() === currentFilters.channel);
+    }
+    if (currentFilters.assistant !== 'all') {
+      filteredAppointments = filteredAppointments.filter(app => 
+        app.assistant.toLowerCase() === currentFilters.assistant);
+    }
+    
+    // Update appointments metrics
+    const scheduledCount = filteredAppointments.filter(app => app.status === 'confirmed').length;
+    const missedCount = filteredAppointments.filter(app => app.status === 'pending').length;
+    
+    appointmentsScheduled.textContent = scheduledCount;
+    appointmentsMissed.textContent = missedCount;
+    
+    // Update appointments table
+    appointmentsTableBody.innerHTML = '';
+    
+    filteredAppointments.forEach(app => {
+      const appRow = document.createElement('tr');
+      appRow.style.borderBottom = '1px solid #e2e8f0';
+      
+      const statusClass = app.status === 'confirmed' ? 
+        'background:#c6f6d5; color:#38a169;' : 
+        'background:#fed7d7; color:#e53e3e;';
+      
+      const statusText = app.status === 'confirmed' ? 'Confirmada' : 'Pendiente';
+      
+      appRow.innerHTML = `
+        <td style="text-align:left; padding:12px 15px;">${app.name}</td>
+        <td style="text-align:left; padding:12px 15px;">${app.date}</td>
+        <td style="text-align:left; padding:12px 15px;">${app.time}</td>
+        <td style="text-align:left; padding:12px 15px;">${app.assistant}</td>
+        <td style="text-align:left; padding:12px 15px;">${app.channel}</td>
+        <td style="text-align:center; padding:12px 15px;"><span style="${statusClass} padding:4px 8px; border-radius:4px; font-size:12px;">${statusText}</span></td>
+      `;
+      
+      appointmentsTableBody.appendChild(appRow);
+    });
+    
+    // Update charts
+    updateCharts(filteredData);
+  }
+  
+  // Update Chart.js charts with filtered data
+  function updateCharts(filteredData) {
+    // Calculate funnel data
+    const flowData = {
+      captacion: filteredData.filter(conv => conv.flow === 'captacion'),
+      ventas: filteredData.filter(conv => conv.flow === 'ventas'),
+      reactivacion: filteredData.filter(conv => conv.flow === 'reactivacion'),
+      soporte: filteredData.filter(conv => conv.flow === 'soporte')
+    };
+    
+    const conversionRates = {
+      captacion: flowData.captacion.length > 0 ? 
+        (flowData.captacion.filter(conv => conv.converted).length / flowData.captacion.length * 100) : 0,
+      ventas: flowData.ventas.length > 0 ? 
+        (flowData.ventas.filter(conv => conv.converted).length / flowData.ventas.length * 100) : 0,
+      reactivacion: flowData.reactivacion.length > 0 ? 
+        (flowData.reactivacion.filter(conv => conv.converted).length / flowData.reactivacion.length * 100) : 0,
+      soporte: flowData.soporte.length > 0 ? 
+        (flowData.soporte.filter(conv => conv.converted).length / flowData.soporte.length * 100) : 0
+    };
+    
+    // Calculate objections data
+    const objectionData = filteredData.filter(conv => conv.intention === 'objecion');
+    
+    // Mock objection types (not in our data model, so we're creating fake distribution)
+    const objectionTypes = {
+      precio: Math.round(objectionData.length * 0.45),
+      competencia: Math.round(objectionData.length * 0.25),
+      tiempo: Math.round(objectionData.length * 0.15),
+      funcionalidades: Math.round(objectionData.length * 0.10),
+      otros: Math.round(objectionData.length * 0.05)
+    };
+    
+    // Calculate profitability (mocked as we don't have actual revenue data)
+    const profitability = {
+      captacion: Math.random() * 20 + 10, // Random value between 10-30
+      ventas: Math.random() * 30 + 30,    // Random value between 30-60
+      reactivacion: Math.random() * 15 + 10, // Random value between 10-25
+      soporte: Math.random() * 10 + 5     // Random value between 5-15
+    };
+    
+    // Update funnel chart
+    if (window.funnelsChart) {
+      window.funnelsChart.data.datasets[0].data = [
+        conversionRates.captacion.toFixed(1),
+        conversionRates.ventas.toFixed(1),
+        conversionRates.reactivacion.toFixed(1),
+        conversionRates.soporte.toFixed(1)
+      ];
+      
+      window.funnelsChart.data.datasets[1].data = [
+        profitability.captacion.toFixed(1),
+        profitability.ventas.toFixed(1),
+        profitability.reactivacion.toFixed(1),
+        profitability.soporte.toFixed(1)
+      ];
+      
+      window.funnelsChart.update();
+    }
+    
+    // Update objections chart
+    if (window.objectionsChart) {
+      window.objectionsChart.data.datasets[0].data = [
+        objectionTypes.precio,
+        objectionTypes.competencia,
+        objectionTypes.tiempo,
+        objectionTypes.funcionalidades,
+        objectionTypes.otros
+      ];
+      
+      window.objectionsChart.update();
+    }
+  }
+  
+  // Add event listeners to filter controls
+  function setupFilterListeners() {
+    const filterControls = document.querySelectorAll('.filter-select');
+    
+    filterControls.forEach(control => {
+      control.addEventListener('change', function() {
+        const filterId = this.id;
+        const filterValue = this.value;
+        
+        // Update current filter state
+        switch(filterId) {
+          case 'channelFilter':
+            currentFilters.channel = filterValue;
+            break;
+          case 'assistantFilter':
+            currentFilters.assistant = filterValue;
+            break;
+          case 'periodFilter':
+            currentFilters.period = filterValue;
+            break;
+          case 'flowFilter':
+            currentFilters.flow = filterValue;
+            break;
+          case 'intentionFilter':
+            currentFilters.intention = filterValue;
+            break;
+          case 'temperatureFilter':
+            currentFilters.temperature = filterValue;
+            break;
+        }
+        
+        // Update dashboard with new filters
+        updateDashboard();
+      });
+    });
+  }
+  
+  // Initialize Chart.js for dashboard charts
+  window.addEventListener('load', function() {
+    // Check if Chart.js is loaded
+    if (typeof Chart !== 'undefined') {
+      // Funnel chart
+      const funnelsCtx = funnelsChartEl;
+      if (funnelsCtx) {
+        window.funnelsChart = new Chart(funnelsCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Captación', 'Ventas', 'Reactivación', 'Soporte'],
+            datasets: [{
+              label: 'Conversión',
+              data: [18.2, 32.5, 21.6, 14.3],
+              backgroundColor: '#4299e1',
+              borderColor: '#3182ce',
+              borderWidth: 1
+            }, {
+              label: 'Rentabilidad',
+              data: [22.3, 45.8, 18.9, 10.2],
+              backgroundColor: '#38a169',
+              borderColor: '#2f855a',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 50,
+                ticks: {
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // Objections chart
+      const objectionsCtx = objectionsChartEl;
+      if (objectionsCtx) {
+        window.objectionsChart = new Chart(objectionsCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Precio', 'Competencia', 'Tiempo', 'Funcionalidades', 'Otros'],
+            datasets: [{
+              data: [45, 25, 15, 10, 5],
+              backgroundColor: [
+                '#4299e1',
+                '#38a169',
+                '#ecc94b',
+                '#ed8936',
+                '#a0aec0'
+              ],
+              borderColor: '#fff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'right',
+              }
+            }
+          }
+        });
+      }
+      
+      // Setup filter listeners
+      setupFilterListeners();
+      
+      // Initial dashboard update
+      updateDashboard();
+    }
+  });
+    // Get all navigation items
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Add click event to each navigation item
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Redirect to index.html
+        window.location.href = `${item.getAttribute(`data-page`)}.html`;
+      });
+    });
+  </script>
+
