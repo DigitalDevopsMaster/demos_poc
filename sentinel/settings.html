@@ -1,0 +1,1193 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel Dashboard - Configuration</title>
+  <!-- Import Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Import Feather Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+    :root {
+      --bg-color: #f7f8fa;
+      --text-color: #1a202c;
+      --text-secondary: #64748b;
+      --primary-blue: #2563eb;
+      --warning-orange: #f97316;
+      --danger-red: #dc2626;
+      --success-green: #10b981;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --sidebar-bg: #ffffff;
+      --header-bg: #ffffff;
+      --hover-bg: #f1f5f9;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #111827;
+      --text-color: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --primary-blue: #3b82f6;
+      --warning-orange: #fb923c;
+      --danger-red: #ef4444;
+      --success-green: #34d399;
+      --border-color: #1f2937;
+      --card-bg: #1e293b;
+      --sidebar-bg: #1e293b;
+      --header-bg: #1e293b;
+      --hover-bg: #2d3748;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      text-align: left;
+      overflow-x: hidden;
+    }
+
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: 70px 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar main";
+      min-height: 100vh;
+    }
+
+    /* Header styles */
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .theme-toggle:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .notification-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--danger-red);
+      color: white;
+      font-size: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      grid-area: sidebar;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 20px 0;
+      transition: 0.3s;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      margin: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .nav-item.active {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .nav-item i {
+      margin-right: 12px;
+    }
+
+    /* Main content styles */
+    .main-content {
+      grid-area: main;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* Configuration styles */
+    .config-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+
+    .config-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 15px 0;
+      color: var(--text-color);
+    }
+
+    .config-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-blue);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background-color: var(--hover-bg);
+      color: var(--text-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .config-table th {
+      text-align: left;
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .config-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .config-table tr:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-low {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-medium {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-high {
+      background-color: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge-critical {
+      background-color: #fecaca;
+      color: #7f1d1d;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .risk-select {
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .protocol-input {
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      width: 100%;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      border-bottom: 2px solid var(--primary-blue);
+      color: var(--primary-blue);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .behavior-table {
+      margin-top: 15px;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      padding: 24px;
+      width: 400px;
+      max-width: 90%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-color);
+    }
+
+    .modal-content {
+      margin-bottom: 24px;
+      color: var(--text-secondary);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .sidebar {
+        width: 60px;
+      }
+
+      .nav-item span {
+        display: none;
+      }
+
+      .nav-item {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .nav-item i {
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "main";
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .user-info span {
+        display: none;
+      }
+
+      .config-table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo">
+          <i data-feather="shield"></i> Sentinel
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle" onclick="toggleTheme()">
+          <i data-feather="moon"></i>
+        </div>
+        <div class="notification-icon">
+          <i data-feather="bell"></i>
+          <div class="notification-badge">3</div>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">JD</div>
+          <span>John Doe</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav>
+            <a href="./sentinel.html">
+              <div class="nav-item">
+                <i data-feather="grid"></i>
+                <span>Overview</span>
+              </div>
+            </a>
+            <a href="./rt_monitoring.html">
+              <div class="nav-item">
+                <i data-feather="alert-circle"></i>
+                <span>Real-time Monitoring</span>
+              </div>
+            </a>
+            <a href="./history.html">
+              <div class="nav-item">
+                <i data-feather="file-text"></i>
+                <span>Logs & History</span>
+              </div>
+            </a>
+            <a href="./settings.html">
+              <div class="nav-item active">
+                <i data-feather="settings"></i>
+                <span>Configuration</span>
+              </div>
+            </a>
+          </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1 class="config-title">Configuración del Sistema</h1>
+      
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('areas')">Áreas</div>
+        <div class="tab" onclick="switchTab('behaviors')">Comportamientos</div>
+      </div>
+      
+      <!-- Areas Tab Content -->
+      <div id="areas-tab" class="tab-content active">
+        <div class="config-card">
+          <h2 class="config-subtitle">Gestión de Áreas</h2>
+          
+          <form id="area-form">
+            <div class="form-group">
+              <label for="area-name">Nombre del Área</label>
+              <input type="text" id="area-name" class="form-control" placeholder="Ej: Salón 1A">
+            </div>
+            
+            <div class="form-group">
+              <label for="camera-select">Cámara Asociada</label>
+              <select id="camera-select" class="form-control">
+                <option value="">Seleccionar cámara...</option>
+                <option value="cam1">Cámara 1</option>
+                <option value="cam2">Cámara 2</option>
+                <option value="cam3">Cámara 3</option>
+                <option value="cam4">Cámara 4</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="model-select">Modelo de Comportamiento</label>
+              <select id="model-select" class="form-control" onchange="updateBehaviorsList()">
+                <option value="">Seleccionar modelo...</option>
+                <option value="salone">Salones</option>
+                <option value="pasillo">Pasillo</option>
+                <option value="recepcion">Recepción</option>
+                <option value="enfermeria">Enfermería</option>
+                <option value="bano">Baño</option>
+                <option value="jardin">Jardín/Cancha</option>
+              </select>
+            </div>
+            
+            <button type="button" class="btn btn-primary" onclick="addArea()">
+              <i data-feather="plus"></i> Agregar Área
+            </button>
+          </form>
+        </div>
+        
+        <div class="config-card" id="areas-table-container">
+          <h2 class="config-subtitle">Áreas Configuradas</h2>
+          <table class="config-table" id="areas-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cámara</th>
+                <th>Modelo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="areas-list">
+              <!-- Areas will be added here dynamically -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div id="area-behaviors-container" class="config-card hidden">
+          <h2 class="config-subtitle">Comportamientos del Área: <span id="selected-area-name"></span></h2>
+          <table class="config-table behavior-table" id="area-behaviors-table">
+            <thead>
+              <tr>
+                <th>Seleccionar</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th>Nivel de riesgo</th>
+                <th>Detectable por IA</th>
+                <th>Protocolo sugerido</th>
+                <th>Comportamiento previo observable</th>
+              </tr>
+            </thead>
+            <tbody id="area-behaviors-list">
+              <!-- Behaviors will be added here dynamically -->
+            </tbody>
+          </table>
+          <div style="margin-top: 15px;">
+            <button type="button" class="btn btn-primary" onclick="saveAreaBehaviors()">
+              <i data-feather="save"></i> Guardar Configuración
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Behaviors Tab Content -->
+      <div id="behaviors-tab" class="tab-content">
+        <div class="config-card">
+          <h2 class="config-subtitle">Comportamientos por Modelo</h2>
+          
+          <div class="form-group">
+            <label for="behavior-model-select">Seleccionar Modelo</label>
+            <select id="behavior-model-select" class="form-control" onchange="loadModelBehaviors()">
+              <option value="">Seleccionar modelo...</option>
+              <option value="salone">Salones</option>
+              <option value="pasillo">Pasillo</option>
+              <option value="recepcion">Recepción</option>
+              <option value="enfermeria">Enfermería</option>
+              <option value="bano">Baño</option>
+              <option value="jardin">Jardín/Cancha</option>
+            </select>
+          </div>
+          
+          <table class="config-table" id="behaviors-table">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th>Descripción</th>
+                <th>Nivel de riesgo</th>
+                <th>Detectable por IA</th>
+                <th>Protocolo sugerido</th>
+                <th>Comportamiento previo observable</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="behaviors-list">
+              <!-- Behaviors will be added here dynamically -->
+            </tbody>
+          </table>
+          
+          <div style="margin-top: 15px;">
+            <button type="button" class="btn btn-primary" onclick="saveModelBehaviors()">
+              <i data-feather="save"></i> Guardar Configuración
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Modal for saving as default -->
+  <div class="modal-overlay" id="save-default-modal">
+    <div class="modal">
+      <h3 class="modal-title">Guardar Configuración</h3>
+      <div class="modal-content">
+        ¿Desea establecer estos cambios como los valores predeterminados para este modelo?
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveAsDefault()">Guardar como Predeterminado</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Initialize Feather icons
+    document.addEventListener('DOMContentLoaded', function() {
+      feather.replace();
+      
+      // Set initial theme icon based on current theme
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`;
+      } else {
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`;
+      }
+      
+      feather.replace();
+      
+      // Load initial data
+      loadAreasList();
+    });
+    
+    // Toggle dark/light theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`
+        
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`
+      }
+      
+      feather.replace();
+    }
+    
+    // Switch between tabs
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+      
+      if (tabName === 'behaviors') {
+        loadModelBehaviors();
+      }
+    }
+    
+    // Sample data - In a real application, this would come from a database
+    let areas = [];
+    
+    // Pre-loaded behaviors for each model
+    const modelBehaviors = {
+      salone: [
+        {
+          id: 1,
+          category: "Aislamiento persistente",
+          description: "Niño se mantiene alejado del grupo durante actividades colectivas",
+          riskLevel: "Medio",
+          detectable: "Sí",
+          protocol: "Notificación a docente + revisión pedagógica",
+          priorBehavior: "Disminución de interacción progresiva",
+          status: "Posible",
+          defaultRiskLevel: "Medio",
+          defaultProtocol: "Notificación a docente + revisión pedagógica"
+        },
+        {
+          id: 2,
+          category: "Inmovilidad prolongada",
+          description: "Niño no se mueve por más de 3 min en una actividad activa",
+          riskLevel: "Alto",
+          detectable: "Sí",
+          protocol: "Alertar monitoreo + verificación inmediata",
+          priorBehavior: "Letargo o apatía previa",
+          status: "",
+          defaultRiskLevel: "Alto",
+          defaultProtocol: "Alertar monitoreo + verificación inmediata"
+        }
+      ],
+      pasillo: [
+        {
+          id: 3,
+          category: "Niño solo en el pasillo",
+          description: "Niño permanece solo sin docente durante más de 30 segundos",
+          riskLevel: "Crítico",
+          detectable: "Sí",
+          protocol: "Alerta inmediata a dirección + revisión cámaras",
+          priorBehavior: "Ausencia del adulto no registrada",
+          status: "",
+          defaultRiskLevel: "Crítico",
+          defaultProtocol: "Alerta inmediata a dirección + revisión cámaras"
+        }
+      ],
+      recepcion: [
+        {
+          id: 4,
+          category: "Docente fuera de cuadro",
+          description: "Ausencia de adulto en recepción sin justificación visual",
+          riskLevel: "Alto",
+          detectable: "Sí",
+          protocol: "Alerta operativa inmediata + justificación obligatoria",
+          priorBehavior: "Patrón previo de ausencias no reportadas",
+          status: "",
+          defaultRiskLevel: "Alto",
+          defaultProtocol: "Alerta operativa inmediata + justificación obligatoria"
+        }
+      ],
+      enfermeria: [
+        {
+          id: 5,
+          category: "Caída sin asistencia inmediata",
+          description: "Niño se cae y no hay respuesta adulta en menos de 10 segundos",
+          riskLevel: "Crítico",
+          detectable: "Sí",
+          protocol: "Alerta prioritaria + revisión del incidente",
+          priorBehavior: "Adulto distraído o fuera de cuadro",
+          status: "",
+          defaultRiskLevel: "Crítico",
+          defaultProtocol: "Alerta prioritaria + revisión del incidente"
+        }
+      ],
+      bano: [
+        {
+          id: 6,
+          category: "Permanencia excesiva",
+          description: "Niño permanece en el baño por más de 5 minutos",
+          riskLevel: "Medio",
+          detectable: "Sí",
+          protocol: "Notificación a docente para verificación verbal",
+          priorBehavior: "Posibles problemas digestivos previos",
+          status: "",
+          defaultRiskLevel: "Medio",
+          defaultProtocol: "Notificación a docente para verificación verbal"
+        }
+      ],
+      jardin: [
+        {
+          id: 7,
+          category: "Niño intentando salir del área",
+          description: "Movimiento hacia la puerta/reja sin supervisión",
+          riskLevel: "Alto",
+          detectable: "Sí",
+          protocol: "Notificación urgente + intervención inmediata",
+          priorBehavior: "Exploración frecuente del perímetro del jardín",
+          status: "",
+          defaultRiskLevel: "Alto",
+          defaultProtocol: "Notificación urgente + intervención inmediata"
+        }
+      ]
+    };
+    
+    // Add a new area
+    function addArea() {
+      const areaName = document.getElementById('area-name').value;
+      const cameraId = document.getElementById('camera-select').value;
+      const modelId = document.getElementById('model-select').value;
+      
+      if (!areaName || !cameraId || !modelId) {
+        alert('Por favor complete todos los campos');
+        return;
+      }
+      
+      const cameraName = document.getElementById('camera-select').options[document.getElementById('camera-select').selectedIndex].text;
+      const modelName = document.getElementById('model-select').options[document.getElementById('model-select').selectedIndex].text;
+      
+      const newArea = {
+        id: Date.now(), // Simple ID generation
+        name: areaName,
+        cameraId: cameraId,
+        cameraName: cameraName,
+        modelId: modelId,
+        modelName: modelName,
+        behaviors: [] // Initially no behaviors are selected
+      };
+      
+      areas.push(newArea);
+      
+      // Reset form
+      document.getElementById('area-form').reset();
+      
+      // Update the areas list
+      loadAreasList();
+    }
+    
+    // Load areas list in the table
+    function loadAreasList() {
+      const areasList = document.getElementById('areas-list');
+      
+      if (areas.length === 0) {
+        areasList.innerHTML = `<tr><td colspan="4" style="text-align: center;">No hay áreas configuradas</td></tr>`;
+        return;
+      }
+      
+      areasList.innerHTML = '';
+      
+      areas.forEach(area => {
+        areasList.innerHTML += `
+          <tr>
+            <td>${area.name}</td>
+            <td>${area.cameraName}</td>
+            <td>${area.modelName}</td>
+            <td class="actions">
+              <button class="btn btn-secondary" onclick="configureAreaBehaviors(${area.id})">
+                <i data-feather="sliders"></i> Configurar
+              </button>
+              <button class="btn btn-secondary" onclick="deleteArea(${area.id})">
+                <i data-feather="trash-2"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      feather.replace();
+    }
+    
+    // Delete an area
+    function deleteArea(areaId) {
+      if (confirm('¿Está seguro de eliminar esta área?')) {
+        areas = areas.filter(area => area.id !== areaId);
+        loadAreasList();
+      }
+    }
+    
+    // Configure behaviors for an area
+    function configureAreaBehaviors(areaId) {
+      const area = areas.find(a => a.id === areaId);
+      
+      if (!area) return;
+      
+      document.getElementById('selected-area-name').textContent = area.name;
+      
+      const behaviorsList = document.getElementById('area-behaviors-list');
+      behaviorsList.innerHTML = '';
+      
+      // Get behaviors for the area's model
+      const modelBehaviorsList = modelBehaviors[area.modelId] || [];
+      
+      modelBehaviorsList.forEach(behavior => {
+        // Check if this behavior is already selected for this area
+        const isSelected = area.behaviors.some(b => b.id === behavior.id);
+        
+        behaviorsList.innerHTML += `
+          <tr>
+            <td>
+              <input type="checkbox" id="behavior-${behavior.id}" ${isSelected ? 'checked' : ''}>
+            </td>
+            <td>${behavior.category}</td>
+            <td>${behavior.description}</td>
+            <td>
+              <select class="risk-select" id="risk-${behavior.id}">
+                <option value="Bajo" ${behavior.riskLevel === 'Bajo' ? 'selected' : ''}>Bajo</option>
+                <option value="Medio" ${behavior.riskLevel === 'Medio' ? 'selected' : ''}>Medio</option>
+                <option value="Alto" ${behavior.riskLevel === 'Alto' ? 'selected' : ''}>Alto</option>
+                <option value="Crítico" ${behavior.riskLevel === 'Crítico' ? 'selected' : ''}>Crítico</option>
+              </select>
+            </td>
+            <td>${behavior.detectable}</td>
+            <td>
+              <input type="text" class="protocol-input" id="protocol-${behavior.id}" value="${behavior.protocol}">
+            </td>
+            <td>${behavior.priorBehavior}</td>
+          </tr>
+        `;
+      });
+      
+      // Show the behaviors container and hide the areas table
+      document.getElementById('area-behaviors-container').classList.remove('hidden');
+      document.getElementById('areas-table-container').classList.add('hidden');
+      
+      // Store the current area ID for saving
+      document.getElementById('area-behaviors-container').dataset.areaId = areaId;
+      
+      feather.replace();
+    }
+    
+    // Save the selected behaviors for an area
+    function saveAreaBehaviors() {
+      const areaId = parseInt(document.getElementById('area-behaviors-container').dataset.areaId);
+      const area = areas.find(a => a.id === areaId);
+      
+      if (!area) return;
+      
+      area.behaviors = [];
+      
+      // Get behaviors for the area's model
+      const modelBehaviorsList = modelBehaviors[area.modelId] || [];
+      
+      modelBehaviorsList.forEach(behavior => {
+        const checkbox = document.getElementById(`behavior-${behavior.id}`);
+        const riskSelect = document.getElementById(`risk-${behavior.id}`);
+        const protocolInput = document.getElementById(`protocol-${behavior.id}`);
+        
+        if (checkbox && checkbox.checked) {
+          // Create a copy of the behavior
+          const selectedBehavior = {...behavior};
+          // Update the risk level and protocol
+          selectedBehavior.riskLevel = riskSelect.value;
+          selectedBehavior.protocol = protocolInput.value;
+          // Add to the area's behaviors
+          area.behaviors.push(selectedBehavior);
+        }
+      });
+      
+      alert('Configuración guardada correctamente');
+      
+      // Hide the behaviors container and show the areas table
+      document.getElementById('area-behaviors-container').classList.add('hidden');
+      document.getElementById('areas-table-container').classList.remove('hidden');
+    }
+    
+    // Load behaviors for a model in the behaviors tab
+    function loadModelBehaviors() {
+      const modelId = document.getElementById('behavior-model-select').value;
+      const behaviorsList = document.getElementById('behaviors-list');
+      
+      if (!modelId) {
+        behaviorsList.innerHTML = `<tr><td colspan="8" style="text-align: center;">Seleccione un modelo para ver sus comportamientos</td></tr>`;
+        return;
+      }
+      
+      const modelBehaviorsList = modelBehaviors[modelId] || [];
+      
+      if (modelBehaviorsList.length === 0) {
+        behaviorsList.innerHTML = `<tr><td colspan="8" style="text-align: center;">No hay comportamientos configurados para este modelo</td></tr>`;
+        return;
+      }
+      
+      behaviorsList.innerHTML = '';
+      
+      modelBehaviorsList.forEach(behavior => {
+        let riskBadgeClass = '';
+        
+        switch (behavior.riskLevel) {
+          case 'Bajo':
+            riskBadgeClass = 'badge-low';
+            break;
+          case 'Medio':
+            riskBadgeClass = 'badge-medium';
+            break;
+          case 'Alto':
+            riskBadgeClass = 'badge-high';
+            break;
+          case 'Crítico':
+            riskBadgeClass = 'badge-critical';
+            break;
+        }
+        
+        behaviorsList.innerHTML += `
+          <tr>
+            <td>${behavior.category}</td>
+            <td>${behavior.description}</td>
+            <td>
+              <select class="risk-select" id="model-risk-${behavior.id}" onchange="updateBehaviorRisk(${behavior.id}, '${modelId}')">
+                <option value="Bajo" ${behavior.riskLevel === 'Bajo' ? 'selected' : ''}>Bajo</option>
+                <option value="Medio" ${behavior.riskLevel === 'Medio' ? 'selected' : ''}>Medio</option>
+                <option value="Alto" ${behavior.riskLevel === 'Alto' ? 'selected' : ''}>Alto</option>
+                <option value="Crítico" ${behavior.riskLevel === 'Crítico' ? 'selected' : ''}>Crítico</option>
+              </select>
+            </td>
+            <td>${behavior.detectable}</td>
+            <td>
+              <input type="text" class="protocol-input" id="model-protocol-${behavior.id}" value="${behavior.protocol}" onchange="updateBehaviorProtocol(${behavior.id}, '${modelId}')">
+            </td>
+            <td>${behavior.priorBehavior}</td>
+            <td>${behavior.status || 'N/A'}</td>
+            <td class="actions">
+             
+              <button class="btn btn-secondary" onclick="restoreDefaults(${behavior.id}, '${modelId}')">
+                <i data-feather="refresh-cw"></i> Restaurar
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      feather.replace();
+    }
+    
+    // Update behavior risk level
+    function updateBehaviorRisk(behaviorId, modelId) {
+      const behavior = modelBehaviors[modelId].find(b => b.id === behaviorId);
+      if (behavior) {
+        behavior.riskLevel = document.getElementById(`model-risk-${behaviorId}`).value;
+      }
+    }
+    
+    // Update behavior protocol
+    function updateBehaviorProtocol(behaviorId, modelId) {
+      const behavior = modelBehaviors[modelId].find(b => b.id === behaviorId);
+      if (behavior) {
+        behavior.protocol = document.getElementById(`model-protocol-${behaviorId}`).value;
+      }
+    }
+    
+    // Restore defaults for a behavior
+    function restoreDefaults(behaviorId, modelId) {
+      const behavior = modelBehaviors[modelId].find(b => b.id === behaviorId);
+      if (behavior) {
+        behavior.riskLevel = behavior.defaultRiskLevel;
+        behavior.protocol = behavior.defaultProtocol;
+        
+        // Update UI
+        const riskSelect = document.getElementById(`model-risk-${behaviorId}`);
+        const protocolInput = document.getElementById(`model-protocol-${behaviorId}`);
+        
+        if (riskSelect) {
+          riskSelect.value = behavior.defaultRiskLevel;
+        }
+        
+        if (protocolInput) {
+          protocolInput.value = behavior.defaultProtocol;
+        }
+      }
+    }
+    
+    // Save model behaviors
+    function saveModelBehaviors() {
+      const modelId = document.getElementById('behavior-model-select').value;
+      
+      if (!modelId) {
+        alert('Por favor seleccione un modelo primero');
+        return;
+      }
+      
+      // Check if there are any changes compared to defaults
+      const modelBehaviorsList = modelBehaviors[modelId] || [];
+      let hasChanges = false;
+      
+      for (const behavior of modelBehaviorsList) {
+        if (behavior.riskLevel !== behavior.defaultRiskLevel || behavior.protocol !== behavior.defaultProtocol) {
+          hasChanges = true;
+          break;
+        }
+      }
+      
+      if (!hasChanges) {
+        alert('No hay cambios para guardar');
+        return;
+      }
+      
+      // Store current model ID for the modal
+      document.getElementById('save-default-modal').dataset.modelId = modelId;
+      
+      // Show the modal
+      openModal();
+    }
+    
+    // Open modal
+    function openModal() {
+      document.getElementById('save-default-modal').classList.add('active');
+    }
+    
+    // Close modal
+    function closeModal() {
+      document.getElementById('save-default-modal').classList.remove('active');
+    }
+    
+    // Save as default
+    function saveAsDefault() {
+      const modelId = document.getElementById('save-default-modal').dataset.modelId;
+      
+      if (!modelId) return;
+      
+      const modelBehaviorsList = modelBehaviors[modelId] || [];
+      
+      // Update default values to current values
+      modelBehaviorsList.forEach(behavior => {
+        behavior.defaultRiskLevel = behavior.riskLevel;
+        behavior.defaultProtocol = behavior.protocol;
+      });
+      
+      // Close the modal
+      closeModal();
+      
+      alert('Configuración guardada como predeterminada correctamente');
+    }
+    
+    // Edit a behavior - This would open a modal in a full implementation
+    function editBehavior(behaviorId, modelId) {
+      alert('Función de edición de comportamiento - En desarrollo');
+      // In a full implementation, this would open a modal with a form to edit the behavior
+    }
+    
+    // Updates behaviors list when selecting a model for an area
+    function updateBehaviorsList() {
+      // This would dynamically update any related fields based on the selected model
+      // For the current implementation, we only use this when configuring an area's behaviors
+    }
+ </script>
+</body>
+</html>

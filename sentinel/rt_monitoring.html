@@ -1,0 +1,1381 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel Dashboard</title>
+  <!-- Import Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Import Feather Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <!-- Import Chart.js for notifications graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    :root {
+      --bg-color: #f7f8fa;
+      --text-color: #1a202c;
+      --text-secondary: #64748b;
+      --primary-blue: #2563eb;
+      --warning-orange: #f97316;
+      --danger-red: #dc2626;
+      --success-green: #10b981;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --sidebar-bg: #ffffff;
+      --header-bg: #ffffff;
+      --hover-bg: #f1f5f9;
+      --critical-color: #ef4444;
+      --high-color: #f97316;
+      --medium-color: #f59e0b;
+      --low-color: #10b981;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #111827;
+      --text-color: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --primary-blue: #3b82f6;
+      --warning-orange: #fb923c;
+      --danger-red: #ef4444;
+      --success-green: #34d399;
+      --border-color: #1f2937;
+      --card-bg: #1e293b;
+      --sidebar-bg: #1e293b;
+      --header-bg: #1e293b;
+      --hover-bg: #2d3748;
+      --critical-color: #f87171;
+      --high-color: #fb923c;
+      --medium-color: #fbbf24;
+      --low-color: #34d399;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      text-align: left;
+      overflow-x: hidden;
+    }
+
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: 70px 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar main";
+      min-height: 100vh;
+    }
+
+    /* Header styles */
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .theme-toggle:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .notification-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--danger-red);
+      color: white;
+      font-size: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      grid-area: sidebar;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 20px 0;
+      transition: 0.3s;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      margin: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .nav-item.active {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .nav-item i {
+      margin-right: 12px;
+    }
+
+    /* Main content styles */
+    .main-content {
+      grid-area: main;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* Monitoring content styles */
+    .section-header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .filter-dropdown {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+    }
+
+    .search-box input {
+      border: none;
+      background: none;
+      outline: none;
+      color: var(--text-color);
+      font-size: 14px;
+      width: 180px;
+      margin-left: 8px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .zone-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .zone-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .zone-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .zone-badge {
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-normal {
+      background-color: var(--success-green);
+      color: white;
+    }
+
+    .badge-alert {
+      background-color: var(--danger-red);
+      color: white;
+    }
+
+    .zone-info {
+      display: flex;
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      gap: 8px;
+    }
+
+    .zone-divider {
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 8px 0;
+    }
+
+    .zone-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-active {
+      background-color: var(--success-green);
+    }
+
+    .status-inactive {
+      background-color: var(--text-secondary);
+    }
+
+    .status-alert {
+      background-color: var(--danger-red);
+    }
+
+    .notifications-container {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .notifications-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notifications-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .notification-item {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 15px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .notification-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .notification-icon-container {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(239, 68, 68, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notification-content {
+      flex: 1;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .notification-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .notification-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .meta-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: var(--hover-bg);
+    }
+
+    .risk-level {
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .risk-critical {
+      background-color: var(--critical-color);
+      color: white;
+    }
+
+    .risk-high {
+      background-color: var(--high-color);
+      color: white;
+    }
+
+    .risk-medium {
+      background-color: var(--medium-color);
+      color: white;
+    }
+
+    .risk-low {
+      background-color: var(--low-color);
+      color: white;
+    }
+
+    .notification-time {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-section-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .protocol-steps {
+      background-color: var(--hover-bg);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .protocol-step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .camera-placeholder {
+      width: 100%;
+      height: 240px;
+      background-color: var(--hover-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: var(--text-secondary);
+    }
+
+    /* Notification badge in zone modal */
+    .notification-badge-large {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 8px;
+      background-color: var(--danger-red);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+
+    /* Alert indicator for chart */
+    .alert-indicator {
+      padding: 8px;
+      margin-top: 10px;
+      background-color: rgba(239, 68, 68, 0.1);
+      border-left: 4px solid var(--danger-red);
+      border-radius: 4px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Zone Modal Styles */
+    .zone-modal-content {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .live-camera-feed {
+      width: 100%;
+      height: 360px;
+      background-color: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .camera-status {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .live-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--danger-red);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .zone-notifications {
+      margin-top: 20px;
+    }
+
+    .compact-notification-item {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .compact-notification-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .compact-notification-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(239, 68, 68, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .compact-notification-content {
+      flex: 1;
+    }
+
+    .compact-notification-title {
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .compact-notification-meta {
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-top: 4px;
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .sidebar {
+        width: 60px;
+      }
+
+      .nav-item span {
+        display: none;
+      }
+
+      .nav-item {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .nav-item i {
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "main";
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .user-info span {
+        display: none;
+      }
+
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo">
+          <i data-feather="shield"></i> Sentinel
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle" onclick="toggleTheme()">
+          <i data-feather="moon"></i>
+        </div>
+        <div class="notification-icon" onclick="openNotificationsModal()">
+          <i data-feather="bell"></i>
+          <div class="notification-badge">3</div>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">JD</div>
+          <span>John Doe</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <a href="./sentinel.html">
+          <div class="nav-item">
+            <i data-feather="grid"></i>
+            <span>Overview</span>
+          </div>
+        </a>
+        <a href="./rt_monitoring.html">
+          <div class="nav-item active">
+            <i data-feather="alert-circle"></i>
+            <span>Real-time Monitoring</span>
+          </div>
+        </a>
+        <a href="./history.html">
+          <div class="nav-item">
+            <i data-feather="file-text"></i>
+            <span>Logs & History</span>
+          </div>
+        </a>
+        <a href="./settings.html">
+          <div class="nav-item">
+            <i data-feather="settings"></i>
+            <span>Configuration</span>
+          </div>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Monitoring Section Header -->
+      <div class="section-header">
+        <h1 class="section-title">Monitoreo en tiempo real</h1>
+        <div class="filter-controls">
+          <div class="search-box">
+            <i data-feather="search" style="width:16px; height:16px; color:var(--text-secondary)"></i>
+            <input type="text" placeholder="Buscar..." id="searchInput" onkeyup="filterZones()">
+          </div>
+          <select class="filter-dropdown" id="zoneTypeFilter" onchange="filterZones()">
+            <option value="all">Todas las zonas</option>
+            <option value="salones">Salones</option>
+            <option value="pasillos">Pasillos</option>
+            <option value="recepcion">Recepción</option>
+            <option value="enfermeria">Enfermería</option>
+            <option value="banos">Baños</option>
+            <option value="jardines">Jardines y canchas</option>
+          </select>
+          <select class="filter-dropdown" id="statusFilter" onchange="filterZones()">
+            <option value="all">Todos los estados</option>
+            <option value="normal">Normal</option>
+            <option value="alert">Alerta</option>
+            <option value="inactive">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Zones Grid -->
+      <div class="grid-container" id="zonesGrid">
+        <!-- Will be populated by JavaScript -->
+      </div>
+
+      <!-- Recent Notifications -->
+      <div class="section-header">
+        <h2 class="section-title">Notificaciones recientes</h2>
+        <button class="filter-dropdown" onclick="markAllAsRead()">
+          Marcar todo como leído
+        </button>
+      </div>
+
+      <div class="notifications-container">
+        <div class="notifications-header">
+          <span>Alertas de comportamiento</span>
+          <span id="notificationCount">3 sin leer</span>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Notification Detail Modal -->
+  <div class="modal" id="notificationModal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="closeModal('notificationModal')">
+        <i data-feather="x"></i>
+      </div>
+      <h2 class="modal-title" id="modalTitle">Detalles de notificación</h2>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Descripción</div>
+        <p id="modalDescription"></p>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Video del incidente</div>
+        <div class="camera-placeholder" id="videoFragment">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+            <i data-feather="video" style="width:48px; height:48px;"></i>
+            <p>Fragmento de video del incidente</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Información</div>
+        <div class="notification-meta" style="font-size:14px; margin-top:8px;">
+          <div class="meta-tag" id="modalZone"></div>
+          <div class="meta-tag" id="modalCamera"></div>
+          <div class="meta-tag" id="modalTime"></div>
+          <div class="meta-tag" id="modalAI"></div>
+        </div>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Comportamiento previo observable</div>
+        <p id="modalBehavior"></p>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Protocolo sugerido</div>
+        <div class="protocol-steps" id="modalProtocol">
+          <!-- Protocol steps will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Zone Detail Modal -->
+  <div class="modal" id="zoneModal">
+    <div class="zone-modal-content">
+      <div class="modal-close" onclick="closeModal('zoneModal')">
+        <i data-feather="x"></i>
+      </div>
+      <h2 class="modal-title" id="zoneModalTitle">Monitoreo en tiempo real</h2>
+      
+      <!-- Live Camera Feed -->
+      <div class="live-camera-feed">
+        <div class="camera-status">
+          <div class="live-indicator"></div>
+          <span>EN VIVO</span>
+        </div>
+        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+          <div style="text-align:center; color:#666;">
+            <i data-feather="video" style="width:48px; height:48px;"></i>
+            <p style="margin-top:10px;">Transmisión en vivo de la cámara</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Recent Notifications for this Zone -->
+      <div class="zone-notifications">
+        <div class="notifications-header">
+          <span>Notificaciones recientes</span>
+          <span id="zoneNotificationCount"></span>
+        </div>
+        <div class="notifications-list" id="zoneNotificationsList">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Feather icons
+    document.addEventListener('DOMContentLoaded', function() {
+      feather.replace();
+      
+      // Set initial theme icon based on current theme
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`;
+      } else {
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`;
+      }
+      
+      feather.replace();
+      
+      // Initialize data
+      loadZones();
+      loadNotifications();
+    });
+    
+    // Toggle dark/light theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`
+        
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`
+      }
+      
+      feather.replace();
+    }
+
+    // Sample zone data
+    const zones = [
+      {
+        id: 1,
+        name: "Salón 101",
+        type: "salones",
+        typeDisplay: "Salón",
+        cameras: 2,
+        status: "normal",
+        lastChecked: "Hace 5 minutos"
+      },
+      {
+        id: 2,
+        name: "Pasillo Principal",
+        type: "pasillos",
+        typeDisplay: "Pasillo",
+        cameras: 3,
+        status: "alert",
+        lastChecked: "Hace 2 minutos"
+      },
+      {
+        id: 3,
+        name: "Recepción",
+        type: "recepcion",
+        typeDisplay: "Recepción",
+        cameras: 2,
+        status: "normal",
+        lastChecked: "Hace 10 minutos"
+      },
+      {
+        id: 4,
+        name: "Enfermería",
+        type: "enfermeria",
+        typeDisplay: "Enfermería",
+        cameras: 1,
+        status: "normal",
+        lastChecked: "Hace 15 minutos"
+      },
+      {
+        id: 5,
+        name: "Baño - Planta Baja",
+        type: "banos",
+        typeDisplay: "Baño",
+        cameras: 0,
+        status: "inactive",
+        lastChecked: "No monitoreado"
+      },
+      {
+        id: 6,
+        name: "Cancha de Fútbol",
+        type: "jardines",
+        typeDisplay: "Área Exterior",
+        cameras: 3,
+        status: "normal",
+        lastChecked: "Hace 8 minutos"
+      },
+      {
+        id: 7,
+        name: "Jardín Principal",
+        type: "jardines",
+        typeDisplay: "Área Exterior",
+        cameras: 1,
+        status: "normal",
+        lastChecked: "Hace 20 minutos"
+      },
+      {
+        id: 8,
+        name: "Salón 202",
+        type: "salones",
+        typeDisplay: "Salón",
+        cameras: 1,
+        status: "alert",
+        lastChecked: "Hace 1 minuto"
+      }
+    ];
+
+    // Sample notification data
+    const notifications = [
+      {
+        id: 1,
+        title: "Atragantamiento",
+        description: "Niño lleva comida a la boca y muestra señales de asfixia",
+        riskLevel: "critical",
+        riskLevelDisplay: "Crítico",
+        zone: "Salón 202",
+        zoneId: 8,
+        zoneType: "salones",
+        camera: "Cámara 1",
+        time: "Hace 1 minuto",
+        detectable: true,
+        protocol: "Alerta inmediata + acción física supervisada",
+        protocolSteps: [
+          "Avisar inmediatamente al personal cercano",
+          "Aplicar maniobra de Heimlich adaptada a niños",
+          "Llamar a servicios médicos si persiste",
+          "Documentar el incidente"
+        ],
+        priorBehavior: "Mala postura al comer, masticación deficiente",
+        unread: true,
+        videoFragment: "atragantamiento_clip.mp4" // Placeholder for video fragment
+      },
+      {
+        id: 2,
+        title: "Comportamiento agresivo",
+        description: "Alumno mostrando signos de agresión física hacia otro estudiante",
+        riskLevel: "high",
+        riskLevelDisplay: "Alto",
+        zone: "Pasillo Principal",
+        zoneId: 2,
+        zoneType: "pasillos",
+        camera: "Cámara 2",
+        time: "Hace 2 minutos",
+        detectable: true,
+        protocol: "Intervención inmediata + separación",
+        protocolSteps: [
+          "Intervenir de forma calmada y firme",
+          "Separar a los estudiantes involucrados",
+          "Llevar a ambos estudiantes a un espacio supervisado",
+          "Notificar al equipo de orientación",
+          "Contactar a los padres/tutores"
+        ],
+        priorBehavior: "Tensión verbal, postura defensiva, miradas hostiles",
+        unread: true,
+        videoFragment: "comportamiento_agresivo_clip.mp4" // Placeholder for video fragment
+      },
+      {
+        id: 3,
+        title: "Estudiante aislado",
+        description: "Alumno permanece aislado durante el recreo por tercer día consecutivo",
+        riskLevel: "medium",
+        riskLevelDisplay: "Medio",
+        zone: "Jardín Principal",
+        zoneId: 7,
+        zoneType: "jardines",
+        camera: "Cámara 3",
+        time: "Hace 20 minutos",
+        detectable: true,
+        protocol: "Observación + acercamiento indirecto",
+        protocolSteps: [
+          "Asignar personal para observación discreta",
+          "Organizar actividades inclusivas",
+          "Facilitar acercamiento por parte de compañeros",
+          "Programar sesión con orientador escolar",
+          "Evaluar progreso a lo largo de la semana"
+        ],
+        priorBehavior: "Evitación de contacto social, resistencia a participar en actividades grupales",
+        unread: true,
+        videoFragment: "estudiante_aislado_clip.mp4" // Placeholder for video fragment
+      }
+    ];
+
+    // Load zones into the grid
+    function loadZones() {
+      const zonesGrid = document.getElementById('zonesGrid');
+      zonesGrid.innerHTML = '';
+      
+      zones.forEach(zone => {
+        const zoneCard = document.createElement('div');
+        zoneCard.className = 'zone-card';
+        zoneCard.setAttribute('data-zone-type', zone.type);
+        zoneCard.setAttribute('data-status', zone.status);
+        zoneCard.setAttribute('data-zone-id', zone.id);
+        
+        const statusText = zone.status === 'normal' ? 'Normal' : 
+                          zone.status === 'alert' ? 'Alerta' : 'Inactivo';
+        const statusClass = zone.status === 'normal' ? 'badge-normal' : 
+                           zone.status === 'alert' ? 'badge-alert' : '';
+        
+        zoneCard.innerHTML = `
+          <div class="zone-header">
+            <div class="zone-title">${zone.name}</div>
+            <div class="zone-badge ${statusClass}">${statusText}</div>
+          </div>
+          <div class="zone-info">
+            <i data-feather="tag" style="width:14px; height:14px;"></i>
+            <span>${zone.typeDisplay}</span>
+          </div>
+          <div class="zone-info">
+            <i data-feather="video" style="width:14px; height:14px;"></i>
+            <span>${zone.cameras} ${zone.cameras === 1 ? 'cámara' : 'cámaras'}</span>
+          </div>
+          <div class="zone-divider"></div>
+          <div class="zone-status">
+            <div class="status-dot status-${zone.status}"></div>
+            <span>Última verificación: ${zone.lastChecked}</span>
+          </div>
+        `;
+        
+        // Add click event to open zone modal
+        zoneCard.addEventListener('click', () => {
+          openZoneModal(zone);
+        });
+        
+        zonesGrid.appendChild(zoneCard);
+      });
+      
+      feather.replace();
+    }
+
+    // Load notifications
+    function loadNotifications() {
+      const notificationsList = document.getElementById('notificationsList');
+      notificationsList.innerHTML = '';
+      
+      notifications.forEach(notification => {
+        const notificationItem = document.createElement('div');
+        notificationItem.className = 'notification-item';
+        notificationItem.setAttribute('data-notification-id', notification.id);
+        if (notification.unread) {
+          notificationItem.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
+        }
+        
+        notificationItem.innerHTML = `
+          <div class="notification-icon-container">
+            <i data-feather="alert-circle" style="color:var(--danger-red)"></i>
+          </div>
+          <div class="notification-content">
+            <div class="notification-title">
+              <span>${notification.title}</span>
+              <span class="risk-level risk-${notification.riskLevel}">${notification.riskLevelDisplay}</span>
+            </div>
+            <div class="notification-description">${notification.description}</div>
+            <div class="notification-meta">
+              <div class="meta-tag"><i data-feather="map-pin" style="width:12px; height:12px;"></i> ${notification.zone}</div>
+              <div class="meta-tag"><i data-feather="video" style="width:12px; height:12px;"></i> ${notification.camera}</div>
+              <div class="meta-tag"><i data-feather="clock" style="width:12px; height:12px;"></i> ${notification.time}</div>
+            </div>
+          </div>
+        `;
+        
+        notificationItem.addEventListener('click', () => {
+          showNotificationDetails(notification);
+          markAsRead(notification.id);
+        });
+        
+        notificationsList.appendChild(notificationItem);
+      });
+      
+      updateNotificationCount();
+      feather.replace();
+    }
+
+    // Filter zones based on search and dropdown selections
+    function filterZones() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const zoneTypeFilter = document.getElementById('zoneTypeFilter').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      
+      const zoneCards = document.querySelectorAll('.zone-card');
+      
+      zoneCards.forEach(card => {
+        const zoneName = card.querySelector('.zone-title').textContent.toLowerCase();
+        const zoneType = card.getAttribute('data-zone-type');
+        const status = card.getAttribute('data-status');
+        
+        const matchesSearch = zoneName.includes(searchTerm);
+        const matchesType = zoneTypeFilter === 'all' || zoneType === zoneTypeFilter;
+        const matchesStatus = statusFilter === 'all' || status === statusFilter;
+        
+        if (matchesSearch && matchesType && matchesStatus) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Show notification details in modal
+    function showNotificationDetails(notification) {
+      document.getElementById('modalTitle').textContent = notification.title;
+      document.getElementById('modalDescription').textContent = notification.description;
+      document.getElementById('modalZone').innerHTML = `<i data-feather="map-pin" style="width:14px; height:14px;"></i> ${notification.zone}`;
+      document.getElementById('modalCamera').innerHTML = `<i data-feather="video" style="width:14px; height:14px;"></i> ${notification.camera}`;
+      document.getElementById('modalTime').innerHTML = `<i data-feather="clock" style="width:14px; height:14px;"></i> ${notification.time}`;
+      document.getElementById('modalAI').innerHTML = `<i data-feather="cpu" style="width:14px; height:14px;"></i> ${notification.detectable ? 'Detectable por IA' : 'No detectable por IA'}`;
+      document.getElementById('modalBehavior').textContent = notification.priorBehavior;
+      
+      // Update video fragment placeholder
+      const videoFragment = document.getElementById('videoFragment');
+      videoFragment.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <i data-feather="video" style="width:48px; height:48px;"></i>
+          <p>Fragmento de video: ${notification.videoFragment}</p>
+        </div>
+      `;
+      
+      // Generate protocol steps
+      const protocolContainer = document.getElementById('modalProtocol');
+      protocolContainer.innerHTML = '';
+      
+      notification.protocolSteps.forEach((step, index) => {
+        const stepElement = document.createElement('div');
+        stepElement.className = 'protocol-step';
+        stepElement.innerHTML = `
+          <div class="step-number">${index + 1}</div>
+          <div>${step}</div>
+        `;
+        protocolContainer.appendChild(stepElement);
+      });
+      
+      openModal('notificationModal');
+      feather.replace();
+    }
+
+    // Open zone modal
+    function openZoneModal(zone) {
+      document.getElementById('zoneModalTitle').textContent = `${zone.name} - Monitoreo en tiempo real`;
+      
+      // Load zone-specific notifications
+      const zoneNotificationsList = document.getElementById('zoneNotificationsList');
+      zoneNotificationsList.innerHTML = '';
+      
+      // Filter notifications for this zone
+      const zoneNotifications = notifications.filter(n => n.zoneId === zone.id);
+      
+      // Update notification count for this zone
+      document.getElementById('zoneNotificationCount').textContent = 
+        zoneNotifications.length > 0 ? `${zoneNotifications.length} notificaciones` : 'Sin notificaciones';
+      
+      // Add notifications to the list
+      zoneNotifications.forEach(notification => {
+        const notificationItem = document.createElement('div');
+        notificationItem.className = 'compact-notification-item';
+        notificationItem.setAttribute('data-notification-id', notification.id);
+        
+        notificationItem.innerHTML = `
+          <div class="compact-notification-icon">
+            <i data-feather="alert-circle" style="width:16px; height:16px; color:var(--danger-red)"></i>
+          </div>
+          <div class="compact-notification-content">
+            <div class="compact-notification-title">
+              <span>${notification.title}</span>
+              <span class="risk-level risk-${notification.riskLevel}">${notification.riskLevelDisplay}</span>
+            </div>
+            <div class="compact-notification-meta">
+              <span><i data-feather="clock" style="width:12px; height:12px;"></i> ${notification.time}</span>
+              <span><i data-feather="video" style="width:12px; height:12px;"></i> ${notification.camera}</span>
+            </div>
+          </div>
+        `;
+        
+        notificationItem.addEventListener('click', () => {
+          closeModal('zoneModal');
+          showNotificationDetails(notification);
+          markAsRead(notification.id);
+        });
+        
+        zoneNotificationsList.appendChild(notificationItem);
+      });
+      
+      // If there are no notifications, show a message
+      if (zoneNotifications.length === 0) {
+        zoneNotificationsList.innerHTML = `
+          <div style="padding:16px; text-align:center; color:var(--text-secondary);">
+            No hay notificaciones recientes para esta zona.
+          </div>
+        `;
+      }
+      
+      openModal('zoneModal');
+      feather.replace();
+    }
+
+    // Mark notification as read
+    function markAsRead(notificationId) {
+      const index = notifications.findIndex(n => n.id === notificationId);
+      if (index !== -1 && notifications[index].unread) {
+        notifications[index].unread = false;
+        
+        const notificationElement = document.querySelector(`.notification-item[data-notification-id="${notificationId}"]`);
+        if (notificationElement) {
+          notificationElement.style.backgroundColor = '';
+        }
+        
+        updateNotificationCount();
+      }
+    }
+
+    // Mark all notifications as read
+    function markAllAsRead() {
+      notifications.forEach(notification => {
+        notification.unread = false;
+      });
+      
+      document.querySelectorAll('.notification-item').forEach(item => {
+        item.style.backgroundColor = '';
+      });
+      
+      updateNotificationCount();
+    }
+
+    // Update notification count
+    function updateNotificationCount() {
+      const unreadCount = notifications.filter(n => n.unread).length;
+      const notificationBadge = document.querySelector('.notification-badge');
+      const notificationCount = document.getElementById('notificationCount');
+      
+      if (unreadCount > 0) {
+        notificationBadge.textContent = unreadCount;
+        notificationBadge.style.display = 'flex';
+        notificationCount.textContent = `${unreadCount} sin leer`;
+      } else {
+        notificationBadge.style.display = 'none';
+        notificationCount.textContent = 'Ninguna sin leer';
+      }
+    }
+
+    // Open notifications modal
+    function openNotificationsModal() {
+      const notification = notifications.find(n => n.unread);
+      if (notification) {
+        showNotificationDetails(notification);
+        markAsRead(notification.id);
+      } else if (notifications.length > 0) {
+        showNotificationDetails(notifications[0]);
+      }
+    }
+
+    // Open modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'flex';
+      } else {
+        console.error(`Modal with ID ${modalId} not found`);
+      }
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'none';
+      } else {
+        console.error(`Modal with ID ${modalId} not found`);
+      }
+    }
+ </script>
+</body>
+</html>

@@ -1,0 +1,1852 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentinel Dashboard</title>
+  <!-- Import Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Import Feather Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <!-- Import Chart.js for notifications graph -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    :root {
+      --bg-color: #f7f8fa;
+      --text-color: #1a202c;
+      --text-secondary: #64748b;
+      --primary-blue: #2563eb;
+      --warning-orange: #f97316;
+      --danger-red: #dc2626;
+      --success-green: #10b981;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --sidebar-bg: #ffffff;
+      --header-bg: #ffffff;
+      --hover-bg: #f1f5f9;
+      --critical-color: #ef4444;
+      --high-color: #f97316;
+      --medium-color: #f59e0b;
+      --low-color: #10b981;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #111827;
+      --text-color: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --primary-blue: #3b82f6;
+      --warning-orange: #fb923c;
+      --danger-red: #ef4444;
+      --success-green: #34d399;
+      --border-color: #1f2937;
+      --card-bg: #1e293b;
+      --sidebar-bg: #1e293b;
+      --header-bg: #1e293b;
+      --hover-bg: #2d3748;
+      --critical-color: #f87171;
+      --high-color: #fb923c;
+      --medium-color: #fbbf24;
+      --low-color: #34d399;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      text-align: left;
+      overflow-x: hidden;
+    }
+
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: 70px 1fr;
+      grid-template-areas:
+        "header header"
+        "sidebar main";
+      min-height: 100vh;
+    }
+
+    /* Header styles */
+    .header {
+      grid-area: header;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+    
+    .theme-toggle:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .notification-icon {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: var(--danger-red);
+      color: white;
+      font-size: 10px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      grid-area: sidebar;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 20px 0;
+      transition: 0.3s;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      margin: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .nav-item.active {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .nav-item i {
+      margin-right: 12px;
+    }
+
+    /* Main content styles */
+    .main-content {
+      grid-area: main;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* Section header styles */
+    .section-header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .filter-dropdown {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+    }
+
+    .search-box input {
+      border: none;
+      background: none;
+      outline: none;
+      color: var(--text-color);
+      font-size: 14px;
+      width: 180px;
+      margin-left: 8px;
+    }
+
+    /* Logs table styles */
+    .logs-container {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .logs-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .logs-table th {
+      background-color: var(--hover-bg);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logs-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logs-table tr:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .log-level {
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .log-critical {
+      background-color: var(--critical-color);
+      color: white;
+    }
+
+    .log-high {
+      background-color: var(--high-color);
+      color: white;
+    }
+
+    .log-medium {
+      background-color: var(--medium-color);
+      color: white;
+    }
+
+    .log-low {
+      background-color: var(--low-color);
+      color: white;
+    }
+
+    .log-info {
+      background-color: var(--primary-blue);
+      color: white;
+    }
+
+    /* Pagination styles */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 20px;
+    }
+
+    .pagination-item {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+    }
+
+    .pagination-item:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .pagination-item.active {
+      background-color: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+    }
+
+    /* Log detail modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-section-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .log-details {
+      background-color: var(--hover-bg);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .meta-tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: var(--hover-bg);
+      margin-right: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    /* Timeline styles */
+    .timeline-container {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .timeline:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: var(--border-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -38px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: var(--primary-blue);
+      border: 3px solid var(--card-bg);
+    }
+
+    .timeline-dot.warning {
+      background-color: var(--warning-orange);
+    }
+
+    .timeline-dot.danger {
+      background-color: var(--danger-red);
+    }
+
+    .timeline-dot.success {
+      background-color: var(--success-green);
+    }
+
+    .timeline-content {
+      padding: 16px;
+      background-color: var(--hover-bg);
+      border-radius: 8px;
+    }
+
+    .timeline-time {
+      color: var(--text-secondary);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .timeline-description {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* View selector styles */
+    .view-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .view-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-option:hover {
+      background-color: var(--hover-bg);
+    }
+
+    .view-option.active {
+      background-color: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 992px) {
+      .dashboard-container {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .sidebar {
+        width: 60px;
+      }
+
+      .nav-item span {
+        display: none;
+      }
+
+      .nav-item {
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .nav-item i {
+        margin-right: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "main";
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .user-info span {
+        display: none;
+      }
+
+      .filter-controls {
+        flex-direction: column;
+      }
+
+      .logs-table {
+        min-width: 600px;
+      }
+
+      .logs-container {
+        overflow-x: auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .filter-controls {
+        width: 100%;
+      }
+
+      .search-box, .filter-dropdown {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo">
+          <i data-feather="shield"></i> Sentinel
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="theme-toggle" onclick="toggleTheme()">
+          <i data-feather="moon"></i>
+        </div>
+        <div class="notification-icon" onclick="openNotificationsModal()">
+          <i data-feather="bell"></i>
+          <div class="notification-badge">3</div>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">JD</div>
+          <span>John Doe</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav>
+        <a href="./sentinel.html">
+          <div class="nav-item">
+            <i data-feather="grid"></i>
+            <span>Overview</span>
+          </div>
+        </a>
+        <a href="./rt_monitoring.html">
+          <div class="nav-item">
+            <i data-feather="alert-circle"></i>
+            <span>Real-time Monitoring</span>
+          </div>
+        </a>
+        <a href="./history.html">
+          <div class="nav-item active">
+            <i data-feather="file-text"></i>
+            <span>Logs & History</span>
+          </div>
+        </a>
+        <a href="./settings.html">
+          <div class="nav-item">
+            <i data-feather="settings"></i>
+            <span>Configuration</span>
+          </div>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Logs Section Header -->
+      <div class="section-header">
+        <h1 class="section-title">Logs & History</h1>
+        <div class="filter-controls">
+          <div class="search-box">
+            <i data-feather="search" style="width:16px; height:16px; color:var(--text-secondary)"></i>
+            <input type="text" placeholder="Buscar logs..." id="searchInput" onkeyup="filterLogs()">
+          </div>
+          <select class="filter-dropdown" id="logTypeFilter" onchange="filterLogs()">
+            <option value="all">Todos los tipos</option>
+            <option value="event">Eventos</option>
+            <option value="alert">Alertas</option>
+            <option value="system">Sistema</option>
+            <option value="user">Usuario</option>
+          </select>
+          <select class="filter-dropdown" id="logLevelFilter" onchange="filterLogs()">
+            <option value="all">Todos los niveles</option>
+            <option value="critical">Crítico</option>
+            <option value="high">Alto</option>
+            <option value="medium">Medio</option>
+            <option value="low">Bajo</option>
+            <option value="info">Información</option>
+          </select>
+          <select class="filter-dropdown" id="dateRangeFilter" onchange="filterLogs()">
+            <option value="all">Todo el historial</option>
+            <option value="today">Hoy</option>
+            <option value="yesterday">Ayer</option>
+            <option value="week">Esta semana</option>
+            <option value="month">Este mes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- View Selector -->
+      <div class="section-header">
+        <h2 class="section-title">Eventos</h2>
+        <div class="view-selector">
+          <div class="view-option active" id="timelineViewBtn" onclick="switchView('timeline')">
+            <i data-feather="clock"></i> Timeline
+          </div>
+          <div class="view-option" id="listViewBtn" onclick="switchView('list')">
+            <i data-feather="list"></i> Lista
+          </div>
+          <button class="filter-dropdown" onclick="exportLogs()">
+            <i data-feather="download"></i> Exportar logs
+          </button>
+        </div>
+      </div>
+      
+      <!-- Recent Events Timeline View -->
+      <div id="timelineView">
+        <div class="timeline-container">
+          <div class="timeline" id="timelineContainer">
+            <!-- Will be populated by JavaScript -->
+          </div>
+        </div>
+        <!-- Timeline Pagination -->
+        <div class="pagination" id="timelinePagination">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- System Logs List View -->
+      <div id="listView" style="display: none;">
+        <div class="logs-container">
+          <div class="logs-header">
+            <span>Logs del sistema</span>
+            <span id="logCount">Mostrando 1-50 de 243</span>
+          </div>
+          <table class="logs-table" id="logsTable">
+            <thead>
+              <tr>
+                <th>Fecha y hora</th>
+                <th>Nivel</th>
+                <th>Tipo</th>
+                <th>Mensaje</th>
+                <th>Zona</th>
+                <th>Usuario</th>
+              </tr>
+            </thead>
+            <tbody id="logsTableBody">
+              <!-- Will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- List Pagination -->
+        <div class="pagination" id="logsPagination">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Log Detail Modal -->
+  <div class="modal" id="logDetailModal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="closeModal('logDetailModal')">
+        <i data-feather="x"></i>
+      </div>
+      <h2 class="modal-title" id="modalTitle">Detalles del log</h2>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Información</div>
+        <div id="logMetadata">
+          <div class="meta-tag"><i data-feather="calendar" style="width:14px; height:14px;"></i> <span id="logDate"></span></div>
+          <div class="meta-tag"><i data-feather="clock" style="width:14px; height:14px;"></i> <span id="logTime"></span></div>
+          <div class="meta-tag"><i data-feather="user" style="width:14px; height:14px;"></i> <span id="logUser"></span></div>
+          <div class="meta-tag"><i data-feather="map-pin" style="width:14px; height:14px;"></i> <span id="logZone"></span></div>
+          <div class="meta-tag"><i data-feather="tag" style="width:14px; height:14px;"></i> <span id="logType"></span></div>
+        </div>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Mensaje</div>
+        <p id="logMessage"></p>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Detalles técnicos</div>
+        <div class="log-details" id="logDetails">
+          <!-- Technical details will be inserted here -->
+        </div>
+      </div>
+      
+      <div class="modal-section">
+        <div class="modal-section-title">Acciones relacionadas</div>
+        <div id="logActions">
+          <!-- Action buttons will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div class="modal" id="notificationsModal">
+    <div class="modal-content">
+      <div class="modal-close" onclick="closeModal('notificationsModal')">
+        <i data-feather="x"></i>
+      </div>
+      <h2 class="modal-title">Notificaciones</h2>
+      <div id="notificationsContainer">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Feather icons
+    document.addEventListener('DOMContentLoaded', function() {
+      feather.replace();
+      
+      // Set initial theme icon based on current theme
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+      
+      if (html.getAttribute('data-theme') === 'dark') {
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`;
+      } else {
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`;
+      }
+      
+      feather.replace();
+      
+      // Initialize data
+      loadTimeline();
+      loadLogs();
+      setupPagination('timelinePagination');
+      setupPagination('logsPagination');
+      loadNotifications();
+    });
+    
+    // Toggle dark/light theme
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeToggle = document.querySelector('.theme-toggle');
+
+      if (html.getAttribute('data-theme') === 'dark') {
+        html.removeAttribute('data-theme');
+        themeToggle.innerHTML = `<i data-feather='moon'></i>`
+        
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = `<i data-feather='sun'></i>`
+      }
+      
+      feather.replace();
+    }
+
+    // Switch between timeline and list views
+    function switchView(view) {
+      const timelineView = document.getElementById('timelineView');
+      const listView = document.getElementById('listView');
+      const timelineViewBtn = document.getElementById('timelineViewBtn');
+      const listViewBtn = document.getElementById('listViewBtn');
+
+      if (view === 'timeline') {
+        timelineView.style.display = 'block';
+        listView.style.display = 'none';
+        timelineViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+      } else {
+        timelineView.style.display = 'none';
+        listView.style.display = 'block';
+        timelineViewBtn.classList.remove('active');
+        listViewBtn.classList.add('active');
+      }
+    }
+
+    // Sample logs data
+    const logs = [
+      {
+        id: 1,
+        timestamp: new Date('2023-08-10T09:15:23'),
+        level: "critical",
+        levelDisplay: "Crítico",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Detección de atragantamiento en salón 202",
+        zone: "Salón 202",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-10T09:15:23.341Z
+eventId: evt_78342
+cameraId: cam_202_1
+detectionConfidence: 0.89
+aiModel: behavior-recognition-v2.3
+alertType: choking_detection
+relatedIncidents: []
+videoSegmentUrl: /api/video/incidents/78342
+`
+      },
+      {
+        id: 2,
+        timestamp: new Date('2023-08-10T09:16:05'),
+        level: "high",
+        levelDisplay: "Alto",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Personal médico enviado a salón 202",
+        zone: "Salón 202",
+        user: "María López",
+        details: `
+timestamp: 2023-08-10T09:16:05.123Z
+eventId: evt_78343
+responderId: staff_42
+responseTime: 42s
+actionTaken: medical_assistance
+status: resolved
+notes: "El personal médico llegó rápidamente y aplicó la maniobra de Heimlich con éxito."
+`
+      },
+      {
+        id: 3,
+        timestamp: new Date('2023-08-10T08:32:18'),
+        level: "medium",
+        levelDisplay: "Medio",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Comportamiento agresivo detectado en pasillo principal",
+        zone: "Pasillo Principal",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-10T08:32:18.892Z
+eventId: evt_78339
+cameraId: cam_pasillo_2
+detectionConfidence: 0.76
+aiModel: behavior-recognition-v2.3
+alertType: aggressive_behavior
+relatedIncidents: [evt_77123, evt_75442]
+videoSegmentUrl: /api/video/incidents/78339
+`
+      },
+      {
+        id: 4,
+        timestamp: new Date('2023-08-10T08:33:45'),
+        level: "medium",
+        levelDisplay: "Medio",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Intervención del supervisor en pasillo principal",
+        zone: "Pasillo Principal",
+        user: "Carlos Ramírez",
+        details: `
+timestamp: 2023-08-10T08:33:45.512Z
+eventId: evt_78340
+responderId: staff_17
+responseTime: 87s
+actionTaken: supervisor_intervention
+status: resolved
+notes: "Se separaron los estudiantes y se llevaron a orientación."
+`
+      },
+      {
+        id: 5,
+        timestamp: new Date('2023-08-10T08:05:33'),
+        level: "info",
+        levelDisplay: "Información",
+        type: "system",
+        typeDisplay: "Sistema",
+        message: "Inicio de monitoreo diario",
+        zone: "Sistema",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-10T08:05:33.001Z
+eventId: evt_78335
+systemAction: daily_monitoring_start
+camerasActive: 12/12
+systemHealth: optimal
+storageRemaining: 1.2TB
+`
+      },
+      {
+        id: 6,
+        timestamp: new Date('2023-08-09T15:42:10'),
+        level: "low",
+        levelDisplay: "Bajo",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Estudiante aislado durante el recreo",
+        zone: "Jardín Principal",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-09T15:42:10.765Z
+eventId: evt_78312
+cameraId: cam_jardin_1
+detectionConfidence: 0.68
+aiModel: behavior-recognition-v2.3
+alertType: isolated_student
+relatedIncidents: [evt_78290, evt_78267]
+videoSegmentUrl: /api/video/incidents/78312
+`
+      },
+      {
+        id: 7,
+        timestamp: new Date('2023-08-09T15:50:22'),
+        level: "low",
+        levelDisplay: "Bajo",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Orientador escolar notificado sobre estudiante aislado",
+        zone: "Jardín Principal",
+        user: "Ana Jiménez",
+        details: `
+timestamp: 2023-08-09T15:50:22.341Z
+eventId: evt_78313
+responderId: staff_28
+responseTime: 492s
+actionTaken: counselor_notification
+status: in_progress
+notes: "Se programó sesión con el orientador para mañana."
+`
+      },
+      {
+        id: 8,
+        timestamp: new Date('2023-08-09T14:10:05'),
+        level: "info",
+        levelDisplay: "Información",
+        type: "system",
+        typeDisplay: "Sistema",
+        message: "Actualización de sistema completada",
+        zone: "Sistema",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-09T14:10:05.123Z
+eventId: evt_78300
+systemAction: system_update
+version: 2.4.7
+updateComponents: ["AI detection engine", "UI improvements", "Security patches"]
+updateStatus: success
+downtime: 120s
+`
+      },
+      {
+        id: 9,
+        timestamp: new Date('2023-08-09T10:24:30'),
+        level: "high",
+        levelDisplay: "Alto",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Persona no autorizada detectada en entrada principal",
+        zone: "Recepción",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-09T10:24:30.892Z
+eventId: evt_78289
+cameraId: cam_recepcion_1
+detectionConfidence: 0.92
+aiModel: face-recognition-v3.1
+alertType: unauthorized_access
+relatedIncidents: []
+videoSegmentUrl: /api/video/incidents/78289
+`
+      },
+      {
+        id: 10,
+        timestamp: new Date('2023-08-09T10:25:15'),
+        level: "high",
+        levelDisplay: "Alto",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Personal de seguridad verificó identidad de visitante",
+        zone: "Recepción",
+        user: "Roberto Mendoza",
+        details: `
+timestamp: 2023-08-09T10:25:15.512Z
+eventId: evt_78290
+responderId: staff_05
+responseTime: 45s
+actionTaken: identity_verification
+status: resolved
+notes: "Falsa alarma. Era un padre que venía a recoger a su hijo pero no estaba en el sistema."
+`
+      },
+      {
+        id: 11,
+        timestamp: new Date('2023-08-08T14:22:10'),
+        level: "critical",
+        levelDisplay: "Crítico",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Detección de humo en laboratorio de química",
+        zone: "Laboratorio 3",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-08T14:22:10.431Z
+eventId: evt_78252
+cameraId: cam_lab3_2
+detectionConfidence: 0.95
+aiModel: environmental-hazard-v1.7
+alertType: smoke_detection
+relatedIncidents: []
+videoSegmentUrl: /api/video/incidents/78252
+`
+      },
+      {
+        id: 12,
+        timestamp: new Date('2023-08-08T14:23:45'),
+        level: "critical",
+        levelDisplay: "Crítico",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Evacuación iniciada en laboratorio de química",
+        zone: "Laboratorio 3",
+        user: "Alejandro Torres",
+        details: `
+timestamp: 2023-08-08T14:23:45.222Z
+eventId: evt_78253
+responderId: staff_11
+responseTime: 95s
+actionTaken: evacuation_protocol
+status: in_progress
+notes: "Se activó la alarma general y se inició el protocolo de evacuación."
+`
+      },
+      {
+        id: 13,
+        timestamp: new Date('2023-08-08T14:25:30'),
+        level: "critical",
+        levelDisplay: "Crítico",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Equipo de emergencia llegó al laboratorio de química",
+        zone: "Laboratorio 3",
+        user: "Pablo Sánchez",
+        details: `
+timestamp: 2023-08-08T14:25:30.589Z
+eventId: evt_78254
+responderId: emergency_team_2
+responseTime: 200s
+actionTaken: fire_control
+status: in_progress
+notes: "Equipo usando extintores para controlar pequeño incendio en campana extractora."
+`
+      },
+      {
+        id: 14,
+        timestamp: new Date('2023-08-08T14:35:12'),
+        level: "high",
+        levelDisplay: "Alto",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Incidente de laboratorio controlado",
+        zone: "Laboratorio 3",
+        user: "Pablo Sánchez",
+        details: `
+timestamp: 2023-08-08T14:35:12.122Z
+eventId: evt_78255
+responderId: emergency_team_2
+responseTime: 782s
+actionTaken: incident_resolution
+status: resolved
+notes: "Incendio controlado. Causa: experimento químico mal supervisado. No hubo heridos."
+`
+      },
+      {
+        id: 15,
+        timestamp: new Date('2023-08-08T11:30:42'),
+        level: "medium",
+        levelDisplay: "Medio",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Patrón de movimiento inusual detectado en estacionamiento",
+        zone: "Estacionamiento Norte",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-08T11:30:42.781Z
+eventId: evt_78242
+cameraId: cam_parking_3
+detectionConfidence: 0.72
+aiModel: behavior-recognition-v2.3
+alertType: suspicious_activity
+relatedIncidents: []
+videoSegmentUrl: /api/video/incidents/78242
+`
+      },
+      {
+        id: 16,
+        timestamp: new Date('2023-08-08T11:35:15'),
+        level: "medium",
+        levelDisplay: "Medio",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Guardia de seguridad verificando estacionamiento",
+        zone: "Estacionamiento Norte",
+        user: "Luis Vega",
+        details: `
+timestamp: 2023-08-08T11:35:15.336Z
+eventId: evt_78243
+responderId: security_07
+responseTime: 273s
+actionTaken: area_inspection
+status: in_progress
+notes: "Revisando vehículos y área cercana."
+`
+      },
+      {
+        id: 17,
+        timestamp: new Date('2023-08-08T11:42:30'),
+        level: "low",
+        levelDisplay: "Bajo",
+        type: "event",
+        typeDisplay: "Evento",
+        message: "Falsa alarma en estacionamiento",
+        zone: "Estacionamiento Norte",
+        user: "Luis Vega",
+        details: `
+timestamp: 2023-08-08T11:42:30.452Z
+eventId: evt_78244
+responderId: security_07
+responseTime: 708s
+actionTaken: false_alarm_resolution
+status: resolved
+notes: "Era un gato moviéndose entre los autos. No se detectaron actividades sospechosas reales."
+`
+      },
+      {
+        id: 18,
+        timestamp: new Date('2023-08-07T13:15:23'),
+        level: "medium",
+        levelDisplay: "Medio",
+        type: "user",
+        typeDisplay: "Usuario",
+        message: "Cambio de configuración de cámaras",
+        zone: "Sistema",
+        user: "Admin",
+        details: `
+timestamp: 2023-08-07T13:15:23.921Z
+eventId: evt_78220
+userId: admin_01
+actionType: config_change
+changes: {
+  "sensitivity": "increased from 65 to 75",
+  "notificationThreshold": "decreased from 5 to 3",
+  "affectedCameras": ["cam_pasillo_1", "cam_pasillo_2", "cam_recepcion_1"]
+}
+reason: "Reducir falsos negativos en detección de comportamiento"
+`
+      },
+      {
+        id: 19,
+        timestamp: new Date('2023-08-07T10:05:42'),
+        level: "info",
+        levelDisplay: "Información",
+        type: "system",
+        typeDisplay: "Sistema",
+        message: "Copia de seguridad automática completada",
+        zone: "Sistema",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-07T10:05:42.334Z
+eventId: evt_78215
+systemAction: automatic_backup
+backupSize: 2.7GB
+backupLocation: "cloud://sentinel-backups/daily/2023-08-07/"
+duration: 342s
+status: success
+`
+      },
+      {
+        id: 20,
+        timestamp: new Date('2023-08-06T16:50:12'),
+        level: "high",
+        levelDisplay: "Alto",
+        type: "alert",
+        typeDisplay: "Alerta",
+        message: "Detección de caída en escaleras principales",
+        zone: "Escalera Central",
+        user: "Sistema",
+        details: `
+timestamp: 2023-08-06T16:50:12.556Z
+eventId: evt_78198
+cameraId: cam_escalera_1
+detectionConfidence: 0.88
+aiModel: accident-detection-v1.5
+alertType: fall_detection
+relatedIncidents: []
+videoSegmentUrl: /api/video/incidents/78198
+`
+      }
+    ];
+
+    // All events data - now we use the same data source for both views
+    const allEvents = logs.sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Pagination variables
+    let currentTimelinePage = 1;
+    let currentListPage = 1;
+    const itemsPerPage = 5;
+
+    // Sample notifications data
+    const notifications = [
+      {
+        id: 1,
+        title: "Atragantamiento",
+        description: "Se ha detectado un incidente de atragantamiento en Salón 202",
+        level: "critical",
+        time: "Hace 5 minutos",
+        unread: true
+      },
+      {
+        id: 2,
+        title: "Comportamiento agresivo",
+        description: "Comportamiento agresivo detectado en Pasillo Principal",
+        level: "high",
+        time: "Hace 30 minutos",
+        unread: true
+      },
+      {
+        id: 3,
+        title: "Actualización del sistema",
+        description: "La actualización del sistema a la versión 2.4.7 se ha completado con éxito",
+        level: "info",
+        time: "Hace 1 día",
+        unread: true
+      },
+      {
+        id: 4,
+        title: "Detección de humo",
+        description: "Se ha detectado humo en el Laboratorio de Química",
+        level: "critical",
+        time: "Hace 2 días",
+        unread: false
+      },
+      {
+        id: 5,
+        title: "Persona no autorizada",
+        description: "Se detectó una persona no autorizada en la entrada principal",
+        level: "high",
+        time: "Hace 2 días",
+        unread: false
+      },
+      {
+        id: 6,
+        title: "Estudiante aislado",
+        description: "Se detectó un estudiante aislado durante el recreo en el Jardín Principal",
+        level: "low",
+        time: "Hace 3 días",
+        unread: false
+      },
+      {
+        id: 7,
+        title: "Caída detectada",
+        description: "Se ha detectado una caída en las Escaleras Principales",
+        level: "high",
+        time: "Hace 4 días",
+        unread: false
+      }
+    ];
+
+    // Get paginated data
+    function getPaginatedData(data, page, itemsPerPage) {
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      return data.slice(startIndex, endIndex);
+    }
+
+    // Load timeline data with pagination
+    function loadTimeline() {
+      const timelineContainer = document.getElementById('timelineContainer');
+      timelineContainer.innerHTML = '';
+      
+      // Get filtered and paginated data
+      const filteredEvents = filterEventsData(allEvents);
+      const paginatedEvents = getPaginatedData(filteredEvents, currentTimelinePage, itemsPerPage);
+      
+      if (paginatedEvents.length === 0) {
+        timelineContainer.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-secondary);">No hay eventos que coincidan con los filtros seleccionados</div>';
+        return;
+      }
+      
+      paginatedEvents.forEach(event => {
+        const timelineItem = document.createElement('div');
+        timelineItem.className = 'timeline-item';
+        
+        // Determine dot color based on level
+        let dotClass = '';
+        if (event.level === 'critical' || event.level === 'high') {
+          dotClass = 'danger';
+        } else if (event.level === 'medium') {
+          dotClass = 'warning';
+        } else if (event.level === 'low' || event.level === 'info') {
+          dotClass = 'success';
+        }
+        
+        const formattedTime = formatDateTime(event.timestamp);
+        
+        timelineItem.innerHTML = `
+          <div class="timeline-dot ${dotClass}"></div>
+          <div class="timeline-content">
+            <div class="timeline-time">${formattedTime}</div>
+            <div class="timeline-title">${event.message}</div>
+            <div class="timeline-description">
+              <span><i data-feather="map-pin" style="width:12px; height:12px;"></i> ${event.zone}</span> | 
+              <span><i data-feather="user" style="width:12px; height:12px;"></i> ${event.user}</span>
+            </div>
+          </div>
+        `;
+        
+        timelineItem.addEventListener('click', () => {
+          showLogDetails(event);
+        });
+        
+        timelineContainer.appendChild(timelineItem);
+      });
+      
+      feather.replace();
+      
+      // Update timeline pagination
+      updatePagination('timelinePagination', filteredEvents.length, currentTimelinePage, itemsPerPage, 'timeline');
+    }
+
+    // Load logs data with pagination
+    function loadLogs() {
+      const logsTableBody = document.getElementById('logsTableBody');
+      logsTableBody.innerHTML = '';
+      
+      // Get filtered and paginated data
+      const filteredEvents = filterEventsData(allEvents);
+      const paginatedEvents = getPaginatedData(filteredEvents, currentListPage, itemsPerPage);
+      
+      if (paginatedEvents.length === 0) {
+        logsTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-secondary);">No hay eventos que coincidan con los filtros seleccionados</td></tr>`;
+        return;
+      }
+      
+      paginatedEvents.forEach(log => {
+        const row = document.createElement('tr');
+        
+        const formattedDateTime = formatDateTime(log.timestamp);
+        
+        row.innerHTML = `
+          <td>${formattedDateTime}</td>
+          <td><span class="log-level log-${log.level}">${log.levelDisplay}</span></td>
+          <td>${log.typeDisplay}</td>
+          <td>${log.message}</td>
+          <td>${log.zone}</td>
+          <td>${log.user}</td>
+        `;
+        
+        row.addEventListener('click', () => {
+          showLogDetails(log);
+        });
+        
+        logsTableBody.appendChild(row);
+      });
+      
+      // Update log count
+      document.getElementById('logCount').textContent = `Mostrando ${(currentListPage-1)*itemsPerPage+1}-${Math.min(currentListPage*itemsPerPage, filteredEvents.length)} de ${filteredEvents.length}`;
+      
+      // Update list pagination
+      updatePagination('logsPagination', filteredEvents.length, currentListPage, itemsPerPage, 'list');
+    }
+
+    // Setup pagination
+    function setupPagination(paginationId) {
+      const paginationContainer = document.getElementById(paginationId);
+      paginationContainer.innerHTML = '';
+      
+      // Add previous button
+      const prevButton = document.createElement('div');
+      prevButton.className = 'pagination-item';
+      prevButton.innerHTML = '<i data-feather="chevron-left"></i>';
+      paginationContainer.appendChild(prevButton);
+      
+      // Add page numbers
+      for (let i = 1; i <= 5; i++) {
+        const pageItem = document.createElement('div');
+        pageItem.className = 'pagination-item';
+        if (i === 1) pageItem.className += ' active';
+        pageItem.textContent = i;
+        
+        pageItem.addEventListener('click', () => {
+          if (paginationId === 'timelinePagination') {
+            currentTimelinePage = i;
+            loadTimeline();
+          } else {
+            currentListPage = i;
+            loadLogs();
+          }
+        });
+        
+        paginationContainer.appendChild(pageItem);
+      }
+      
+      // Add next button
+      const nextButton = document.createElement('div');
+      nextButton.className = 'pagination-item';
+      nextButton.innerHTML = '<i data-feather="chevron-right"></i>';
+      paginationContainer.appendChild(nextButton);
+      
+      feather.replace();
+    }
+
+    // Update pagination based on data
+    function updatePagination(paginationId, totalItems, currentPage, itemsPerPage, viewType) {
+      const paginationContainer = document.getElementById(paginationId);
+      paginationContainer.innerHTML = '';
+      
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      
+      if (totalPages <= 1) {
+        paginationContainer.style.display = 'none';
+        return;
+      } else {
+        paginationContainer.style.display = 'flex';
+      }
+      
+      // Add previous button
+      const prevButton = document.createElement('div');
+      prevButton.className = 'pagination-item';
+      prevButton.innerHTML = '<i data-feather="chevron-left"></i>';
+      prevButton.addEventListener('click', () => {
+        if (currentPage > 1) {
+          if (viewType === 'timeline') {
+            currentTimelinePage--;
+            loadTimeline();
+          } else {
+            currentListPage--;
+            loadLogs();
+          }
+        }
+      });
+      paginationContainer.appendChild(prevButton);
+      
+      // Add page numbers
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        const pageItem = document.createElement('div');
+        pageItem.className = 'pagination-item';
+        if (i === currentPage) pageItem.className += ' active';
+        pageItem.textContent = i;
+        
+        pageItem.addEventListener('click', () => {
+          if (viewType === 'timeline') {
+            currentTimelinePage = i;
+            loadTimeline();
+          } else {
+            currentListPage = i;
+            loadLogs();
+          }
+        });
+        
+        paginationContainer.appendChild(pageItem);
+      }
+      
+      // Add next button
+      const nextButton = document.createElement('div');
+      nextButton.className = 'pagination-item';
+      nextButton.innerHTML = '<i data-feather="chevron-right"></i>';
+      nextButton.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          if (viewType === 'timeline') {
+            currentTimelinePage++;
+            loadTimeline();
+          } else {
+            currentListPage++;
+            loadLogs();
+          }
+        }
+      });
+      paginationContainer.appendChild(nextButton);
+      
+      feather.replace();
+    }
+
+    // Filter events data based on search and dropdown selections
+    function filterEventsData(events) {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const typeFilter = document.getElementById('logTypeFilter').value;
+      const levelFilter = document.getElementById('logLevelFilter').value;
+      const dateRangeFilter = document.getElementById('dateRangeFilter').value;
+      
+      return events.filter(event => {
+        // Check if text matches search term
+        const eventText = `${event.message} ${event.zone} ${event.user} ${event.typeDisplay} ${event.levelDisplay}`.toLowerCase();
+        const matchesSearch = eventText.includes(searchTerm);
+        
+        // Check if type matches filter
+        const matchesType = typeFilter === 'all' || event.type === typeFilter;
+        
+        // Check if level matches filter
+        const matchesLevel = levelFilter === 'all' || event.level === levelFilter;
+        
+        // Check if date matches filter
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        const weekStart = new Date(today);
+        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+        
+        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        let matchesDate = true;
+        
+        if (dateRangeFilter === 'today') {
+          const eventDate = new Date(event.timestamp);
+          eventDate.setHours(0, 0, 0, 0);
+          matchesDate = eventDate.getTime() === today.getTime();
+        } else if (dateRangeFilter === 'yesterday') {
+          const eventDate = new Date(event.timestamp);
+          eventDate.setHours(0, 0, 0, 0);
+          matchesDate = eventDate.getTime() === yesterday.getTime();
+        } else if (dateRangeFilter === 'week') {
+          matchesDate = event.timestamp >= weekStart;
+        } else if (dateRangeFilter === 'month') {
+          matchesDate = event.timestamp >= monthStart;
+        }
+        
+        return matchesSearch && matchesType && matchesLevel && matchesDate;
+      });
+    }
+
+    // Filter logs based on search and dropdown selections
+    function filterLogs() {
+      loadTimeline();
+      loadLogs();
+    }
+
+    // Format date and time
+    function formatDateTime(date) {
+      if (!date) return '';
+      
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      const isToday = date.toDateString() === today.toDateString();
+      const isYesterday = date.toDateString() === yesterday.toDateString();
+      
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+      const timeString = `${hours}:${minutes}:${seconds}`;
+      
+      if (isToday) {
+        return `Hoy, ${timeString}`;
+      } else if (isYesterday) {
+        return `Ayer, ${timeString}`;
+      } else {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}, ${timeString}`;
+      }
+    }
+
+    // Show log details in modal
+    function showLogDetails(log) {
+      document.getElementById('modalTitle').textContent = log.message;
+      document.getElementById('logDate').textContent = log.timestamp.toLocaleDateString();
+      document.getElementById('logTime').textContent = log.timestamp.toLocaleTimeString();
+      document.getElementById('logUser').textContent = log.user;
+      document.getElementById('logZone').textContent = log.zone;
+      document.getElementById('logType').textContent = `${log.typeDisplay} (${log.levelDisplay})`;
+      document.getElementById('logMessage').textContent = log.message;
+      document.getElementById('logDetails').textContent = log.details;
+      
+      // Set up actions based on log type
+      const actionsContainer = document.getElementById('logActions');
+      actionsContainer.innerHTML = '';
+      
+      if (log.type === 'alert') {
+        actionsContainer.innerHTML = `
+          <button class="filter-dropdown" style="background-color:var(--primary-blue); color:white; margin-right:10px;">
+            <i data-feather="video" style="width:14px; height:14px;"></i> Ver grabación
+          </button>
+          <button class="filter-dropdown">
+            <i data-feather="file-text" style="width:14px; height:14px;"></i> Generar reporte
+          </button>
+        `;
+      } else if (log.type === 'event') {
+        actionsContainer.innerHTML = `
+          <button class="filter-dropdown" style="background-color:var(--primary-blue); color:white; margin-right:10px;">
+            <i data-feather="edit" style="width:14px; height:14px;"></i> Editar notas
+          </button>
+          <button class="filter-dropdown">
+            <i data-feather="file-text" style="width:14px; height:14px;"></i> Generar reporte
+          </button>
+        `;
+      } else {
+        actionsContainer.innerHTML = `
+          <button class="filter-dropdown">
+            <i data-feather="file-text" style="width:14px; height:14px;"></i> Exportar detalles
+          </button>
+        `;
+      }
+      
+      openModal('logDetailModal');
+      feather.replace();
+    }
+
+    // Export logs function
+    function exportLogs() {
+      // Get filtered events
+      const filteredEvents = filterEventsData(allEvents);
+      
+      if (filteredEvents.length === 0) {
+        alert('No hay eventos para exportar con los filtros actuales');
+        return;
+      }
+      
+      // Create CSV content
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Fecha,Hora,Nivel,Tipo,Mensaje,Zona,Usuario\n";
+      
+      filteredEvents.forEach(event => {
+        const date = event.timestamp.toLocaleDateString();
+        const time = event.timestamp.toLocaleTimeString();
+        // Escape commas and quotes in fields
+        const escapeCSV = (field) => `"${String(field).replace(/"/g, '""')}"`;
+        
+        csvContent += [
+          date,
+          time,
+          escapeCSV(event.levelDisplay),
+          escapeCSV(event.typeDisplay),
+          escapeCSV(event.message),
+          escapeCSV(event.zone),
+          escapeCSV(event.user)
+        ].join(',') + "\n";
+      });
+      
+      // Create a download link
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `logs_export_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      
+      // Trigger download
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Load notifications
+    function loadNotifications() {
+      // Count unread notifications
+      const unreadCount = notifications.filter(n => n.unread).length;
+      const notificationBadge = document.querySelector('.notification-badge');
+      
+      if (unreadCount > 0) {
+        notificationBadge.textContent = unreadCount;
+        notificationBadge.style.display = 'flex';
+      } else {
+        notificationBadge.style.display = 'none';
+      }
+      
+      // Populate notifications modal
+      const notificationsContainer = document.getElementById('notificationsContainer');
+      notificationsContainer.innerHTML = '';
+      
+      if (notifications.length === 0) {
+        notificationsContainer.innerHTML = '<p style="text-align:center; color:var(--text-secondary);">No hay notificaciones</p>';
+        return;
+      }
+      
+      notifications.forEach(notification => {
+        const notificationItem = document.createElement('div');
+        notificationItem.style.padding = '12px';
+        notificationItem.style.borderBottom = '1px solid var(--border-color)';
+        notificationItem.style.display = 'flex';
+        notificationItem.style.gap = '12px';
+        
+        // Determine icon color based on level
+        let iconColor = 'var(--primary-blue)';
+        if (notification.level === 'critical') {
+          iconColor = 'var(--critical-color)';
+        } else if (notification.level === 'high') {
+          iconColor = 'var(--high-color)';
+        } else if (notification.level === 'medium') {
+          iconColor = 'var(--medium-color)';
+        } else if (notification.level === 'low') {
+          iconColor = 'var(--low-color)';
+        }
+        
+        notificationItem.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:50%; background-color:rgba(0,0,0,0.1);">
+            <i data-feather="bell" style="color:${iconColor};"></i>
+          </div>
+          <div style="flex:1;">
+            <div style="font-weight:600;">${notification.title}</div>
+            <div style="font-size:14px; color:var(--text-secondary);">${notification.description}</div>
+            <div style="font-size:12px; color:var(--text-secondary); margin-top:5px;">${notification.time}</div>
+          </div>
+        `;
+        
+        // If unread, add a visual indicator
+        if (notification.unread) {
+          notificationItem.style.backgroundColor = 'rgba(37, 99, 235, 0.05)';
+        }
+        
+        notificationsContainer.appendChild(notificationItem);
+      });
+      
+      feather.replace();
+    }
+
+    // Open notifications modal
+    function openNotificationsModal() {
+      openModal('notificationsModal');
+      
+      // Mark notifications as read
+      notifications.forEach(notification => {
+        notification.unread = false;
+      });
+      
+      // Update badge
+      document.querySelector('.notification-badge').style.display = 'none';
+    }
+
+    // Open modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'flex';
+      } else {
+        console.error(`Modal with ID ${modalId} not found`);
+      }
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.style.display = 'none';
+      } else {
+        console.error(`Modal with ID ${modalId} not found`);
+      }
+    }
+ </script>
+</body>
+</html>
+
