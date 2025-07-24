@@ -1,0 +1,1698 @@
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Main container with sidebar and content area -->
+<div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
+  
+  <!-- Sidebar navigation -->
+  <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
+    <!-- Logo and brand -->
+    <div style="padding:20px; text-align:center;">
+      <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
+      <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
+    </div>
+    
+    <!-- Navigation links -->
+    <nav>
+      <ul style="list-style:none; padding:0; margin:0;">
+        <li class="nav-item" data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
+        </li>
+        <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
+        </li>
+        <li class="nav-item" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
+          <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
+        </li>
+        <li class="nav-item" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
+        </li><!-- 
+        <li class="nav-item" data-page="reports" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-chart-bar" style="margin-right:10px;"></i> Reportes
+        </li>
+        <li class="nav-item" data-page="appointments" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-calendar-alt" style="margin-right:10px;"></i> Citas
+        </li>
+        <li class="nav-item" data-page="campaigns" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-bullhorn" style="margin-right:10px;"></i> Campañas
+        </li>
+        <li class="nav-item" data-page="settings" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+          <i class="fas fa-cog" style="margin-right:10px;"></i> Configuración
+        </li> -->
+      </ul>
+    </nav>
+  </div>
+  
+  <!-- Main content area -->
+  <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
+    
+    <!-- CRM Visual Page Content -->
+    <div id="crmPage" class="content-page">
+    </div>
+    
+    <!-- Automation Page Content -->
+    <div id="automationPage" class="content-page">
+      <!-- Flows List View - initially visible -->
+      <div id="flowsListView">
+        <h2>Automatizaciones</h2>
+        <button id="newFlowBtn" style="padding:8px 16px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer; margin-bottom:20px;">
+          <i class="fas fa-plus" style="margin-right:8px;"></i> Nuevo
+        </button>
+        
+        <div id="flowsList" style="border:1px solid #ddd; border-radius:5px; background:white;">
+          <!-- Empty flow list - items will be added dynamically -->
+        </div>
+      </div>
+      
+      <!-- Flow Builder View - initially hidden -->
+      <div id="flowBuilderView" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+          <div style="display:flex; align-items:center;">
+            <h2 id="flowBuilderTitle" style="margin:0;">Nuevo Flujo</h2>
+            <input id="flowNameInput" type="text" placeholder="Nombre del flujo" style="margin-left:15px; padding:8px; border:1px solid #ddd; border-radius:4px;">
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button id="saveFlowBtn" style="padding:6px 12px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer;">
+              <i class="fas fa-save" style="margin-right:5px;"></i> Guardar
+            </button>
+            <button id="backToListBtn" style="padding:6px 12px; background:#f0f0f0; border:1px solid #ddd; border-radius:4px; cursor:pointer;">
+              <i class="fas fa-arrow-left" style="margin-right:5px;"></i> Volver
+            </button>
+          </div>
+        </div>
+        
+        <!-- Tabs for General Config and Flow Builder -->
+        <div class="tabs-container" style="margin-bottom:20px;">
+          <div class="tabs-header" style="display:flex; border-bottom:1px solid #ddd; margin-bottom:15px;">
+            <div id="configTab" class="tab active" style="padding:10px 20px; cursor:pointer; border-bottom:2px solid #5a67d8; font-weight:bold;">
+              Configuración General
+            </div>
+            <div id="builderTab" class="tab" style="padding:10px 20px; cursor:pointer;">
+              Flow Builder
+            </div>
+            <div id="templateTab" class="tab" style="padding:10px 20px; cursor:pointer;">
+              Plantillas
+            </div>
+          </div>
+          
+          <!-- General flow configuration tab content -->
+          <div id="configTabContent" class="tab-content" style="padding:15px; background:white; border:1px solid #ddd; border-radius:5px;">
+            <h3 style="margin-top:0;">Configuración General</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:15px;">
+              <!-- Channels section -->
+              <div style="flex:1; min-width:200px;">
+                <h4 style="margin-top:0;">Canales de activación</h4>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="whatsappChannel">
+                    <span style="margin-left:5px;">WhatsApp</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="instagramChannel">
+                    <span style="margin-left:5px;">Instagram</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="messengerChannel">
+                    <span style="margin-left:5px;">Messenger</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="webChannel">
+                    <span style="margin-left:5px;">Web</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="newsletterChannel">
+                    <span style="margin-left:5px;">Suscripción a Newsletter</span>
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Flow Activation section - new addition -->
+              <div style="flex:1; min-width:200px;">
+                <h4 style="margin-top:0;">Periodo de activación</h4>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <label style="display:flex; align-items:center;">
+                    <input type="radio" name="activationPeriod" id="alwaysActive" checked>
+                    <span style="margin-left:5px;">Siempre activo</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="radio" name="activationPeriod" id="periodActive">
+                    <span style="margin-left:5px;">Activo durante un periodo</span>
+                  </label>
+                  <div id="periodSelectionCtn" style="margin-left:20px; display:none;">
+                    <div style="margin-bottom:8px;">
+                      <label style="display:block; margin-bottom:5px;">Fecha de inicio:</label>
+                      <input type="datetime-local" id="startDateInput" style="padding:6px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                    <div>
+                      <label style="display:block; margin-bottom:5px;">Fecha de fin:</label>
+                      <input type="datetime-local" id="endDateInput" style="padding:6px; border:1px solid #ddd; border-radius:4px;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Flow Objective section - new addition -->
+            <div style="margin-top:20px;">
+              <h4 style="margin-top:0;">Objetivo del flujo</h4>
+              <p style="margin-top:5px; font-size:0.9em; color:#666;">Define el objetivo principal para ayudar a la IA a generar respuestas más precisas.</p>
+              
+              <div style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:5px;">Tipo de objetivo:</label>
+                <select id="objectiveTypeSelect" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;">
+                  <option value="">Selecciona un objetivo</option>
+                  <option value="sales">Venta de productos</option>
+                  <option value="support">Atención al cliente</option>
+                  <option value="lead">Generación de leads</option>
+                  <option value="info">Información / FAQ</option>
+                  <option value="appointment">Reserva de citas</option>
+                  <option value="feedback">Encuestas / Feedback</option>
+                </select>
+              </div>
+              
+              <!-- Product list section (for sales objective) -->
+              <div id="salesObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Productos para venta:</label>
+                <textarea id="productsInput" placeholder="Introduce los productos a vender (uno por línea)" style="width:100%; padding:8px; height:100px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <p style="margin-top:5px; font-size:0.9em; color:#666;">Incluye nombre, precio y descripción breve para cada producto.</p>
+              </div>
+              
+              <!-- Support categories section -->
+              <div id="supportObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Categorías de atención:</label>
+                <textarea id="supportCategoriesInput" placeholder="Introduce las categorías de soporte (una por línea)" style="width:100%; padding:8px; height:100px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <p style="margin-top:5px; font-size:0.9em; color:#666;">Por ejemplo: Problemas técnicos, Facturación, Devoluciones, etc.</p>
+              </div>
+              
+              <!-- Lead generation section -->
+              <div id="leadObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Datos a recopilar:</label>
+                <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="leadNameCheck" checked>
+                    <span style="margin-left:5px;">Nombre</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="leadEmailCheck" checked>
+                    <span style="margin-left:5px;">Email</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="leadPhoneCheck" checked>
+                    <span style="margin-left:5px;">Teléfono</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="leadCompanyCheck">
+                    <span style="margin-left:5px;">Empresa</span>
+                  </label>
+                  <label style="display:flex; align-items:center;">
+                    <input type="checkbox" id="leadInterestCheck">
+                    <span style="margin-left:5px;">Intereses</span>
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Info/FAQ section -->
+              <div id="infoObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Temas de información:</label>
+                <textarea id="infoTopicsInput" placeholder="Introduce los temas de información (uno por línea)" style="width:100%; padding:8px; height:100px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <p style="margin-top:5px; font-size:0.9em; color:#666;">Por ejemplo: Horarios, Ubicaciones, Servicios disponibles, etc.</p>
+              </div>
+              
+              <!-- Appointment booking section -->
+              <div id="appointmentObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Tipos de citas:</label>
+                <textarea id="appointmentTypesInput" placeholder="Introduce los tipos de citas disponibles (uno por línea)" style="width:100%; padding:8px; height:100px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <p style="margin-top:5px; font-size:0.9em; color:#666;">Por ejemplo: Consulta inicial, Revisión, Demostración de producto, etc.</p>
+              </div>
+              
+              <!-- Feedback/Survey section -->
+              <div id="feedbackObjectiveCtn" style="display:none;">
+                <label style="display:block; margin-bottom:5px;">Áreas de feedback:</label>
+                <textarea id="feedbackAreasInput" placeholder="Introduce las áreas para recopilar feedback (una por línea)" style="width:100%; padding:8px; height:100px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <p style="margin-top:5px; font-size:0.9em; color:#666;">Por ejemplo: Atención al cliente, Calidad del producto, Proceso de compra, etc.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Flow Builder tab content -->
+          <div id="builderTabContent" class="tab-content" style="display:none; height:calc(100vh - 160px); overflow:hidden;">
+            <div style="display:flex; height:100%; width:100%;">
+              <!-- Left panel - Toolbox -->
+              <div id="toolboxCtn" style="width:200px; background:#f0f0f0; border-right:1px solid #ddd; padding:10px; overflow-y:auto;">
+                <h3 style="margin-top:0;">Flow Builder</h3>
+                <div class="node-item" data-type="message" draggable="true" style="background:#2196F3; color:white; padding:10px; margin-bottom:10px; border-radius:5px; cursor:grab;">
+                  Mensaje
+                </div>
+                <div class="node-item" data-type="condition" draggable="true" style="background:#FF9800; color:white; padding:10px; margin-bottom:10px; border-radius:5px; cursor:grab;">
+                  Condición
+                </div>
+                <div class="node-item" data-type="waitResponse" draggable="true" style="background:#9C27B0; color:white; padding:10px; margin-bottom:10px; border-radius:5px; cursor:grab;">
+                  Espera de Respuesta
+                </div>
+                <div class="node-item" data-type="end" draggable="true" style="background:#F44336; color:white; padding:10px; margin-bottom:10px; border-radius:5px; cursor:grab;">
+                  Fin
+                </div>
+              </div>
+              
+              <!-- Center panel - Canvas -->
+              <div id="canvasCtn" style="flex:1; position:relative; overflow:auto;">
+                <div id="flowArea" style="position:relative; min-width:1000px; min-height:1000px;">
+                  <svg id="connectionsSvg" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0;">
+                    <g id="connectionsContent"></g>
+                  </svg>
+                  <div id="nodesContainer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:1;">
+                    <div id="nodesContent" style="position:relative; min-width:100%; min-height:100%;"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Right panel - Properties -->
+              <div id="propertiesCtn" style="width:250px; background:#f0f0f0; border-left:1px solid #ddd; padding:10px; overflow-y:auto;">
+                <h3 style="margin-top:0;">Propiedades</h3>
+                <div id="nodePropertiesCtn">
+                  <p>Selecciona un nodo para ver sus propiedades</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Templates tab content -->
+          <div id="templateTabContent" class="tab-content" style="display:none; padding:15px; flex-direction: column; background:white; border:1px solid #ddd; border-radius:5px; max-height:calc(100vh - 200px); overflow-y:auto;">
+            <h3 style="margin-top:0;">Plantillas de Flujo</h3>
+            <p style="margin-top:5px; margin-bottom:15px; font-size:0.9em; color:#666;">Selecciona una plantilla preconfigurada para comenzar rápidamente.</p>
+            
+            <div class="template-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px;">
+              <!-- Plantilla: Bienvenida Básica -->
+              <div class="template-card" data-template="welcome" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Bienvenida Básica</h4>
+                <p style="font-size:0.9em; color:#666;">Un flujo simple para dar la bienvenida a nuevos contactos y presentar tu negocio.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#F44336; color:white; padding:2px 8px; border-radius:3px;">Fin</span>
+                </div>
+              </div>
+              
+              <!-- Plantilla: Calificación de Leads -->
+              <div class="template-card" data-template="lead-qualification" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Calificación de Leads</h4>
+                <p style="font-size:0.9em; color:#666;">Identifica leads calificados mediante preguntas específicas y condiciones de evaluación.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#FF9800; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Condición</span>
+                </div>
+              </div>
+              
+              <!-- Plantilla: Atención al Cliente -->
+              <div class="template-card" data-template="customer-support" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Atención al Cliente</h4>
+                <p style="font-size:0.9em; color:#666;">Atiende consultas frecuentes y dirige a los usuarios a los recursos adecuados según sus necesidades.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#FF9800; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Condición</span>
+                </div>
+              </div>
+              
+              <!-- Plantilla: Venta de Productos -->
+              <div class="template-card" data-template="product-sales" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Venta de Productos</h4>
+                <p style="font-size:0.9em; color:#666;">Presenta productos, responde preguntas y guía al cliente hacia la compra mediante un flujo conversacional.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#FF9800; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Condición</span>
+                </div>
+              </div>
+              
+              <!-- Plantilla: Encuesta de Satisfacción -->
+              <div class="template-card" data-template="satisfaction-survey" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Encuesta de Satisfacción</h4>
+                <p style="font-size:0.9em; color:#666;">Recopila feedback de tus clientes sobre sus experiencias con tu producto o servicio.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#FF9800; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Condición</span>
+                </div>
+              </div>
+              
+              <!-- Plantilla: Reserva de Citas -->
+              <div class="template-card" data-template="appointment-booking" style="border:1px solid #ddd; border-radius:5px; padding:15px; background:#f9f9f9; cursor:pointer;">
+                <h4 style="margin-top:0; color:#5a67d8;">Reserva de Citas</h4>
+                <p style="font-size:0.9em; color:#666;">Automatiza el proceso de reserva de citas con tu negocio mediante un flujo conversacional.</p>
+                <div style="margin-top:10px; font-size:0.8em; color:#666;">
+                  <span style="display:inline-block; background:#2196F3; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Mensaje</span>
+                  <span style="display:inline-block; background:#9C27B0; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Espera</span>
+                  <span style="display:inline-block; background:#FF9800; color:white; padding:2px 8px; border-radius:3px; margin-right:5px;">Condición</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const navItems = document.querySelectorAll('.nav-item');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      window.location.href = `${item.getAttribute(`data-page`)}.html`;
+    });
+  });
+
+  // UI Management
+  document.getElementById('newFlowBtn').addEventListener('click', function() {
+    showFlowBuilder('Nuevo Flujo');
+  });
+  
+  document.getElementById('backToListBtn').addEventListener('click', function() {
+    hideFlowBuilder();
+  });
+  
+  document.getElementById('saveFlowBtn').addEventListener('click', function() {
+    saveFlow();
+  });
+  
+  // Tab switching
+  document.getElementById('configTab').addEventListener('click', function() {
+    switchTab('config');
+  });
+  
+  document.getElementById('builderTab').addEventListener('click', function() {
+    switchTab('builder');
+  });
+  
+  document.getElementById('templateTab').addEventListener('click', function() {
+    switchTab('template');
+  });
+  
+  function switchTab(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.style.display = 'none';
+    });
+    
+    // Remove active class from all tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+      tab.style.borderBottom = 'none';
+      tab.style.fontWeight = 'normal';
+    });
+    
+    // Show selected tab content and set active class
+    document.getElementById(`${tabId}TabContent`).style.display = tabId === 'config' ? 'block' : 'flex';
+    document.getElementById(`${tabId}Tab`).classList.add('active');
+    document.getElementById(`${tabId}Tab`).style.borderBottom = '2px solid #5a67d8';
+    document.getElementById(`${tabId}Tab`).style.fontWeight = 'bold';
+  }
+  
+  function showFlowBuilder(title, flowId) {
+    document.getElementById('flowsListView').style.display = 'none';
+    document.getElementById('flowBuilderView').style.display = 'block';
+    document.getElementById('flowBuilderTitle').textContent = title;
+    document.getElementById('flowNameInput').value = title.startsWith('Editar: ') ? title.substring(8) : '';
+    
+    // Switch to config tab by default
+    switchTab('config');
+    
+    // Clear the canvas for a new flow
+    flowBuilder.nodes = [];
+    flowBuilder.connections = [];
+    flowBuilder.nodeIdCounter = 0;
+    document.getElementById('nodesContainer').innerHTML = '';
+    document.getElementById('connectionsSvg').innerHTML = '';
+    
+    // Add default start node
+    flowBuilder.createNode('start', 250, 100);
+  }
+  
+  function hideFlowBuilder() {
+    document.getElementById('flowBuilderView').style.display = 'none';
+    document.getElementById('flowsListView').style.display = 'block';
+  }
+  
+  function saveFlow() {
+    const flowName = document.getElementById('flowNameInput').value.trim();
+    if (!flowName) {
+      alert('Por favor, ingresa un nombre para el flujo.');
+      return;
+    }
+    
+    // Get channel configuration
+    const flowConfig = {
+      channels: {
+        whatsapp: document.getElementById('whatsappChannel').checked,
+        instagram: document.getElementById('instagramChannel').checked,
+        messenger: document.getElementById('messengerChannel').checked,
+        web: document.getElementById('webChannel').checked,
+        newsletter: document.getElementById('newsletterChannel').checked
+      },
+      // New: Get activation period configuration
+      activation: {
+        always: document.getElementById('alwaysActive').checked,
+        period: document.getElementById('periodActive').checked,
+        startDate: document.getElementById('startDateInput').value,
+        endDate: document.getElementById('endDateInput').value
+      },
+      // New: Get flow objective configuration
+      objective: {
+        type: document.getElementById('objectiveTypeSelect').value,
+        // Sales objective details
+        products: document.getElementById('productsInput').value,
+        // Support objective details
+        supportCategories: document.getElementById('supportCategoriesInput').value,
+        // Lead generation objective details
+        leadFields: {
+          name: document.getElementById('leadNameCheck').checked,
+          email: document.getElementById('leadEmailCheck').checked,
+          phone: document.getElementById('leadPhoneCheck').checked,
+          company: document.getElementById('leadCompanyCheck').checked,
+          interests: document.getElementById('leadInterestCheck').checked
+        },
+        // Info/FAQ objective details
+        infoTopics: document.getElementById('infoTopicsInput').value,
+        // Appointment objective details
+        appointmentTypes: document.getElementById('appointmentTypesInput').value,
+        // Feedback objective details
+        feedbackAreas: document.getElementById('feedbackAreasInput').value
+      }
+    };
+    
+    // Create flow data
+    const flowData = {
+      name: flowName,
+      config: flowConfig,
+      nodes: flowBuilder.nodes,
+      connections: flowBuilder.connections
+    };
+    
+    console.log('Saving flow:', flowData);
+    
+    // Here you would send the flow data to your backend
+    // For now, just show a success message
+    alert(`Flujo "${flowName}" guardado con éxito.`);
+    
+    hideFlowBuilder();
+  }
+
+  // Flow Builder functionality
+  const flowBuilder = {
+    nodes: [],
+    connections: [],
+    selectedNode: null,
+    nodeIdCounter: 0,
+    
+    init() {
+      // Set up drag and drop for node items
+      document.querySelectorAll('.node-item').forEach(item => {
+        item.addEventListener('dragstart', this.handleDragStart.bind(this));
+      });
+      
+      const canvas = document.getElementById('canvasCtn');
+      canvas.addEventListener('dragover', this.handleDragOver.bind(this));
+      canvas.addEventListener('drop', this.handleDrop.bind(this));
+      
+      // Set up template cards click event
+      document.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', () => {
+          this.loadTemplate(card.getAttribute('data-template'));
+        });
+      });
+    },
+    
+    handleDragStart(e) {
+      e.dataTransfer.setData('nodeType', e.target.getAttribute('data-type'));
+    },
+    
+    handleDragOver(e) {
+      e.preventDefault(); // Allow drop
+    },
+    
+    handleDrop(e) {
+      e.preventDefault();
+      const nodeType = e.dataTransfer.getData('nodeType');
+      const canvas = document.getElementById('canvasCtn');
+      const rect = canvas.getBoundingClientRect();
+      
+      // Calculate position relative to canvas
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      this.createNode(nodeType, x, y);
+    },
+    
+    createNode(type, x, y) {
+      const id = ++this.nodeIdCounter;
+      const node = {
+        id: id,
+        type: type,
+        x: x,
+        y: y,
+        properties: {}
+      };
+      
+      // Set default properties based on node type
+      if (type === 'message') {
+        node.properties.text = '';
+        node.properties.aiPrompt = 'Genera un mensaje de bienvenida cordial para un nuevo cliente.';
+      } else if (type === 'condition') {
+        node.properties.text = '';
+        node.properties.aiPrompt = 'Evalúa si el usuario ha proporcionado su nombre en su respuesta.';
+      } else if (type === 'waitResponse') {
+        node.properties.waitTime = 60; // Default wait time in seconds
+      }
+      
+      this.nodes.push(node);
+      this.renderNode(node);
+      return id;
+    },
+    
+    renderNode(node) {
+      // Remove existing node element if it exists
+      const existingNode = document.getElementById(`node-${node.id}`);
+      if (existingNode) {
+        existingNode.remove();
+      }
+      
+      const nodeEl = document.createElement('div');
+      nodeEl.id = `node-${node.id}`;
+      nodeEl.className = 'flow-node';
+      nodeEl.setAttribute('data-id', node.id);
+      nodeEl.setAttribute('data-type', node.type);
+      
+      // Set node style based on type
+      let backgroundColor, width;
+      switch(node.type) {
+        case 'start':
+          backgroundColor = '#4CAF50';
+          width = '100px';
+          break;
+        case 'message':
+          backgroundColor = '#2196F3';
+          width = '150px';
+          break;
+        case 'condition':
+          backgroundColor = '#FF9800';
+          width = '120px';
+          break;
+        case 'waitResponse':
+          backgroundColor = '#9C27B0';
+          width = '150px';
+          break;
+        case 'end':
+          backgroundColor = '#F44336';
+          width = '100px';
+          break;
+      }
+      
+      nodeEl.style.cssText = `
+        position: absolute;
+        left: ${node.x}px;
+        top: ${node.y}px;
+        background-color: ${backgroundColor};
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        width: ${width};
+        cursor: move;
+        user-select: none;
+        z-index: 1;
+      `;
+      
+      // Node title
+      let nodeTitle;
+      switch(node.type) {
+        case 'start': nodeTitle = 'Inicio'; break;
+        case 'message': nodeTitle = 'Mensaje'; break;
+        case 'condition': nodeTitle = 'Condición'; break;
+        case 'waitResponse': nodeTitle = 'Espera de Respuesta'; break;
+        case 'end': nodeTitle = 'Fin'; break;
+      }
+      
+      // Node content
+      let nodeContent = `<div style="font-weight:bold;">${nodeTitle}</div>`;
+      
+      if (node.type === 'message' && node.properties.text) {
+        nodeContent += `<div style="margin-top:5px; font-size:0.9em;">${node.properties.text}</div>`;
+      } else if (node.type === 'condition' && node.properties.text) {
+        nodeContent += `<div style="margin-top:5px; font-size:0.9em;">${node.properties.text}</div>`;
+      } else if (node.type === 'waitResponse' && node.properties.waitTime) {
+        nodeContent += `<div style="margin-top:5px; font-size:0.9em;">Tiempo de espera: ${node.properties.waitTime}s</div>`;
+      }
+      
+      // Add connection points
+      if (node.type !== 'end') {
+        if (node.type === 'condition') {
+          // For condition nodes, add three connectors: input, yes output, and no output
+          nodeContent += `<div class="node-input" data-node="${node.id}" style="position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:16px; height:16px; background:#fff; border-radius:50%; border:2px solid #666;"></div>`;
+          nodeContent += `<div class="node-output yes-output" data-node="${node.id}" data-path="yes" style="position:absolute; bottom:-8px; right:10px; width:16px; height:16px; background:#4CAF50; border-radius:50%; border:2px solid #666; cursor:pointer;"></div>`;
+          nodeContent += `<div class="node-output no-output" data-node="${node.id}" data-path="no" style="position:absolute; bottom:-8px; left:10px; width:16px; height:16px; background:#F44336; border-radius:50%; border:2px solid #666; cursor:pointer;"></div>`;
+          
+          // Add "Sí" and "No" labels
+          nodeContent += `<div style="position:absolute; bottom:-25px; right:6px; font-size:0.8em; color:#333;">Sí</div>`;
+          nodeContent += `<div style="position:absolute; bottom:-25px; left:6px; font-size:0.8em; color:#333;">No</div>`;
+        } else if (node.type === 'waitResponse') {
+          // For wait response nodes, add three connectors: input, response output, and timeout output
+          nodeContent += `<div class="node-input" data-node="${node.id}" style="position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:16px; height:16px; background:#fff; border-radius:50%; border:2px solid #666;"></div>`;
+          nodeContent += `<div class="node-output response-output" data-node="${node.id}" data-path="response" style="position:absolute; bottom:-8px; right:10px; width:16px; height:16px; background:#4CAF50; border-radius:50%; border:2px solid #666; cursor:pointer;"></div>`;
+          nodeContent += `<div class="node-output timeout-output" data-node="${node.id}" data-path="timeout" style="position:absolute; bottom:-8px; left:10px; width:16px; height:16px; background:#F44336; border-radius:50%; border:2px solid #666; cursor:pointer;"></div>`;
+          
+          // Add "Respuesta" and "Timeout" labels
+          nodeContent += `<div style="position:absolute; bottom:-25px; right:0px; font-size:0.8em; color:#333;">Respuesta</div>`;
+          nodeContent += `<div style="position:absolute; bottom:-25px; left:4px; font-size:0.8em; color:#333;">Timeout</div>`;
+        } else {
+          // For non-condition and non-wait nodes, add standard output
+          nodeContent += `<div class="node-output" data-node="${node.id}" style="position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); width:16px; height:16px; background:#fff; border-radius:50%; border:2px solid #666; cursor:pointer;"></div>`;
+        }
+      }
+      
+      if (node.type !== 'start') {
+        nodeContent += `<div class="node-input" data-node="${node.id}" style="position:absolute; top:-8px; left:50%; transform:translateX(-50%); width:16px; height:16px; background:#fff; border-radius:50%; border:2px solid #666;"></div>`;
+      }
+      
+      nodeEl.innerHTML = nodeContent;
+      
+      document.getElementById('nodesContainer').appendChild(nodeEl);
+      
+      // Make node draggable within canvas
+      this.makeNodeDraggable(nodeEl);
+      
+      // Make node selectable
+      nodeEl.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('node-output') && !e.target.classList.contains('node-input')) {
+          this.selectNode(node.id);
+        }
+      });
+      
+      // Add connection functionality
+      this.setupConnectionPoints(nodeEl);
+    },
+    
+    makeNodeDraggable(nodeEl) {
+      let offsetX, offsetY, isDragging = false;
+      
+      nodeEl.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('node-output') || e.target.classList.contains('node-input')) {
+          return; // Don't start dragging if clicked on connection point
+        }
+        
+        isDragging = true;
+        offsetX = e.clientX - nodeEl.offsetLeft;
+        offsetY = e.clientY - nodeEl.offsetTop;
+        nodeEl.style.zIndex = '10';
+      });
+      
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        const x = e.clientX - offsetX;
+        const y = e.clientY - offsetY;
+        
+        nodeEl.style.left = `${x}px`;
+        nodeEl.style.top = `${y}px`;
+        
+        // Update node position in data
+        const nodeId = parseInt(nodeEl.getAttribute('data-id'));
+        const node = this.nodes.find(n => n.id === nodeId);
+        if (node) {
+          node.x = x;
+          node.y = y;
+        }
+        
+        // Update connections
+        this.updateConnections();
+      });
+      
+      document.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          nodeEl.style.zIndex = '1';
+        }
+      });
+    },
+    
+    setupConnectionPoints(nodeEl) {
+      const nodeId = parseInt(nodeEl.getAttribute('data-id'));
+      const nodeType = nodeEl.getAttribute('data-type');
+      
+      // Setup all output points
+      const outputPoints = nodeEl.querySelectorAll('.node-output');
+      outputPoints.forEach(outputPoint => {
+        let startX, startY, line, targetNodeId;
+        let outputPath = outputPoint.getAttribute('data-path') || 'standard';
+        
+        outputPoint.addEventListener('mousedown', (e) => {
+          e.stopPropagation();
+          
+          const rect = outputPoint.getBoundingClientRect();
+          startX = rect.left + rect.width/2;
+          startY = rect.top + rect.height/2;
+          
+          // Create temporary SVG line
+          const svg = document.getElementById('connectionsSvg');
+          line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', startX - svg.getBoundingClientRect().left);
+          line.setAttribute('y1', startY - svg.getBoundingClientRect().top);
+          line.setAttribute('x2', startX - svg.getBoundingClientRect().left);
+          line.setAttribute('y2', startY - svg.getBoundingClientRect().top);
+          
+          // Set line color based on the path type
+          if (outputPath === 'yes' || outputPath === 'response') {
+            line.setAttribute('stroke', '#4CAF50');
+          } else if (outputPath === 'no' || outputPath === 'timeout') {
+            line.setAttribute('stroke', '#F44336');
+          } else {
+            line.setAttribute('stroke', '#666');
+          }
+          
+          line.setAttribute('stroke-width', '2');
+          svg.appendChild(line);
+          
+          document.addEventListener('mousemove', onMouseMove);
+          document.addEventListener('mouseup', onMouseUp);
+        });
+        
+        const onMouseMove = (e) => {
+          if (!line) return;
+          
+          const svg = document.getElementById('connectionsSvg');
+          line.setAttribute('x2', e.clientX - svg.getBoundingClientRect().left);
+          line.setAttribute('y2', e.clientY - svg.getBoundingClientRect().top);
+          
+          // Highlight input points that mouse is over
+          document.querySelectorAll('.node-input').forEach(input => {
+            const rect = input.getBoundingClientRect();
+            if (e.clientX >= rect.left && e.clientX <= rect.right &&
+                e.clientY >= rect.top && e.clientY <= rect.bottom) {
+              input.style.backgroundColor = '#ffcc00';
+              targetNodeId = parseInt(input.getAttribute('data-node'));
+            } else {
+              input.style.backgroundColor = '#fff';
+            }
+          });
+        };
+        
+        const onMouseUp = (e) => {
+          if (line) {
+            const svg = document.getElementById('connectionsSvg');
+            svg.removeChild(line);
+            line = null;
+            
+            // Reset input point styles
+            document.querySelectorAll('.node-input').forEach(input => {
+              input.style.backgroundColor = '#fff';
+            });
+            
+            if (targetNodeId) {
+              this.createConnection(nodeId, targetNodeId, outputPath);
+              targetNodeId = null;
+            }
+          }
+          
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+        };
+      });
+    },
+    
+    createConnection(sourceId, targetId, pathType = 'standard') {
+      // Check if connection already exists
+      const existingConnection = this.connections.find(c => 
+        c.source === sourceId && c.target === targetId && c.type === pathType
+      );
+      
+      if (!existingConnection) {
+        this.connections.push({
+          source: sourceId,
+          target: targetId,
+          type: pathType
+        });
+        
+        this.updateConnections();
+      }
+    },
+    
+    updateConnections() {
+      const svg = document.getElementById('connectionsSvg');
+      svg.innerHTML = ''; // Clear existing connections
+      
+      this.connections.forEach(conn => {
+        const sourceNode = document.getElementById(`node-${conn.source}`);
+        const targetNode = document.getElementById(`node-${conn.target}`);
+        
+        if (sourceNode && targetNode) {
+          let sourceOutput;
+          
+          // Find the correct output connector based on connection type
+          if (sourceNode.getAttribute('data-type') === 'condition') {
+            if (conn.type === 'yes') {
+              sourceOutput = sourceNode.querySelector('.yes-output');
+            } else if (conn.type === 'no') {
+              sourceOutput = sourceNode.querySelector('.no-output');
+            } else {
+              sourceOutput = sourceNode.querySelector('.node-output');
+            }
+          } else if (sourceNode.getAttribute('data-type') === 'waitResponse') {
+            if (conn.type === 'response') {
+              sourceOutput = sourceNode.querySelector('.response-output');
+            } else if (conn.type === 'timeout') {
+              sourceOutput = sourceNode.querySelector('.timeout-output');
+            } else {
+              sourceOutput = sourceNode.querySelector('.node-output');
+            }
+          } else {
+            sourceOutput = sourceNode.querySelector('.node-output');
+          }
+          
+          const targetInput = targetNode.querySelector('.node-input');
+          
+          if (sourceOutput && targetInput) {
+            const sourceRect = sourceOutput.getBoundingClientRect();
+            const targetRect = targetInput.getBoundingClientRect();
+            const svgRect = svg.getBoundingClientRect();
+            
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', sourceRect.left + sourceRect.width/2 - svgRect.left);
+            line.setAttribute('y1', sourceRect.top + sourceRect.height/2 - svgRect.top);
+            line.setAttribute('x2', targetRect.left + targetRect.width/2 - svgRect.left);
+            line.setAttribute('y2', targetRect.top + targetRect.height/2 - svgRect.top);
+            
+            // Set line color based on connection type
+            if (conn.type === 'yes' || conn.type === 'response') {
+              line.setAttribute('stroke', '#4CAF50');
+            } else if (conn.type === 'no' || conn.type === 'timeout') {
+              line.setAttribute('stroke', '#F44336');
+            } else {
+              line.setAttribute('stroke', '#666');
+            }
+            
+            line.setAttribute('stroke-width', '2');
+            
+            svg.appendChild(line);
+          }
+        }
+      });
+    },
+    
+    selectNode(nodeId) {
+      // Deselect previously selected node
+      const prevSelectedEl = document.querySelector('.flow-node.selected');
+      if (prevSelectedEl) {
+        prevSelectedEl.classList.remove('selected');
+        prevSelectedEl.style.boxShadow = 'none';
+      }
+      
+      // Select new node
+      const nodeEl = document.getElementById(`node-${nodeId}`);
+      if (nodeEl) {
+        nodeEl.classList.add('selected');
+        nodeEl.style.boxShadow = '0 0 0 2px #fff, 0 0 0 4px #5a67d8';
+        
+        this.selectedNode = this.nodes.find(n => n.id === nodeId);
+        this.showNodeProperties();
+      } else {
+        this.selectedNode = null;
+        this.showNodeProperties();
+      }
+    },
+    
+    deleteSelectedNode() {
+      if (!this.selectedNode) return;
+      
+      // Prevent deleting the start node if it's the only one
+      if (this.selectedNode.type === 'start') {
+        alert('No se puede eliminar el nodo de inicio. Debe existir al menos uno.');
+        return;
+      }
+      
+      // Remove node from data
+      const index = this.nodes.findIndex(n => n.id === this.selectedNode.id);
+      if (index !== -1) {
+        this.nodes.splice(index, 1);
+      }
+      
+      // Remove connections involving this node
+      this.connections = this.connections.filter(
+        conn => conn.source !== this.selectedNode.id && conn.target !== this.selectedNode.id
+      );
+      
+      // Remove node element from DOM
+      const nodeEl = document.getElementById(`node-${this.selectedNode.id}`);
+      if (nodeEl) {
+        nodeEl.remove();
+      }
+      
+      // Update connections
+      this.updateConnections();
+      
+      // Clear selection
+      this.selectedNode = null;
+      this.showNodeProperties();
+    },
+    
+    showNodeProperties() {
+      const propertiesCtn = document.getElementById('nodePropertiesCtn');
+      
+      if (!this.selectedNode) {
+        propertiesCtn.innerHTML = '<p>Selecciona un nodo para ver sus propiedades</p>';
+        return;
+      }
+      
+      // Common properties section
+      let html = `
+        <div style="margin-bottom:15px;">
+          <strong>Tipo:</strong> ${this.getNodeTypeName(this.selectedNode.type)}
+        </div>
+        <div style="margin-bottom:15px;">
+          <strong>ID:</strong> ${this.selectedNode.id}
+        </div>
+      `;
+      
+      // Specific properties for each node type
+      if (this.selectedNode.type === 'message') {
+        html += `
+          <div style="margin-bottom:15px;">
+            <label style="display:block; margin-bottom:5px;"><strong>Prompt para generar mensaje:</strong></label>
+            <textarea id="messageAIPrompt" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; height:100px;">${this.selectedNode.properties.aiPrompt || ''}</textarea>
+            <p style="margin-top:5px; font-size:0.8em; color:#666;">Este prompt se enviará a la IA para generar un mensaje para el usuario.</p>
+          </div>
+          <div style="margin-bottom:15px;">
+            <label style="display:block; margin-bottom:5px;"><strong>Mensaje de prueba/previsualización:</strong></label>
+            <textarea id="messageText" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; height:100px;">${this.selectedNode.properties.text || ''}</textarea>
+            <p style="margin-top:5px; font-size:0.8em; color:#666;">Para visualizar cómo podría verse el mensaje.</p>
+          </div>
+
+        `;
+      } else if (this.selectedNode.type === 'condition') {
+        html += `
+          <div style="margin-bottom:15px;">
+            <label style="display:block; margin-bottom:5px;"><strong>Prompt para evaluar la condición:</strong></label>
+            <textarea id="conditionAIPrompt" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; height:100px;">${this.selectedNode.properties.aiPrompt || ''}</textarea>
+            <p style="margin-top:5px; font-size:0.8em; color:#666;">Este prompt se enviará a la IA para evaluar la respuesta del usuario.</p>
+          </div>
+          <div style="margin-bottom:15px;">
+            <label style="display:block; margin-bottom:5px;"><strong>Descripción de la condición:</strong></label>
+            <textarea id="conditionText" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; height:100px;">${this.selectedNode.properties.text || ''}</textarea>
+            <p style="margin-top:5px; font-size:0.8em; color:#666;">Descripción de lo que evalúa esta condición.</p>
+          </div>
+        `;
+      } else if (this.selectedNode.type === 'waitResponse') {
+        html += `
+          <div style="margin-bottom:15px;">
+            <label style="display:block; margin-bottom:5px;"><strong>Tiempo de espera (segundos):</strong></label>
+            <input type="number" id="waitTimeInput" min="1" max="3600" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px;" value="${this.selectedNode.properties.waitTime || 60}">
+            <p style="margin-top:5px; font-size:0.9em; color:#666;">Tiempo máximo para esperar una respuesta del cliente. Si no responde en este tiempo, se seguirá el camino de "Timeout".</p>
+          </div>
+
+        `;
+      }
+      
+      // Add save and delete buttons - except for start node
+      if (this.selectedNode.type !== 'start') {
+        html += `
+          <div style="display:flex; gap:10px; margin-top:15px;">
+            <button id="savePropertiesBtn" style="flex:1; padding:8px 16px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer;">
+              Guardar
+            </button>
+            <button id="deleteNodeBtn" style="padding:8px 16px; background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer;">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        `;
+      }
+      
+      propertiesCtn.innerHTML = html;
+      
+      // Add event listeners for the properties panel
+      this.setupPropertiesEventListeners();
+    },
+    
+    setupPropertiesEventListeners() {
+      // Save button
+      const saveBtn = document.getElementById('savePropertiesBtn');
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          if (this.selectedNode.type === 'message') {
+            this.selectedNode.properties.text = document.getElementById('messageText').value;
+            this.selectedNode.properties.aiPrompt = document.getElementById('messageAIPrompt').value;
+            this.selectedNode.properties.nextAction = document.getElementById('messageNextAction').value;
+          } else if (this.selectedNode.type === 'condition') {
+            this.selectedNode.properties.text = document.getElementById('conditionText').value;
+            this.selectedNode.properties.aiPrompt = document.getElementById('conditionAIPrompt').value;
+          } else if (this.selectedNode.type === 'waitResponse') {
+            this.selectedNode.properties.waitTime = parseInt(document.getElementById('waitTimeInput').value) || 60;
+            this.selectedNode.properties.responseNextAction = document.getElementById('responseNextAction').value;
+            this.selectedNode.properties.timeoutNextAction = document.getElementById('timeoutNextAction').value;
+          }
+          
+          // Update node display
+          this.renderNode(this.selectedNode);
+          
+          // Re-select the node to update the properties panel
+          this.selectNode(this.selectedNode.id);
+        });
+      }
+      
+      // Delete button
+      const deleteBtn = document.getElementById('deleteNodeBtn');
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+          this.deleteSelectedNode();
+        });
+      }
+    },
+    
+    getNodeTypeName(type) {
+      switch(type) {
+        case 'start': return 'Inicio';
+        case 'message': return 'Mensaje';
+        case 'condition': return 'Condición';
+        case 'waitResponse': return 'Espera de Respuesta';
+        case 'end': return 'Fin';
+        default: return type;
+      }
+    },
+    
+    loadTemplate(templateId) {
+      // First clear the canvas
+      this.nodes = [];
+      this.connections = [];
+      this.nodeIdCounter = 0;
+      document.getElementById('nodesContainer').innerHTML = '';
+      document.getElementById('connectionsSvg').innerHTML = '';
+      
+      // Common settings for all templates
+      document.getElementById('flowNameInput').value = this.getTemplateDefaultName(templateId);
+      
+      // Create template based on type
+      switch(templateId) {
+        case 'welcome':
+          this.createWelcomeTemplate();
+          break;
+        case 'lead-qualification':
+          this.createLeadQualificationTemplate();
+          break;
+        case 'customer-support':
+          this.createCustomerSupportTemplate();
+          break;
+        case 'product-sales':
+          this.createProductSalesTemplate();
+          break;
+        case 'satisfaction-survey':
+          this.createSatisfactionSurveyTemplate();
+          break;
+        case 'appointment-booking':
+          this.createAppointmentBookingTemplate();
+          break;
+      }
+      
+      // Switch to builder tab to show the created flow
+      switchTab('builder');
+    },
+    
+    getTemplateDefaultName(templateId) {
+      switch(templateId) {
+        case 'welcome': return 'Flujo de Bienvenida';
+        case 'lead-qualification': return 'Calificación de Leads';
+        case 'customer-support': return 'Atención al Cliente';
+        case 'product-sales': return 'Venta de Productos';
+        case 'satisfaction-survey': return 'Encuesta de Satisfacción';
+        case 'appointment-booking': return 'Reserva de Citas';
+        default: return 'Nuevo Flujo';
+      }
+    },
+    
+    createWelcomeTemplate() {
+      // Create nodes
+      const startId = this.createNode('start', 250, 100);
+      const welcomeId = this.createNode('message', 250, 200);
+      const waitId = this.createNode('waitResponse', 250, 350);
+      const responseId = this.createNode('message', 350, 500);
+      const timeoutId = this.createNode('message', 150, 500);
+      const endId = this.createNode('end', 250, 650);
+      
+      // Set node properties
+      const welcomeNode = this.nodes.find(n => n.id === welcomeId);
+      if (welcomeNode) {
+        welcomeNode.properties.text = '¡Hola! 👋 Bienvenido a nuestra empresa. ¿En qué podemos ayudarte hoy?';
+        welcomeNode.properties.aiPrompt = 'Genera un mensaje de bienvenida amigable para un nuevo cliente que acaba de contactar por primera vez. Preséntate como un asistente virtual y pregunta en qué puedes ayudarle.';
+        welcomeNode.properties.nextAction = 'waitResponse';
+        this.renderNode(welcomeNode);
+      }
+      
+      const waitNode = this.nodes.find(n => n.id === waitId);
+      if (waitNode) {
+        waitNode.properties.waitTime = 120;
+        waitNode.properties.responseNextAction = 'message';
+        waitNode.properties.timeoutNextAction = 'message';
+        this.renderNode(waitNode);
+      }
+      
+      const responseNode = this.nodes.find(n => n.id === responseId);
+      if (responseNode) {
+        responseNode.properties.text = 'Gracias por tu mensaje. Un agente se pondrá en contacto contigo pronto.';
+        responseNode.properties.aiPrompt = 'Genera un mensaje de agradecimiento por la respuesta del usuario, informándole que un agente humano revisará su consulta y se pondrá en contacto pronto.';
+        responseNode.properties.nextAction = 'end';
+        this.renderNode(responseNode);
+      }
+      
+      const timeoutNode = this.nodes.find(n => n.id === timeoutId);
+      if (timeoutNode) {
+        timeoutNode.properties.text = 'Parece que no estás disponible en este momento. Te contactaremos más tarde.';
+        timeoutNode.properties.aiPrompt = 'Genera un mensaje para cuando el usuario no ha respondido dentro del tiempo de espera. Menciona que intentarán contactarlo más tarde.';
+        timeoutNode.properties.nextAction = 'end';
+        this.renderNode(timeoutNode);
+      }
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, waitId);
+      this.createConnection(waitId, responseId, 'response');
+      this.createConnection(waitId, timeoutId, 'timeout');
+      this.createConnection(responseId, endId);
+      this.createConnection(timeoutId, endId);
+    },
+    
+    createLeadQualificationTemplate() {
+      // Create nodes
+      const startId = this.createNode('start', 250, 50);
+      const welcomeId = this.createNode('message', 250, 150);
+      const wait1Id = this.createNode('waitResponse', 250, 250);
+      const askServiceId = this.createNode('message', 350, 350);
+      const timeoutId = this.createNode('message', 150, 350);
+      const wait2Id = this.createNode('waitResponse', 350, 450);
+      const conditionId = this.createNode('condition', 350, 550);
+      const qualifiedId = this.createNode('message', 450, 650);
+      const notQualifiedId = this.createNode('message', 250, 650);
+      const endId = this.createNode('end', 350, 750);
+      
+      // Set node properties
+      const welcomeNode = this.nodes.find(n => n.id === welcomeId);
+      if (welcomeNode) {
+        welcomeNode.properties.text = '¡Hola! 👋 Gracias por contactarnos. ¿Podrías decirme tu nombre, por favor?';
+        welcomeNode.properties.aiPrompt = 'Genera un mensaje de bienvenida para iniciar un proceso de calificación de leads. Pide amablemente el nombre del usuario.';
+        welcomeNode.properties.nextAction = 'waitResponse';
+        this.renderNode(welcomeNode);
+      }
+      
+      const wait1Node = this.nodes.find(n => n.id === wait1Id);
+      if (wait1Node) {
+        wait1Node.properties.waitTime = 120;
+        wait1Node.properties.responseNextAction = 'message';
+        wait1Node.properties.timeoutNextAction = 'message';
+        this.renderNode(wait1Node);
+      }
+      
+      const askServiceNode = this.nodes.find(n => n.id === askServiceId);
+      if (askServiceNode) {
+        askServiceNode.properties.text = 'Un placer conocerte. ¿Qué servicio te interesa de nuestra empresa?';
+        askServiceNode.properties.aiPrompt = 'Genera un mensaje que agradezca al usuario por compartir su nombre y pregúntale qué servicio específico le interesa de la empresa.';
+        askServiceNode.properties.nextAction = 'waitResponse';
+        this.renderNode(askServiceNode);
+      }
+      
+      const timeoutNode = this.nodes.find(n => n.id === timeoutId);
+      if (timeoutNode) {
+        timeoutNode.properties.text = 'Parece que no estás disponible ahora. Te contactaremos más tarde.';
+        timeoutNode.properties.aiPrompt = 'Genera un mensaje para cuando el usuario no ha respondido dentro del tiempo de espera. Menciona que intentarán contactarlo más tarde.';
+        timeoutNode.properties.nextAction = 'end';
+        this.renderNode(timeoutNode);
+      }
+      
+      const wait2Node = this.nodes.find(n => n.id === wait2Id);
+      if (wait2Node) {
+        wait2Node.properties.waitTime = 120;
+        wait2Node.properties.responseNextAction = 'condition';
+        wait2Node.properties.timeoutNextAction = 'message';
+        this.renderNode(wait2Node);
+      }
+      
+      const conditionNode = this.nodes.find(n => n.id === conditionId);
+      if (conditionNode) {
+        conditionNode.properties.text = '¿El usuario está interesado en servicios premium?';
+        conditionNode.properties.aiPrompt = 'Evalúa si la respuesta del usuario indica interés en alguno de los servicios premium (consultoría estratégica, implementación personalizada) o si solo está interesado en servicios básicos. Responde sí o no.';
+        this.renderNode(conditionNode);
+      }
+      
+      const qualifiedNode = this.nodes.find(n => n.id === qualifiedId);
+      if (qualifiedNode) {
+        qualifiedNode.properties.text = 'Excelente elección. Un asesor especializado te contactará en breve para discutir los detalles.';
+        qualifiedNode.properties.aiPrompt = 'Genera un mensaje para un lead calificado que ha mostrado interés en servicios premium. Menciona que un asesor especializado lo contactará pronto.';
+        qualifiedNode.properties.nextAction = 'end';
+        this.renderNode(qualifiedNode);
+      }
+      
+      const notQualifiedNode = this.nodes.find(n => n.id === notQualifiedId);
+      if (notQualifiedNode) {
+        notQualifiedNode.properties.text = 'Gracias por tu interés. Te enviaremos información sobre nuestros servicios básicos por correo.';
+        notQualifiedNode.properties.aiPrompt = 'Genera un mensaje para un lead que no califica para servicios premium. Ofrece enviarle información sobre servicios básicos.';
+        notQualifiedNode.properties.nextAction = 'end';
+        this.renderNode(notQualifiedNode);
+      }
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, wait1Id);
+      this.createConnection(wait1Id, askServiceId, 'response');
+      this.createConnection(wait1Id, timeoutId, 'timeout');
+      this.createConnection(askServiceId, wait2Id);
+      this.createConnection(wait2Id, conditionId, 'response');
+      this.createConnection(wait2Id, timeoutId, 'timeout');
+      this.createConnection(conditionId, qualifiedId, 'yes');
+      this.createConnection(conditionId, notQualifiedId, 'no');
+      this.createConnection(qualifiedId, endId);
+      this.createConnection(notQualifiedId, endId);
+      this.createConnection(timeoutId, endId);
+    },
+    
+    createCustomerSupportTemplate() {
+      // Create basic customer support template with issue identification and routing
+      const startId = this.createNode('start', 250, 50);
+      const welcomeId = this.createNode('message', 250, 150);
+      const wait1Id = this.createNode('waitResponse', 250, 250);
+      const issueQueryId = this.createNode('message', 350, 350);
+      const timeoutId = this.createNode('message', 150, 450);
+      const wait2Id = this.createNode('waitResponse', 350, 450);
+      const conditionId = this.createNode('condition', 350, 550);
+      const technicalId = this.createNode('message', 500, 650);
+      const billingId = this.createNode('message', 200, 650);
+      const endId = this.createNode('end', 350, 750);
+      
+      // Set node properties
+      this.nodes.find(n => n.id === welcomeId).properties = {
+        text: '¡Hola! Soy el asistente de soporte. ¿En qué puedo ayudarte hoy?',
+        aiPrompt: 'Genera un mensaje de bienvenida para atención al cliente. Preséntate como asistente de soporte y pregunta cómo puedes ayudar.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === welcomeId));
+      
+      this.nodes.find(n => n.id === wait1Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait1Id));
+      
+      this.nodes.find(n => n.id === issueQueryId).properties = {
+        text: 'Entiendo. ¿Podrías darme más detalles sobre el problema que estás experimentando?',
+        aiPrompt: 'Genera un mensaje que solicite más detalles sobre el problema que el usuario ha mencionado. Muestra empatía y pide información específica.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === issueQueryId));
+      
+      this.nodes.find(n => n.id === timeoutId).properties = {
+        text: 'Parece que no estás disponible ahora. Puedes retomar esta conversación cuando lo necesites.',
+        aiPrompt: 'Genera un mensaje para cuando el usuario no ha respondido dentro del tiempo de espera en un contexto de soporte al cliente.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === timeoutId));
+      
+      this.nodes.find(n => n.id === wait2Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'condition',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait2Id));
+      
+      this.nodes.find(n => n.id === conditionId).properties = {
+        text: '¿El problema es técnico o de facturación?',
+        aiPrompt: 'Analiza la descripción del problema del usuario y determina si es un problema técnico o relacionado con la facturación/pagos. Responde "sí" si es técnico o "no" si es de facturación.'
+      };
+      this.renderNode(this.nodes.find(n => n.id === conditionId));
+      
+      this.nodes.find(n => n.id === technicalId).properties = {
+        text: 'Entiendo tu problema técnico. Un especialista revisará tu caso y te contactará en breve.',
+        aiPrompt: 'Genera un mensaje para problemas técnicos. Asegura al cliente que un especialista técnico revisará su caso y lo contactará pronto.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === technicalId));
+      
+      this.nodes.find(n => n.id === billingId).properties = {
+        text: 'Entiendo tu consulta de facturación. Un representante del departamento de finanzas te contactará para resolverlo.',
+        aiPrompt: 'Genera un mensaje para problemas de facturación. Informa al cliente que un representante del departamento financiero lo contactará pronto.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === billingId));
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, wait1Id);
+      this.createConnection(wait1Id, issueQueryId, 'response');
+      this.createConnection(wait1Id, timeoutId, 'timeout');
+      this.createConnection(issueQueryId, wait2Id);
+      this.createConnection(wait2Id, conditionId, 'response');
+      this.createConnection(wait2Id, timeoutId, 'timeout');
+      this.createConnection(conditionId, technicalId, 'yes');
+      this.createConnection(conditionId, billingId, 'no');
+      this.createConnection(technicalId, endId);
+      this.createConnection(billingId, endId);
+      this.createConnection(timeoutId, endId);
+    },
+    
+    createProductSalesTemplate() {
+      // Create a sales flow template
+      const startId = this.createNode('start', 250, 50);
+      const welcomeId = this.createNode('message', 250, 150);
+      const wait1Id = this.createNode('waitResponse', 250, 250);
+      const productsId = this.createNode('message', 350, 350);
+      const timeoutId = this.createNode('message', 150, 450);
+      const wait2Id = this.createNode('waitResponse', 350, 450);
+      const conditionId = this.createNode('condition', 350, 550);
+      const interestedId = this.createNode('message', 500, 650);
+      const notInterestedId = this.createNode('message', 200, 650);
+      const endId = this.createNode('end', 350, 750);
+      
+      // Set node properties
+      this.nodes.find(n => n.id === welcomeId).properties = {
+        text: '¡Hola! 👋 Bienvenido a nuestra tienda. ¿En qué producto estás interesado hoy?',
+        aiPrompt: 'Genera un mensaje de bienvenida para un cliente potencial. Sé amigable y pregunta en qué producto está interesado.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === welcomeId));
+      
+      this.nodes.find(n => n.id === wait1Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait1Id));
+      
+      this.nodes.find(n => n.id === productsId).properties = {
+        text: 'Tenemos excelentes opciones en esa categoría. ¿Te gustaría conocer nuestro producto premium con estas características?',
+        aiPrompt: 'Genera una respuesta que recomiende un producto premium basado en la categoría que el usuario ha mencionado. Incluye 2-3 características destacadas.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === productsId));
+      
+      this.nodes.find(n => n.id === timeoutId).properties = {
+        text: 'Parece que no estás disponible ahora. Cuando quieras conocer nuestros productos, estaremos aquí para ayudarte.',
+        aiPrompt: 'Genera un mensaje para cuando el usuario no ha respondido dentro del tiempo de espera en un contexto de venta.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === timeoutId));
+      
+      this.nodes.find(n => n.id === wait2Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'condition',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait2Id));
+      
+      this.nodes.find(n => n.id === conditionId).properties = {
+        text: '¿El usuario está interesado en el producto?',
+        aiPrompt: 'Analiza la respuesta del usuario para determinar si muestra interés en el producto recomendado. Responde "sí" si muestra interés o hace preguntas para saber más, o "no" si rechaza la oferta o muestra desinterés.'
+      };
+      this.renderNode(this.nodes.find(n => n.id === conditionId));
+      
+      this.nodes.find(n => n.id === interestedId).properties = {
+        text: '¡Excelente elección! Para proceder con la compra o resolver cualquier duda adicional, un asesor se pondrá en contacto contigo pronto.',
+        aiPrompt: 'Genera un mensaje entusiasta para un cliente que ha mostrado interés en el producto. Informa que un asesor lo contactará para finalizar la venta.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === interestedId));
+      
+      this.nodes.find(n => n.id === notInterestedId).properties = {
+        text: 'Entiendo. También tenemos otras opciones que podrían ajustarse mejor a tus necesidades. ¿Te gustaría que un asesor te contacte para explorarlas?',
+        aiPrompt: 'Genera un mensaje para un cliente que no mostró interés en el producto recomendado. Menciona que hay otras opciones y ofrece ayuda personalizada.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === notInterestedId));
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, wait1Id);
+      this.createConnection(wait1Id, productsId, 'response');
+      this.createConnection(wait1Id, timeoutId, 'timeout');
+      this.createConnection(productsId, wait2Id);
+      this.createConnection(wait2Id, conditionId, 'response');
+      this.createConnection(wait2Id, timeoutId, 'timeout');
+      this.createConnection(conditionId, interestedId, 'yes');
+      this.createConnection(conditionId, notInterestedId, 'no');
+      this.createConnection(interestedId, endId);
+      this.createConnection(notInterestedId, endId);
+      this.createConnection(timeoutId, endId);
+    },
+    
+    createSatisfactionSurveyTemplate() {
+      // Create a satisfaction survey flow
+      const startId = this.createNode('start', 250, 50);
+      const welcomeId = this.createNode('message', 250, 150);
+      const wait1Id = this.createNode('waitResponse', 250, 250);
+      const ratingId = this.createNode('message', 350, 350);
+      const timeoutId = this.createNode('message', 150, 450);
+      const wait2Id = this.createNode('waitResponse', 350, 450);
+      const conditionId = this.createNode('condition', 350, 550);
+      const positiveId = this.createNode('message', 500, 650);
+      const negativeId = this.createNode('message', 200, 650);
+      const endId = this.createNode('end', 350, 750);
+      
+      // Set node properties
+      this.nodes.find(n => n.id === welcomeId).properties = {
+        text: '¡Hola! Nos gustaría conocer tu experiencia con nuestro servicio. ¿Tendrías un momento para responder algunas preguntas breves?',
+        aiPrompt: 'Genera un mensaje inicial para una encuesta de satisfacción. Sé cortés y pide permiso para hacer algunas preguntas breves.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === welcomeId));
+      
+      this.nodes.find(n => n.id === wait1Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait1Id));
+      
+      this.nodes.find(n => n.id === ratingId).properties = {
+        text: 'En una escala del 1 al 10, ¿cómo calificarías tu experiencia general con nuestro servicio?',
+        aiPrompt: 'Genera una pregunta solicitando una calificación del 1 al 10 sobre la experiencia general con el servicio.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === ratingId));
+      
+      this.nodes.find(n => n.id === timeoutId).properties = {
+        text: 'Entendemos que estás ocupado. Puedes completar nuestra encuesta cuando te sea más conveniente.',
+        aiPrompt: 'Genera un mensaje comprensivo para cuando el usuario no responde a la encuesta de satisfacción.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === timeoutId));
+      
+      this.nodes.find(n => n.id === wait2Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'condition',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait2Id));
+      
+      this.nodes.find(n => n.id === conditionId).properties = {
+        text: '¿La calificación es 7 o superior?',
+        aiPrompt: 'Analiza la respuesta del usuario para determinar si su calificación es de 7 o superior en una escala del 1 al 10. Responde "sí" si es 7 o más, o "no" si es 6 o menos.'
+      };
+      this.renderNode(this.nodes.find(n => n.id === conditionId));
+      
+      this.nodes.find(n => n.id === positiveId).properties = {
+        text: '¡Gracias por tu valoración positiva! ¿Hay algo específico que te haya gustado especialmente de nuestro servicio?',
+        aiPrompt: 'Genera un mensaje de agradecimiento para una valoración positiva (7+). Pregunta qué aspectos específicos le gustaron más al cliente.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === positiveId));
+      
+      this.nodes.find(n => n.id === negativeId).properties = {
+        text: 'Lamentamos que tu experiencia no haya sido completamente satisfactoria. ¿Podrías decirnos qué podríamos mejorar?',
+        aiPrompt: 'Genera un mensaje para una valoración negativa (6 o menos). Muestra empatía y solicita sugerencias específicas para mejorar.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === negativeId));
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, wait1Id);
+      this.createConnection(wait1Id, ratingId, 'response');
+      this.createConnection(wait1Id, timeoutId, 'timeout');
+      this.createConnection(ratingId, wait2Id);
+      this.createConnection(wait2Id, conditionId, 'response');
+      this.createConnection(wait2Id, timeoutId, 'timeout');
+      this.createConnection(conditionId, positiveId, 'yes');
+      this.createConnection(conditionId, negativeId, 'no');
+      this.createConnection(positiveId, endId);
+      this.createConnection(negativeId, endId);
+      this.createConnection(timeoutId, endId);
+    },
+    
+    createAppointmentBookingTemplate() {
+      // Create an appointment booking flow
+      const startId = this.createNode('start', 250, 50);
+      const welcomeId = this.createNode('message', 250, 150);
+      const wait1Id = this.createNode('waitResponse', 250, 250);
+      const serviceId = this.createNode('message', 350, 350);
+      const timeoutId = this.createNode('message', 150, 450);
+      const wait2Id = this.createNode('waitResponse', 350, 450);
+      const dateId = this.createNode('message', 350, 550);
+      const wait3Id = this.createNode('waitResponse', 350, 650);
+      const confirmId = this.createNode('message', 350, 750);
+      const endId = this.createNode('end', 350, 850);
+      
+      // Set node properties
+      this.nodes.find(n => n.id === welcomeId).properties = {
+        text: '¡Hola! Soy el asistente de reservas. ¿En qué servicio estás interesado para agendar una cita?',
+        aiPrompt: 'Genera un mensaje de bienvenida para un sistema de reserva de citas. Preséntate como asistente de reservas y pregunta qué servicio le interesa al cliente.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === welcomeId));
+      
+      this.nodes.find(n => n.id === wait1Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait1Id));
+      
+      this.nodes.find(n => n.id === serviceId).properties = {
+        text: 'Excelente elección. ¿Para qué día y hora te gustaría agendar tu cita?',
+        aiPrompt: 'Genera un mensaje que confirme el servicio seleccionado y pregunte qué día y hora prefiere el cliente para su cita.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === serviceId));
+      
+      this.nodes.find(n => n.id === timeoutId).properties = {
+        text: 'Parece que no estás disponible ahora. Puedes retomar el proceso de reserva cuando lo desees.',
+        aiPrompt: 'Genera un mensaje para cuando el usuario no responde durante el proceso de reserva de cita.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === timeoutId));
+      
+      this.nodes.find(n => n.id === wait2Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait2Id));
+      
+      this.nodes.find(n => n.id === dateId).properties = {
+        text: 'Perfecto. ¿Puedes confirmarme tu nombre completo y un número de contacto para la reserva?',
+        aiPrompt: 'Genera un mensaje que confirme la disponibilidad de la fecha/hora solicitada y pida datos de contacto (nombre y teléfono) para completar la reserva.',
+        nextAction: 'waitResponse'
+      };
+      this.renderNode(this.nodes.find(n => n.id === dateId));
+      
+      this.nodes.find(n => n.id === wait3Id).properties = {
+        waitTime: 120,
+        responseNextAction: 'message',
+        timeoutNextAction: 'message'
+      };
+      this.renderNode(this.nodes.find(n => n.id === wait3Id));
+      
+      this.nodes.find(n => n.id === confirmId).properties = {
+        text: '¡Tu cita ha sido reservada con éxito! Te enviaremos una confirmación por mensaje y te recordaremos un día antes de tu cita. ¡Gracias!',
+        aiPrompt: 'Genera un mensaje de confirmación de reserva exitosa. Menciona que se enviará una confirmación y un recordatorio previo a la cita.',
+        nextAction: 'end'
+      };
+      this.renderNode(this.nodes.find(n => n.id === confirmId));
+      
+      // Create connections
+      this.createConnection(startId, welcomeId);
+      this.createConnection(welcomeId, wait1Id);
+      this.createConnection(wait1Id, serviceId, 'response');
+      this.createConnection(wait1Id, timeoutId, 'timeout');
+      this.createConnection(serviceId, wait2Id);
+      this.createConnection(wait2Id, dateId, 'response');
+      this.createConnection(wait2Id, timeoutId, 'timeout');
+      this.createConnection(dateId, wait3Id);
+      this.createConnection(wait3Id, confirmId, 'response');
+      this.createConnection(wait3Id, timeoutId, 'timeout');
+      this.createConnection(confirmId, endId);
+      this.createConnection(timeoutId, endId);
+    }
+  };
+
+  // Initialize flow builder when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    flowBuilder.init();
+    
+    // Setup event listeners for the activation period radio buttons
+    document.getElementById('alwaysActive').addEventListener('change', function() {
+      document.getElementById('periodSelectionCtn').style.display = 'none';
+    });
+    
+    document.getElementById('periodActive').addEventListener('change', function() {
+      document.getElementById('periodSelectionCtn').style.display = 'block';
+    });
+    
+    // Setup event listeners for the objective type select
+    document.getElementById('objectiveTypeSelect').addEventListener('change', function() {
+      // Hide all objective-specific containers
+      document.querySelectorAll('[id$="ObjectiveCtn"]').forEach(container => {
+        container.style.display = 'none';
+      });
+      
+      // Show the selected objective container
+      const selectedValue = this.value;
+      if (selectedValue) {
+        document.getElementById(`${selectedValue}ObjectiveCtn`).style.display = 'block';
+      }
+    });
+  });
+
+  function updateCanvasSizeIfNeeded(newX, newY) {
+  const buffer = 200;
+  const nodesContent = document.getElementById('nodesContent');
+
+  const currentWidth = nodesContent.scrollWidth;
+  const currentHeight = nodesContent.scrollHeight;
+
+  const neededWidth = newX + buffer;
+  const neededHeight = newY + buffer;
+
+  if (neededWidth > currentWidth) {
+    nodesContent.style.minWidth = neededWidth + 'px';
+  }
+
+  if (neededHeight > currentHeight) {
+    nodesContent.style.minHeight = neededHeight + 'px';
+  }
+}
+
+
+
+  document.getElementById("canvasCtn").addEventListener('drop', (e) => {
+    const nodeType = e.dataTransfer.getData('text/plain');
+    const x = e.offsetX;
+    const y = e.offsetY;
+
+    // Crear nodo visual
+    const node = document.createElement('div');
+    node.className = 'flow-node';
+    node.style.position = 'absolute';
+    node.style.left = x + 'px';
+    node.style.top = y + 'px';
+    node.innerText = nodeType;
+
+    document.getElementById('nodesContent').appendChild(node);
+
+    // Asegurar que el área de canvas sea suficientemente grande
+    updateCanvasSizeIfNeeded(x, y);
+    });
+
+</script>
+
+</body>
+</html>
