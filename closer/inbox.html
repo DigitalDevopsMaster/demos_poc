@@ -1,0 +1,1182 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- Include Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- Include Chart.js for dashboard charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Main container with sidebar and content area -->
+<div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
+  
+  <!-- Sidebar navigation -->
+  <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
+    <!-- Logo and brand -->
+    <div style="padding:20px; text-align:center;">
+      <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
+      <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
+    </div>
+    
+    <!-- Navigation links -->
+    <nav>
+      <ul style="list-style:none; padding:0; margin:0;">
+        <li class="nav-item " data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
+          </li>
+          <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
+          </li>
+          <li class="nav-item" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
+          </li>
+          <li class="nav-item active" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
+            <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
+          </li>
+      </ul>
+    </nav>
+  </div>
+  
+  <!-- Main content area -->
+  <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
+    
+    <!-- Inbox Multicanal Page Content -->
+    <div id="inboxPage" class="content-page">
+      <div style="display:flex; gap:20px; height:calc(100vh - 80px);">
+        <!-- Left sidebar - Conversation list -->
+        <div style="width:300px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05); overflow:hidden; display:flex; flex-direction:column;">
+          <!-- Search and filters -->
+          <div style="padding:15px; border-bottom:1px solid #e2e8f0;">
+            <div style="position:relative;">
+              <input type="text" placeholder="Buscar conversación..." style="width:100%; padding:10px 15px 10px 35px; border-radius:4px; border:1px solid #e2e8f0; font-size:14px;">
+              <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#a0aec0;"></i>
+            </div>
+          </div>
+          
+          <!-- Conversations list -->
+          <div id="conversationsList" style="flex:1; overflow-y:auto;">
+            <!-- Conversations will be dynamically inserted here -->
+          </div>
+        </div>
+        
+        <!-- Right main content - Conversation -->
+        <div style="flex:1; display:flex; flex-direction:column; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+          <!-- Conversation header -->
+          <div class="conversation-header" style="padding:15px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:15px;">
+              <div>
+                <div class="contact-name" style="font-weight:600; font-size:16px; color:#2d3748;">Juan Pérez</div>
+                <div class="contact-status" style="font-size:13px; color:#718096;">Online ahora</div>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:10px;">
+              <button class="ver-perfil-btn" style="background:none; border:1px solid #e2e8f0; padding:8px 12px; border-radius:4px; display:none; align-items:center; gap:5px; font-size:14px; color:#4a5568; cursor:pointer;">
+                <i class="fas fa-user"></i> Ver perfil
+              </button>
+              
+              <button id="changeChannelBtn" style="background:none; border:1px solid #e2e8f0; padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:14px; color:#4a5568; cursor:pointer;">
+                <i class="fas fa-sync-alt"></i> Cambiar canal
+              </button>
+              
+              <button id="transferBtn" style="background:#3182ce; border:none; padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:14px; color:white; cursor:pointer;">
+                <i class="fas fa-user-plus"></i> Transferir
+              </button>
+            </div>
+          </div>
+          
+          <!-- Conversation body -->
+          <div class="conversation" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:15px; background:#f8fafc;">
+            <!-- Conversation content will be dynamically inserted here -->
+          </div>
+          
+          <!-- Conversation input -->
+          <div style="padding:15px; border-top:1px solid #e2e8f0; background:white;">
+            <div>
+              <div style="margin-bottom:10px; display:flex; gap:10px;">
+                <button id="suggestionsBtn" style="background:none; border:1px solid #e2e8f0; padding:6px 10px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:13px; color:#4a5568; cursor:pointer;">
+                  <i class="fas fa-robot"></i> Sugerencias
+                </button>
+                <button id="viewDetailsBtn" style="background:none; border:1px solid #e2e8f0; padding:6px 10px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:13px; color:#4a5568; cursor:pointer;">
+                  <i class="fas fa-user-tag"></i> Ver detalle
+                </button>
+                <div style="background:none; padding:6px 10px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:13px; color:#4a5568;">
+                  <i class="fas fa-fire"></i> Temperatura: 🔥
+                </div>
+                <div style="background:none; padding:6px 10px; border-radius:4px; display:flex; align-items:center; gap:5px; font-size:13px; color:#4a5568;">
+                  <i class="fas fa-tag"></i> Compra
+                </div>
+              </div>
+              
+              <div style="position:relative;">
+                <textarea placeholder="Escribe un mensaje..." style="width:100%; padding:12px 50px 12px 15px; border-radius:20px; border:1px solid #e2e8f0; font-size:14px; min-height:60px; resize:none;"></textarea>
+                <button style="position:absolute; right:10px; bottom:10px; background:#3182ce; color:white; border:none; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Channel Selection Modal -->
+<div id="channelModalCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:white; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); width:450px; max-width:90%;">
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0; font-weight:600; color:#2d3748;">Administrar Canales</h3>
+      <button id="closeChannelModalBtn" style="background:none; border:none; cursor:pointer; color:#a0aec0; font-size:18px;">&times;</button>
+    </div>
+    
+    <!-- Channel Management Options -->
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0;">
+      <button id="addChannelBtn" style="background:#3182ce; border:none; padding:8px 12px; border-radius:4px; color:white; cursor:pointer; font-size:14px;">
+        <i class="fas fa-plus"></i> Agregar Canal
+      </button>
+    </div>
+    
+    <!-- Channel List -->
+    <div id="channelListContainer" style="padding:15px; max-height:60vh; overflow-y:auto;">
+      <!-- Channels will be dynamically inserted here -->
+    </div>
+    
+    <!-- Add/Edit Channel Form (initially hidden) -->
+    <div id="channelFormContainer" style="display:none; padding:15px; border-top:1px solid #e2e8f0;">
+      <h4 id="formTitle" style="margin-top:0; color:#2d3748;">Agregar Canal</h4>
+      <div style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:5px; font-weight:500; color:#4a5568;">Tipo de Canal</label>
+        <select id="channelTypeInput" style="width:100%; padding:8px; border-radius:4px; border:1px solid #e2e8f0;">
+          <option value="whatsapp">WhatsApp</option>
+          <option value="messenger">Facebook Messenger</option>
+          <option value="instagram">Instagram</option>
+          <option value="email">Email</option>
+          <option value="telegram">Telegram</option>
+        </select>
+      </div>
+      <div style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:5px; font-weight:500; color:#4a5568;">Identificador</label>
+        <input id="channelIdentifierInput" type="text" placeholder="Número, usuario o email..." style="width:100%; padding:8px; border-radius:4px; border:1px solid #e2e8f0;">
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button id="cancelChannelFormBtn" style="background:none; border:1px solid #e2e8f0; padding:8px 12px; border-radius:4px; color:#4a5568; cursor:pointer;">Cancelar</button>
+        <button id="saveChannelBtn" style="background:#3182ce; border:none; padding:8px 12px; border-radius:4px; color:white; cursor:pointer;">Guardar</button>
+      </div>
+      <input type="hidden" id="editChannelId" value="">
+    </div>
+  </div>
+</div>
+
+<!-- Transfer Modal (Human Agents Directory) -->
+<div id="transferModalCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:white; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); width:500px; max-width:90%;">
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0; font-weight:600; color:#2d3748;">Transferir Conversación</h3>
+      <button id="closeTransferModalBtn" style="background:none; border:none; cursor:pointer; color:#a0aec0; font-size:18px;">&times;</button>
+    </div>
+    
+    <!-- Search Agents -->
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0;">
+      <div style="position:relative;">
+        <input type="text" id="searchAgentsInput" placeholder="Buscar agente..." style="width:100%; padding:10px 15px 10px 35px; border-radius:4px; border:1px solid #e2e8f0; font-size:14px;">
+        <i class="fas fa-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#a0aec0;"></i>
+      </div>
+    </div>
+    
+    <!-- Agents List -->
+    <div id="agentsListContainer" style="padding:15px; max-height:60vh; overflow-y:auto;">
+      <!-- Example agents (would be dynamically populated in a real app) -->
+      <div class="agent-item" style="padding:12px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; background:#3182ce; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">AM</div>
+          <div>
+            <div style="font-weight:600; color:#2d3748;">Ana Martínez</div>
+            <div style="font-size:12px; color:#718096;">Ventas - Disponible</div>
+          </div>
+        </div>
+        <button class="transfer-to-btn" data-agent-id="1" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px;">Transferir</button>
+      </div>
+      
+      <div class="agent-item" style="padding:12px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; background:#38a169; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">LR</div>
+          <div>
+            <div style="font-weight:600; color:#2d3748;">Luis Rodríguez</div>
+            <div style="font-size:12px; color:#718096;">Soporte Técnico - Disponible</div>
+          </div>
+        </div>
+        <button class="transfer-to-btn" data-agent-id="2" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px;">Transferir</button>
+      </div>
+      
+      <div class="agent-item" style="padding:12px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; background:#e53e3e; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">CP</div>
+          <div>
+            <div style="font-weight:600; color:#2d3748;">Carmen Pérez</div>
+            <div style="font-size:12px; color:#718096;">Atención al Cliente - Ocupado</div>
+          </div>
+        </div>
+        <button class="transfer-to-btn" data-agent-id="3" style="background:#718096; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px;">No Disponible</button>
+      </div>
+      
+      <div class="agent-item" style="padding:12px; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; background:#805ad5; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">JL</div>
+          <div>
+            <div style="font-weight:600; color:#2d3748;">Javier López</div>
+            <div style="font-size:12px; color:#718096;">Ventas - Disponible</div>
+          </div>
+        </div>
+        <button class="transfer-to-btn" data-agent-id="4" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px;">Transferir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Suggestions Modal -->
+<div id="suggestionsModalCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:white; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); width:500px; max-width:90%;">
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0; font-weight:600; color:#2d3748;">Sugerencias de Respuesta</h3>
+      <button id="closeSuggestionsModalBtn" style="background:none; border:none; cursor:pointer; color:#a0aec0; font-size:18px;">&times;</button>
+    </div>
+    
+    <!-- Suggestions List -->
+    <div id="suggestionsListContainer" style="padding:15px; max-height:60vh; overflow-y:auto;">
+      <!-- Example suggestions (would be dynamically generated by AI in a real app) -->
+      <div class="suggestion-item" style="padding:12px; border-bottom:1px solid #e2e8f0; cursor:pointer;">
+        <div style="font-weight:500; color:#2d3748; margin-bottom:5px;">Respuesta informativa</div>
+        <div style="color:#4a5568; font-size:14px;">¡Gracias por su interés! Nuestro plan Premium incluye acceso ilimitado a todas las funcionalidades. ¿Le gustaría una demostración personalizada?</div>
+        <button class="use-suggestion-btn" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px; margin-top:8px;">Usar esta respuesta</button>
+      </div>
+      
+      <div class="suggestion-item" style="padding:12px; border-bottom:1px solid #e2e8f0; cursor:pointer;">
+        <div style="font-weight:500; color:#2d3748; margin-bottom:5px;">Respuesta con promoción</div>
+        <div style="color:#4a5568; font-size:14px;">Actualmente tenemos una oferta especial con un 20% de descuento en nuestro plan Premium. Esta oferta estará disponible solo por esta semana. ¿Le gustaría aprovecharlo?</div>
+        <button class="use-suggestion-btn" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px; margin-top:8px;">Usar esta respuesta</button>
+      </div>
+      
+      <div class="suggestion-item" style="padding:12px; border-bottom:1px solid #e2e8f0; cursor:pointer;">
+        <div style="font-weight:500; color:#2d3748; margin-bottom:5px;">Solicitud de información adicional</div>
+        <div style="color:#4a5568; font-size:14px;">Para poder ofrecerle la mejor solución, ¿podría indicarme el tamaño aproximado de su empresa y qué funcionalidades específicas le interesan más?</div>
+        <button class="use-suggestion-btn" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px; margin-top:8px;">Usar esta respuesta</button>
+      </div>
+      
+      <div class="suggestion-item" style="padding:12px; border-bottom:1px solid #e2e8f0; cursor:pointer;">
+        <div style="font-weight:500; color:#2d3748; margin-bottom:5px;">Agendar demostración</div>
+        <div style="color:#4a5568; font-size:14px;">Me encantaría mostrarle en detalle cómo nuestra plataforma puede ayudarle. ¿Podríamos agendar una breve demostración? Tenemos disponibilidad mañana a las 10:00 o a las 15:00.</div>
+        <button class="use-suggestion-btn" style="background:#3182ce; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer; font-size:12px; margin-top:8px;">Usar esta respuesta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lead Details Modal -->
+<div id="leadDetailsModalCtn" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+  <div style="background:white; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); width:600px; max-width:90%;">
+    <div style="padding:15px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="margin:0; font-weight:600; color:#2d3748;">Detalle del Lead</h3>
+      <button id="closeLeadDetailsModalBtn" style="background:none; border:none; cursor:pointer; color:#a0aec0; font-size:18px;">&times;</button>
+    </div>
+    
+    <!-- Lead Details Content -->
+    <div style="padding:15px; max-height:70vh; overflow-y:auto;">
+      <!-- Contact Information -->
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-top:0; margin-bottom:10px; color:#4a5568; font-size:16px;">Información de Contacto</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:14px;">
+          <div style="color:#718096;">Nombre:</div>
+          <div style="color:#2d3748; font-weight:500;">Juan Pérez</div>
+          
+          <div style="color:#718096;">Email:</div>
+          <div style="color:#2d3748; font-weight:500;">juan.perez@ejemplo.com</div>
+          
+          <div style="color:#718096;">Teléfono:</div>
+          <div style="color:#2d3748; font-weight:500;">+1234567890</div>
+          
+          <div style="color:#718096;">Empresa:</div>
+          <div style="color:#2d3748; font-weight:500;">Innovaciones S.A.</div>
+          
+          <div style="color:#718096;">Cargo:</div>
+          <div style="color:#2d3748; font-weight:500;">Director de Marketing</div>
+        </div>
+      </div>
+      
+      <!-- Lead Status and Score -->
+      <div style="margin-bottom:20px; display:flex; gap:20px;">
+        <div style="flex:1; background:#f7fafc; padding:10px; border-radius:6px; text-align:center;">
+          <div style="font-size:12px; color:#718096; margin-bottom:5px;">Estado</div>
+          <div style="font-weight:600; color:#3182ce;">Oportunidad</div>
+        </div>
+        <div style="flex:1; background:#f7fafc; padding:10px; border-radius:6px; text-align:center;">
+          <div style="font-size:12px; color:#718096; margin-bottom:5px;">Puntuación</div>
+          <div style="font-weight:600; color:#38a169;">85/100</div>
+        </div>
+        <div style="flex:1; background:#f7fafc; padding:10px; border-radius:6px; text-align:center;">
+          <div style="font-size:12px; color:#718096; margin-bottom:5px;">Interés</div>
+          <div style="font-weight:600; color:#dd6b20;">Alto</div>
+        </div>
+      </div>
+      
+      <!-- Lead History -->
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-top:0; margin-bottom:10px; color:#4a5568; font-size:16px;">Historial</h4>
+        <div style="border-left:2px solid #e2e8f0; padding-left:15px;">
+          <div style="margin-bottom:15px; position:relative;">
+            <div style="width:10px; height:10px; background:#3182ce; border-radius:50%; position:absolute; left:-20px; top:5px;"></div>
+            <div style="font-size:12px; color:#718096; margin-bottom:2px;">Ayer, 15:30</div>
+            <div style="font-size:14px; color:#2d3748;">Primer contacto vía WhatsApp</div>
+          </div>
+          
+          <div style="margin-bottom:15px; position:relative;">
+            <div style="width:10px; height:10px; background:#3182ce; border-radius:50%; position:absolute; left:-20px; top:5px;"></div>
+            <div style="font-size:12px; color:#718096; margin-bottom:2px;">Ayer, 16:45</div>
+            <div style="font-size:14px; color:#2d3748;">Envío de información de planes Premium</div>
+          </div>
+          
+          <div style="margin-bottom:15px; position:relative;">
+            <div style="width:10px; height:10px; background:#3182ce; border-radius:50%; position:absolute; left:-20px; top:5px;"></div>
+            <div style="font-size:12px; color:#718096; margin-bottom:2px;">Hoy, 10:25</div>
+            <div style="font-size:14px; color:#2d3748;">Solicitud de demostración</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Lead Interests -->
+      <div style="margin-bottom:20px;">
+        <h4 style="margin-top:0; margin-bottom:10px; color:#4a5568; font-size:16px;">Intereses</h4>
+        <div style="display:flex; flex-wrap:wrap; gap:5px;">
+          <span style="background:#ebf8ff; color:#3182ce; padding:4px 8px; border-radius:4px; font-size:12px;">Plan Premium</span>
+          <span style="background:#e6fffa; color:#319795; padding:4px 8px; border-radius:4px; font-size:12px;">Integración CRM</span>
+          <span style="background:#faf5ff; color:#805ad5; padding:4px 8px; border-radius:4px; font-size:12px;">Automatización</span>
+          <span style="background:#fff5f5; color:#e53e3e; padding:4px 8px; border-radius:4px; font-size:12px;">Análisis de datos</span>
+        </div>
+      </div>
+      
+      <!-- Next Steps -->
+      <div>
+        <h4 style="margin-top:0; margin-bottom:10px; color:#4a5568; font-size:16px;">Próximos Pasos</h4>
+        <div style="background:#f7fafc; padding:10px; border-radius:6px;">
+          <div style="font-weight:500; color:#2d3748; margin-bottom:5px;">Demostración programada</div>
+          <div style="display:flex; justify-content:space-between; font-size:14px;">
+            <div style="color:#4a5568;">Hoy, 15:30</div>
+            <div style="color:#3182ce; cursor:pointer;">Ver en calendario</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for tab navigation and chat simulation -->
+<script>
+  // Define conversations data for each chat
+  const conversations = {
+    "juan": {
+      name: "Juan Pérez",
+      status: "Online ahora",
+      channel: "WhatsApp",
+      messages: [
+        {type: "bot", content: "¡Hola! Bienvenido a Closer Digital. Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?", time: "10:25 AM"},
+        {type: "user", content: "Hola, estoy interesado en conocer más sobre sus planes Premium", time: "10:26 AM"},
+        {type: "bot", content: "¡Perfecto! Nuestro plan Premium incluye acceso a todas las funcionalidades de la plataforma:<br><br>✅ Asistentes ilimitados<br>✅ Integración multicanal<br>✅ Plantillas personalizadas<br>✅ Análisis avanzado<br>✅ Soporte 24/7<br><br>El costo es de $99/mes. ¿Te gustaría conocer más detalles específicos de alguna función?", time: "10:28 AM"},
+        {type: "user", content: "Se ve bien. ¿Puedo tener una demostración para ver cómo funciona?", time: "10:32 AM"},
+        {type: "bot", content: "¡Claro que sí! Podemos agendar una demostración personalizada con uno de nuestros especialistas. Tenemos disponibilidad hoy a las 15:30 o mañana a las 10:00. ¿Cuál prefieres?", time: "10:35 AM"},
+        {type: "user", content: "Perfecto, me viene bien hoy a las 15:30", time: "10:40 AM"},
+        {type: "bot", content: "¡Excelente! He agendado tu demostración para hoy a las 15:30. Recibirás un recordatorio 30 minutos antes. ¿Hay algo más en lo que pueda ayudarte?", time: "10:45 AM"},
+        {type: "user", content: "No, eso es todo por ahora. ¡Gracias!", time: "10:46 AM"},
+        {type: "bot", content: "¡Un placer ayudarte! Estamos aquí para cualquier otra pregunta que tengas. Te esperamos en la demostración. ¡Que tengas un excelente día!", time: "10:47 AM"}
+      ],
+      // Available channels for Juan
+      availableChannels: [
+        {id: "1", channel: "whatsapp", identifier: "+1234567890"},
+        {id: "2", channel: "web", identifier: "juan@example.com"}
+      ]
+    },
+    "maria": {
+      name: "María González",
+      status: "Inactiva - Último acceso: Ayer",
+      channel: "Instagram",
+      messages: [
+        {type: "bot", content: "¡Hola María! Gracias por contactarnos a través de Instagram. ¿En qué podemos ayudarte hoy?", time: "Ayer 15:30"},
+        {type: "user", content: "Hola, vi su anuncio sobre automatización de ventas. Quiero saber más sobre el servicio.", time: "Ayer 15:35"},
+        {type: "bot", content: "¡Claro! Nuestro servicio de automatización de ventas te permite:<br><br>• Automatizar seguimientos<br>• Generar leads cualificados<br>• Integrar con tu CRM existente<br>• Analizar conversiones en tiempo real<br><br>¿Qué aspecto te interesa más?", time: "Ayer 15:37"},
+        {type: "user", content: "La generación de leads principalmente. ¿Cómo funciona exactamente?", time: "Ayer 15:40"},
+        {type: "bot", content: "Excelente pregunta. Nuestra plataforma utiliza IA para identificar y calificar leads automáticamente. Funciona así:<br><br>1. Configuramos campañas personalizadas para tu negocio<br>2. Nuestros algoritmos identifican clientes potenciales en tus canales<br>3. Se inicia una conversación automática personalizada<br>4. Los leads cualificados se asignan a tu equipo de ventas<br><br>¿Te gustaría ver una demostración?", time: "Ayer 15:45"},
+        {type: "user", content: "Suena interesante, pero ¿cuál es el precio?", time: "Ayer 15:50"},
+        {type: "bot", content: "Tenemos varios planes según el tamaño de tu negocio:<br><br>• Básico: $199/mes - Hasta 500 leads/mes<br>• Profesional: $399/mes - Hasta 2,000 leads/mes<br>• Empresarial: $799/mes - Leads ilimitados<br><br>Todos incluyen soporte técnico y actualizaciones. ¿Cuál se ajustaría mejor a tus necesidades?", time: "Ayer 15:55"},
+        {type: "user", content: "El profesional podría funcionar. Quiero saber más sobre el servicio...", time: "Ayer 16:00"}
+        // Este último mensaje no tiene respuesta aún, lo que explica el indicador de mensajes sin leer
+      ],
+      // Available channels for Maria
+      availableChannels: [
+        {id: "3", channel: "instagram", identifier: "@user.instagram"},
+        {id: "4", channel: "whatsapp", identifier: "+5678901234"}
+      ]
+    },
+    "carlos": {
+      name: "Carlos Rodríguez",
+      status: "Inactivo desde 12/08",
+      channel: "Web",
+      messages: [
+        {type: "bot", content: "¡Hola Carlos! Bienvenido al chat de soporte de Closer Digital. ¿Cómo puedo ayudarte hoy?", time: "12/08 09:15"},
+        {type: "user", content: "Hola, estoy evaluando su herramienta pero creo que el precio es muy alto para lo que ofrece comparado con otros competidores.", time: "12/08 09:18"},
+        {type: "bot", content: "Entiendo tu preocupación, Carlos. Valoramos mucho tu feedback. ¿Podrías indicarme qué funcionalidades específicas estás comparando y con qué competidores? Así podré explicarte mejor nuestro valor añadido.", time: "12/08 09:20"},
+        {type: "user", content: "Estoy comparando con HelpCrunch y Zendesk. Ofrecen características similares por menor precio.", time: "12/08 09:25"},
+        {type: "bot", content: "Gracias por la información. Es cierto que hay alternativas en el mercado, pero Closer Digital ofrece algunas ventajas exclusivas:<br><br>• IA avanzada entrenada específicamente para tu sector<br>• Integraciones nativas con más de 50 plataformas<br>• Personalización completa sin necesidad de codificación<br>• Análisis predictivo de comportamiento<br><br>Además, ahora mismo tenemos una promoción con 30% de descuento para nuevos clientes. ¿Te interesaría?", time: "12/08 09:30"},
+        {type: "user", content: "Hmm, esas características suenan interesantes. ¿El descuento aplica a todos los planes?", time: "12/08 09:35"},
+        {type: "bot", content: "¡Sí! El descuento del 30% aplica a todos nuestros planes durante los primeros 6 meses. Además, podemos ofrecerte una prueba extendida de 30 días con todas las funcionalidades para que puedas evaluar completamente el valor que aportamos.", time: "12/08 09:38"},
+        {type: "user", content: "Eso suena mejor. Déjame pensarlo y revisar internamente con mi equipo.", time: "12/08 09:42"},
+        {type: "bot", content: "Perfecto, Carlos. Tómate el tiempo que necesites. Si quieres, puedo enviarte documentación adicional sobre las funcionalidades que nos diferencian de HelpCrunch y Zendesk para que puedas compartirla con tu equipo. ¿Te sería útil?", time: "12/08 09:45"},
+        {type: "user", content: "Sí, por favor envíame esa información. Y también un enlace para la prueba de 30 días.", time: "12/08 09:48"},
+        {type: "bot", content: "¡Excelente! Te acabo de enviar un email con toda la documentación comparativa y un enlace único para activar tu prueba de 30 días. Si tienes cualquier otra pregunta, no dudes en contactarme. ¡Estamos aquí para ayudarte!", time: "12/08 09:50"}
+      ],
+      // Available channels for Carlos
+      availableChannels: [
+        {id: "5", channel: "web", identifier: "carlos@example.com"}
+      ]
+    },
+    "pedro": {
+      name: "Pedro Sánchez",
+      status: "Inactivo desde el Lunes",
+      channel: "Facebook",
+      messages: [
+        {type: "bot", content: "¡Hola Pedro! Gracias por contactarnos a través de Facebook Messenger. ¿En qué podemos ayudarte hoy?", time: "Lunes 09:15"},
+        {type: "user", content: "Buenos días, estoy buscando información sobre sus servicios de automatización para mi empresa.", time: "Lunes 09:20"},
+        {type: "bot", content: "Con gusto puedo ayudarte con eso. Ofrecemos diversos servicios de automatización:<br><br>• Automatización de marketing<br>• Chatbots personalizados<br>• Integración con CRM<br>• Análisis de conversiones<br><br>¿Hay algún área específica que te interese más?", time: "Lunes 09:25"},
+        {type: "user", content: "Me interesa principalmente la parte de chatbots e integración con CRM. ¿Podemos agendar una llamada para discutir más detalles?", time: "Lunes 09:30"},
+        {type: "bot", content: "¡Por supuesto! Tenemos disponibilidad para una llamada mañana a las 10:00 AM o pasado mañana a las 2:00 PM. ¿Cuál te vendría mejor?", time: "Lunes 09:35"}
+      ],
+      // Available channels for Pedro
+      availableChannels: [
+        {id: "6", channel: "messenger", identifier: "user.messenger123"},
+        {id: "7", channel: "telegram", identifier: "@pedro_telegram"}
+      ]
+    }
+  };
+
+  // Keep track of conversations by channel type
+  const conversationsByChannel = {};
+
+  // Channel icons and colors configuration
+  const channelConfig = {
+    whatsapp: { icon: "fab fa-whatsapp", color: "#25D366", label: "WhatsApp", placeholder: "Número telefónico..." },
+    messenger: { icon: "fab fa-facebook-messenger", color: "#0084FF", label: "Facebook Messenger", placeholder: "ID de usuario..." },
+    instagram: { icon: "fab fa-instagram", color: "#E1306C", label: "Instagram", placeholder: "Usuario de Instagram..." },
+    web: { icon: "fas fa-globe", color: "#4299E1", label: "Web", placeholder: "Email..." },
+    telegram: { icon: "fab fa-telegram", color: "#0088cc", label: "Telegram", placeholder: "Usuario de Telegram..." },
+    twitter: { icon: "fab fa-twitter", color: "#1DA1F2", label: "Twitter", placeholder: "Usuario de Twitter..." },
+    email: { icon: "fas fa-envelope", color: "#718096", label: "Email", placeholder: "Dirección de email..." }
+  };
+
+  // Keep track of the current conversation
+  let currentConversationId = "juan";
+
+  // Function to group conversations by sender
+  function groupConversationsBySender() {
+    const groupedConversations = {};
+    
+    // Group conversations by sender name
+    Object.keys(conversations).forEach(conversationId => {
+      const conversation = conversations[conversationId];
+      const senderName = conversation.name;
+      
+      if (!groupedConversations[senderName]) {
+        groupedConversations[senderName] = [];
+      }
+      
+      groupedConversations[senderName].push({
+        id: conversationId,
+        channel: conversation.channel,
+        status: conversation.status,
+        lastMessage: conversation.messages[conversation.messages.length - 1],
+        unreadCount: conversationId === "maria" || conversationId === "pedro" ? 1 : 0, // Hardcoded for demo
+      });
+    });
+    
+    return groupedConversations;
+  }
+
+  // Function to render the conversations list
+  function renderConversationsList() {
+    const conversationsList = document.getElementById('conversationsList');
+    conversationsList.innerHTML = '';
+    
+    const groupedConversations = groupConversationsBySender();
+    
+    // For each sender group
+    Object.keys(groupedConversations).forEach(senderName => {
+      // Create a group header
+      const groupHeader = document.createElement('div');
+      groupHeader.className = 'sender-group-header';
+      groupHeader.style.padding = '10px 15px';
+      groupHeader.style.backgroundColor = '#f8fafc';
+      groupHeader.style.fontWeight = '600';
+      groupHeader.style.fontSize = '14px';
+      groupHeader.style.color = '#4a5568';
+      groupHeader.style.borderBottom = '1px solid #e2e8f0';
+      groupHeader.textContent = senderName;
+      
+      conversationsList.appendChild(groupHeader);
+      
+      // Add all conversations for this sender
+      groupedConversations[senderName].forEach(convo => {
+        const config = channelConfig[convo.channel.toLowerCase()] || 
+                       channelConfig.web; // Default to web if channel not found
+        
+        const chatItem = document.createElement('div');
+        chatItem.className = 'chat-item';
+        chatItem.setAttribute('data-conversation', convo.id);
+        chatItem.style.padding = '15px';
+        chatItem.style.borderBottom = '1px solid #e2e8f0';
+        chatItem.style.cursor = 'pointer';
+        
+        // If this is the current conversation, make it active
+        if (convo.id === currentConversationId) {
+          chatItem.classList.add('active');
+          chatItem.style.background = '#ebf8ff';
+        }
+        
+        // Get last message time
+        let lastMessageTime = "";
+        if (convo.lastMessage) {
+          lastMessageTime = convo.lastMessage.time;
+        }
+        
+        // Get last message content
+        let lastMessageContent = "No hay mensajes";
+        if (convo.lastMessage) {
+          lastMessageContent = convo.lastMessage.content.replace(/<br>|<br\/>/g, " ").replace(/<[^>]*>/g, "");
+          // Truncate if too long
+          if (lastMessageContent.length > 45) {
+            lastMessageContent = lastMessageContent.substring(0, 45) + "...";
+          }
+        }
+        
+        chatItem.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+            <div style="font-weight:500; color:#2d3748;">${convo.channel}</div>
+            <div style="font-size:12px; color:#718096;">${lastMessageTime}</div>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <div style="font-size:13px; color:#718096; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;">${lastMessageContent}</div>
+            <div style="display:flex; align-items:center; gap:5px;">
+              ${convo.unreadCount ? `<span style="background:#f56565; color:white; padding:2px 6px; border-radius:4px; font-size:11px;">${convo.unreadCount}</span>` : 
+                `<span style="width:8px; height:8px; background:#38a169; border-radius:50%;"></span>`}
+            </div>
+          </div>
+          <div style="display:flex; gap:5px; margin-top:5px;">
+            <span class="channel-badge" style="background:${getLightColor(config.color)}; color:${config.color}; padding:2px 6px; border-radius:4px; font-size:11px;"><i class="${config.icon}"></i> ${config.label}</span>
+          </div>
+        `;
+        
+        chatItem.addEventListener('click', function() {
+          // Remove active class from all chat items
+          document.querySelectorAll('.chat-item').forEach(item => {
+            item.classList.remove('active');
+            item.style.background = '';
+          });
+          
+          // Add active class to clicked item
+          this.classList.add('active');
+          this.style.background = '#ebf8ff';
+          
+          // Get the conversation ID and render it
+          const conversationId = this.getAttribute('data-conversation');
+          renderConversation(conversationId);
+        });
+        
+        conversationsList.appendChild(chatItem);
+      });
+    });
+  }
+
+  // Function to render conversation
+  function renderConversation(conversationId) {
+    // Get conversation data
+    const conversation = conversations[conversationId];
+    if (!conversation) return;
+    
+    // Update current conversation ID
+    currentConversationId = conversationId;
+    
+    // Update conversation header
+    document.querySelector('.conversation-header .contact-name').textContent = conversation.name;
+    document.querySelector('.conversation-header .contact-status').textContent = conversation.status;
+    
+    // Always hide "Ver perfil" button regardless of channel
+    const verPerfilBtn = document.querySelector('.ver-perfil-btn');
+    verPerfilBtn.style.display = "none";
+    
+    // Clear current conversation
+    const conversationContainer = document.querySelector('.conversation');
+    conversationContainer.innerHTML = '';
+    
+    // Add messages to conversation
+    conversation.messages.forEach(message => {
+      const messageEl = document.createElement('div');
+      messageEl.className = message.type === 'user' ? 'message-user' : 'message-bot';
+      messageEl.style.alignSelf = message.type === 'user' ? 'flex-end' : 'flex-start';
+      messageEl.style.maxWidth = '75%';
+      
+      const messageContent = document.createElement('div');
+      messageContent.style.background = message.type === 'user' ? '#3182ce' : '#f7fafc';
+      messageContent.style.padding = '12px 15px';
+      messageContent.style.borderRadius = message.type === 'user' ? '18px 18px 0 18px' : '18px 18px 18px 0';
+      messageContent.style.color = message.type === 'user' ? 'white' : '#2d3748';
+      messageContent.style.fontSize = '14px';
+      messageContent.innerHTML = message.content;
+      
+      const messageTime = document.createElement('div');
+      messageTime.style.fontSize = '11px';
+      messageTime.style.color = '#a0aec0';
+      messageTime.style.marginTop = '5px';
+      messageTime.style.textAlign = message.type === 'user' ? 'right' : 'left';
+      messageTime.textContent = message.time;
+      
+      messageEl.appendChild(messageContent);
+      messageEl.appendChild(messageTime);
+      conversationContainer.appendChild(messageEl);
+    });
+  }
+
+  // Function to render available channels for the current conversation
+  function renderAvailableChannels() {
+    const channelListContainer = document.getElementById('channelListContainer');
+    channelListContainer.innerHTML = '';
+    
+    // Get available channels for the current conversation
+    const availableChannels = conversations[currentConversationId].availableChannels || [];
+    
+    // Filter out 'web' channel
+    const filteredChannels = availableChannels.filter(channel => channel.channel !== 'web');
+    
+    if (filteredChannels.length === 0) {
+      channelListContainer.innerHTML = '<p style="text-align:center; color:#718096;">No hay canales disponibles para este contacto.</p>';
+      return;
+    }
+    
+    // Render each channel
+    filteredChannels.forEach(channelData => {
+      const config = channelConfig[channelData.channel];
+      if (!config) return;
+      
+      const channelElement = document.createElement('div');
+      channelElement.className = 'channel-option';
+      channelElement.setAttribute('data-channel-id', channelData.id);
+      channelElement.style.padding = '12px';
+      channelElement.style.borderBottom = '1px solid #e2e8f0';
+      channelElement.style.display = 'flex';
+      channelElement.style.alignItems = 'center';
+      channelElement.style.justifyContent = 'space-between';
+      
+      // Channel info
+      const channelInfo = document.createElement('div');
+      channelInfo.style.display = 'flex';
+      channelInfo.style.alignItems = 'center';
+      channelInfo.style.gap = '10px';
+      
+      // Channel icon
+      const iconElement = document.createElement('i');
+      iconElement.className = config.icon;
+      iconElement.style.fontSize = '24px';
+      iconElement.style.color = config.color;
+      
+      // Channel details
+      const detailsElement = document.createElement('div');
+      
+      const nameElement = document.createElement('div');
+      nameElement.style.fontWeight = '600';
+      nameElement.style.color = '#2d3748';
+      nameElement.textContent = config.label;
+      
+      const identifierElement = document.createElement('div');
+      identifierElement.style.fontSize = '13px';
+      identifierElement.style.color = '#718096';
+      
+      // Format identifier based on channel type
+      let identifierLabel = 'ID';
+      if (channelData.channel === 'whatsapp') {
+        identifierLabel = 'Número telefónico';
+      } else if (channelData.channel === 'web' || channelData.channel === 'email') {
+        identifierLabel = 'Email';
+      } else if (channelData.channel === 'instagram' || channelData.channel === 'twitter' || channelData.channel === 'telegram') {
+        identifierLabel = 'Usuario';
+      } else if (channelData.channel === 'messenger') {
+        identifierLabel = 'ID';
+      }
+      
+      identifierElement.textContent = `${identifierLabel}: ${channelData.identifier}`;
+      
+      detailsElement.appendChild(nameElement);
+      detailsElement.appendChild(identifierElement);
+      
+      channelInfo.appendChild(iconElement);
+      channelInfo.appendChild(detailsElement);
+      
+      // Action buttons
+      const actionsElement = document.createElement('div');
+      actionsElement.style.display = 'flex';
+      actionsElement.style.gap = '8px';
+      
+      // Select button
+      const selectBtn = document.createElement('button');
+      selectBtn.className = 'select-channel-btn';
+      selectBtn.style.background = '#3182ce';
+      selectBtn.style.color = 'white';
+      selectBtn.style.border = 'none';
+      selectBtn.style.padding = '5px 10px';
+      selectBtn.style.borderRadius = '4px';
+      selectBtn.style.cursor = 'pointer';
+      selectBtn.style.fontSize = '12px';
+      selectBtn.innerHTML = '<i class="fas fa-check"></i> Usar';
+      selectBtn.onclick = function() {
+        selectChannel(channelData);
+      };
+      
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'edit-channel-btn';
+      editBtn.style.background = '#edf2f7';
+      editBtn.style.color = '#4a5568';
+      editBtn.style.border = 'none';
+      editBtn.style.padding = '5px 10px';
+      editBtn.style.borderRadius = '4px';
+      editBtn.style.cursor = 'pointer';
+      editBtn.style.fontSize = '12px';
+      editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+      editBtn.onclick = function() {
+        editChannel(channelData);
+      };
+      
+      // Delete button
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-channel-btn';
+      deleteBtn.style.background = '#edf2f7';
+      deleteBtn.style.color = '#e53e3e';
+      deleteBtn.style.border = 'none';
+      deleteBtn.style.padding = '5px 10px';
+      deleteBtn.style.borderRadius = '4px';
+      deleteBtn.style.cursor = 'pointer';
+      deleteBtn.style.fontSize = '12px';
+      deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+      deleteBtn.onclick = function() {
+        deleteChannel(channelData.id);
+      };
+      
+      actionsElement.appendChild(selectBtn);
+      actionsElement.appendChild(editBtn);
+      actionsElement.appendChild(deleteBtn);
+      
+      channelElement.appendChild(channelInfo);
+      channelElement.appendChild(actionsElement);
+      
+      channelListContainer.appendChild(channelElement);
+    });
+  }
+
+  // Function to select a channel
+  function selectChannel(channelData) {
+    const config = channelConfig[channelData.channel];
+    const currentName = conversations[currentConversationId].name;
+    const channelLabel = config.label;
+    
+    // Check if a conversation already exists for this channel and contact
+    let existingConversationId = null;
+    for (const id in conversations) {
+      const conversation = conversations[id];
+      // Check if this conversation belongs to the same contact and uses the same channel
+      if (conversation.name === currentName && 
+          conversation.channel.toLowerCase() === channelLabel.toLowerCase()) {
+        existingConversationId = id;
+        break;
+      }
+    }
+    
+    if (existingConversationId) {
+      // If conversation exists, just select it
+      currentConversationId = existingConversationId;
+      renderConversation(existingConversationId);
+      renderConversationsList(); // Update the UI to show the selected conversation
+    } else {
+      // Create a new conversation ID with the contact name and channel
+      const newConversationId = `${currentName}_${channelData.channel}_${Date.now()}`;
+      
+      // Create a new conversation with empty messages
+      conversations[newConversationId] = {
+        name: currentName,
+        status: "Nuevo chat",
+        channel: channelLabel,
+        messages: [],
+        // Copy available channels from the original conversation
+        availableChannels: [...conversations[currentConversationId].availableChannels]
+      };
+      
+      // Add this new conversation to the chat list
+      addNewChatToList(newConversationId, channelData.channel);
+    }
+    
+    // Close the modal
+    toggleChannelModal();
+  }
+
+  // Function to add a new chat to the list
+  function addNewChatToList(conversationId, channelType) {
+    const config = channelConfig[channelType];
+    
+    // Set as current conversation
+    currentConversationId = conversationId;
+    
+    // Re-render the conversations list to include the new conversation
+    renderConversationsList();
+    
+    // Render the new conversation
+    renderConversation(conversationId);
+  }
+
+  // Function to show edit form for a channel
+  function editChannel(channelData) {
+    const formContainer = document.getElementById('channelFormContainer');
+    const formTitle = document.getElementById('formTitle');
+    const channelTypeInput = document.getElementById('channelTypeInput');
+    const channelIdentifierInput = document.getElementById('channelIdentifierInput');
+    const editChannelId = document.getElementById('editChannelId');
+    const addChannelBtn = document.getElementById('addChannelBtn');
+    
+    // Set form title and values
+    formTitle.textContent = 'Editar Canal';
+    channelTypeInput.value = channelData.channel;
+    channelIdentifierInput.value = channelData.identifier;
+    editChannelId.value = channelData.id;
+    
+    // Update placeholder based on selected channel type
+    updateIdentifierPlaceholder();
+    
+    // Show form and hide add channel button
+    formContainer.style.display = 'block';
+    addChannelBtn.style.display = 'none';
+    
+    // Hide channel list while editing
+    document.getElementById('channelListContainer').style.display = 'none';
+  }
+
+  // Function to delete a channel
+  function deleteChannel(channelId) {
+    if (!confirm('¿Estás seguro de que deseas eliminar este canal?')) {
+      return;
+    }
+    
+    // Find the channel index
+    const availableChannels = conversations[currentConversationId].availableChannels;
+    const channelIndex = availableChannels.findIndex(c => c.id === channelId);
+    
+    if (channelIndex !== -1) {
+      // Remove the channel
+      availableChannels.splice(channelIndex, 1);
+      
+      // Refresh the channels list
+      renderAvailableChannels();
+    }
+  }
+
+  // Function to show add channel form
+  function showAddChannelForm() {
+    const formContainer = document.getElementById('channelFormContainer');
+    const formTitle = document.getElementById('formTitle');
+    const channelTypeInput = document.getElementById('channelTypeInput');
+    const channelIdentifierInput = document.getElementById('channelIdentifierInput');
+    const editChannelId = document.getElementById('editChannelId');
+    const addChannelBtn = document.getElementById('addChannelBtn');
+    
+    // Reset form
+    formTitle.textContent = 'Agregar Canal';
+    channelTypeInput.value = 'whatsapp';
+    channelIdentifierInput.value = '';
+    editChannelId.value = '';
+    
+    // Update placeholder based on selected channel type
+    updateIdentifierPlaceholder();
+    
+    // Show form and hide add channel button
+    formContainer.style.display = 'block';
+    addChannelBtn.style.display = 'none';
+    
+    // Hide channel list while adding
+    document.getElementById('channelListContainer').style.display = 'none';
+  }
+
+  // Function to cancel channel form
+  function cancelChannelForm() {
+    const formContainer = document.getElementById('channelFormContainer');
+    const addChannelBtn = document.getElementById('addChannelBtn');
+    
+    // Hide form and show add channel button
+    formContainer.style.display = 'none';
+    addChannelBtn.style.display = 'block';
+    
+    // Show channel list
+    document.getElementById('channelListContainer').style.display = 'block';
+  }
+
+  // Function to save channel (add or update)
+  function saveChannel() {
+    const channelTypeInput = document.getElementById('channelTypeInput');
+    const channelIdentifierInput = document.getElementById('channelIdentifierInput');
+    const editChannelId = document.getElementById('editChannelId');
+    const addChannelBtn = document.getElementById('addChannelBtn');
+    
+    // Validate input
+    if (!channelIdentifierInput.value.trim()) {
+      alert('Por favor ingresa un identificador válido.');
+      return;
+    }
+    
+    // Get available channels for the current conversation
+    if (!conversations[currentConversationId].availableChannels) {
+      conversations[currentConversationId].availableChannels = [];
+    }
+    
+    const availableChannels = conversations[currentConversationId].availableChannels;
+    
+    if (editChannelId.value) {
+      // Update existing channel
+      const channelIndex = availableChannels.findIndex(c => c.id === editChannelId.value);
+      
+      if (channelIndex !== -1) {
+        availableChannels[channelIndex] = {
+          id: editChannelId.value,
+          channel: channelTypeInput.value,
+          identifier: channelIdentifierInput.value
+        };
+      }
+    } else {
+      // Add new channel
+      const newChannelId = Date.now().toString(); // Simple ID generation
+      
+      availableChannels.push({
+        id: newChannelId,
+        channel: channelTypeInput.value,
+        identifier: channelIdentifierInput.value
+      });
+    }
+    
+    // Hide form and show add channel button
+    const formContainer = document.getElementById('channelFormContainer');
+    formContainer.style.display = 'none';
+    addChannelBtn.style.display = 'block';
+    
+    // Show channel list
+    document.getElementById('channelListContainer').style.display = 'block';
+    
+    // Refresh the channels list
+    renderAvailableChannels();
+  }
+
+  // Function to update identifier placeholder based on selected channel type
+  function updateIdentifierPlaceholder() {
+    const channelTypeInput = document.getElementById('channelTypeInput');
+    const channelIdentifierInput = document.getElementById('channelIdentifierInput');
+    
+    const config = channelConfig[channelTypeInput.value];
+    if (config && config.placeholder) {
+      channelIdentifierInput.placeholder = config.placeholder;
+    }
+  }
+
+  // Helper function to get a lighter version of a color (for background)
+  function getLightColor(hexColor) {
+    // For simple implementation, use predefined light colors
+    const lightColors = {
+      '#25D366': '#ebf8ff', // WhatsApp
+      '#0084FF': '#ebf5ff', // Messenger
+      '#E1306C': '#feebc8', // Instagram
+      '#4299E1': '#c6f6d5', // Web
+      '#0088cc': '#e6f7ff', // Telegram
+      '#1DA1F2': '#ebf8ff',  // Twitter
+      '#718096': '#f7fafc'   // Email
+    };
+    
+    return lightColors[hexColor] || '#f7fafc';
+  }
+
+  // Get all navigation items
+  const navItems = document.querySelectorAll('.nav-item');
+  const contentPages = document.querySelectorAll('.content-page');
+  
+  // Show the inbox page by default
+  inboxPage.style.display = 'block';
+  
+  // Add click event to each navigation item
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Redirect to index.html
+      window.location.href = `${item.getAttribute(`data-page`)}.html`;
+    });
+  });
+  // Render conversations list when page loads
+  renderConversationsList();
+  
+  // Show default conversation (Juan) on page load
+  renderConversation('juan');
+  
+  // Channel modal functionality
+  const channelModalCtn = document.getElementById('channelModalCtn');
+  const closeChannelModalBtn = document.getElementById('closeChannelModalBtn');
+  const addChannelBtn = document.getElementById('addChannelBtn');
+  const cancelChannelFormBtn = document.getElementById('cancelChannelFormBtn');
+  const saveChannelBtn = document.getElementById('saveChannelBtn');
+  const channelTypeInput = document.getElementById('channelTypeInput');
+  const changeChannelBtn = document.getElementById('changeChannelBtn');
+  
+  // Transfer modal functionality
+  const transferModalCtn = document.getElementById('transferModalCtn');
+  const closeTransferModalBtn = document.getElementById('closeTransferModalBtn');
+  const transferBtn = document.getElementById('transferBtn');
+  
+  // Suggestions modal functionality
+  const suggestionsModalCtn = document.getElementById('suggestionsModalCtn');
+  const closeSuggestionsModalBtn = document.getElementById('closeSuggestionsModalBtn');
+  const suggestionsBtn = document.getElementById('suggestionsBtn');
+  
+  // Lead details modal functionality
+  const leadDetailsModalCtn = document.getElementById('leadDetailsModalCtn');
+  const closeLeadDetailsModalBtn = document.getElementById('closeLeadDetailsModalBtn');
+  const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+
+  // Toggle channel modal visibility
+  function toggleChannelModal() {
+    if (channelModalCtn.style.display === 'none' || channelModalCtn.style.display === '') {
+      channelModalCtn.style.display = 'flex';
+      
+      // Render available channels for the current conversation
+      renderAvailableChannels();
+      
+      // Make sure form is hidden and list is visible when opening modal
+      document.getElementById('channelFormContainer').style.display = 'none';
+      document.getElementById('channelListContainer').style.display = 'block';
+      
+      // Make sure the add channel button is visible
+      addChannelBtn.style.display = 'block';
+    } else {
+      channelModalCtn.style.display = 'none';
+    }
+  }
+  
+  // Toggle transfer modal visibility
+  function toggleTransferModal() {
+    if (transferModalCtn.style.display === 'none' || transferModalCtn.style.display === '') {
+      transferModalCtn.style.display = 'flex';
+    } else {
+      transferModalCtn.style.display = 'none';
+    }
+  }
+  
+  // Toggle suggestions modal visibility
+  function toggleSuggestionsModal() {
+    if (suggestionsModalCtn.style.display === 'none' || suggestionsModalCtn.style.display === '') {
+      suggestionsModalCtn.style.display = 'flex';
+    } else {
+      suggestionsModalCtn.style.display = 'none';
+    }
+  }
+  
+  // Toggle lead details modal visibility
+  function toggleLeadDetailsModal() {
+    if (leadDetailsModalCtn.style.display === 'none' || leadDetailsModalCtn.style.display === '') {
+      leadDetailsModalCtn.style.display = 'flex';
+    } else {
+      leadDetailsModalCtn.style.display = 'none';
+    }
+  }
+
+  // Add click event to the "Cambiar canal" button
+  changeChannelBtn.addEventListener('click', toggleChannelModal);
+  
+  // Add click event to the "Transferir" button
+  transferBtn.addEventListener('click', toggleTransferModal);
+  
+  // Add click event to the "Sugerencias" button
+  suggestionsBtn.addEventListener('click', toggleSuggestionsModal);
+  
+  // Add click event to the "Ver detalle" button
+  viewDetailsBtn.addEventListener('click', toggleLeadDetailsModal);
+
+  // Close the modals when the close buttons are clicked
+  closeChannelModalBtn.addEventListener('click', toggleChannelModal);
+  closeTransferModalBtn.addEventListener('click', toggleTransferModal);
+  closeSuggestionsModalBtn.addEventListener('click', toggleSuggestionsModal);
+  closeLeadDetailsModalBtn.addEventListener('click', toggleLeadDetailsModal);
+
+  // Close the modals when clicking outside the modal content
+  channelModalCtn.addEventListener('click', function(event) {
+    if (event.target === this) {
+      toggleChannelModal();
+    }
+  });
+  
+  transferModalCtn.addEventListener('click', function(event) {
+    if (event.target === this) {
+      toggleTransferModal();
+    }
+  });
+  
+  suggestionsModalCtn.addEventListener('click', function(event) {
+    if (event.target === this) {
+      toggleSuggestionsModal();
+    }
+  });
+  
+  leadDetailsModalCtn.addEventListener('click', function(event) {
+    if (event.target === this) {
+      toggleLeadDetailsModal();
+    }
+  });
+
+  // Use suggestion functionality
+  document.querySelectorAll('.use-suggestion-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const suggestion = this.previousElementSibling.textContent;
+      document.querySelector('textarea').value = suggestion;
+      toggleSuggestionsModal();
+    });
+  });
+  
+  // Transfer to agent functionality
+  document.querySelectorAll('.transfer-to-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      if (this.textContent === 'No Disponible') return;
+      
+      const agentId = this.getAttribute('data-agent-id');
+      const agentName = this.parentElement.querySelector('div > div:first-child').textContent;
+      
+      alert(`Chat transferido a ${agentName}`);
+      toggleTransferModal();
+    });
+  });
+
+  // Add click event to "Add Channel" button
+  addChannelBtn.addEventListener('click', showAddChannelForm);
+
+  // Add click event to "Cancel" button in form
+  cancelChannelFormBtn.addEventListener('click', cancelChannelForm);
+
+  // Add click event to "Save" button in form
+  saveChannelBtn.addEventListener('click', saveChannel);
+
+  // Add change event to channel type input to update placeholder
+  channelTypeInput.addEventListener('change', updateIdentifierPlaceholder);
+</script>
+
+</body>
+</html>
