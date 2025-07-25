@@ -1,203 +1,1099 @@
 
 
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* General styles */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #333;
+      background: #f5f7fa;
+    }
+    
+    /* Flow builder specific styles */
+    .flow-section {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .flow-section:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .flow-section h4 {
+      color: #5a67d8;
+      border-bottom: 1px solid #edf2f7;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    
+    /* Form elements styling */
+    input[type="text"], 
+    input[type="datetime-local"], 
+    input[type="time"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border 0.3s ease;
+    }
+    
+    input[type="text"]:focus, 
+    input[type="datetime-local"]:focus, 
+    input[type="time"]:focus,
+    textarea:focus {
+      border-color: #5a67d8;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+    }
+    
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    /* Button styles */
+    .btn {
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-primary {
+      background: #5a67d8;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #4c51bf;
+      transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    
+    /* Checkbox and radio styles */
+    .custom-control {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    
+    .custom-control input {
+      margin-right: 10px;
+    }
+    
+    /* Animation and transitions */
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Flow list item */
+    .flow-item {
+      padding: 15px;
+      border-bottom: 1px solid #edf2f7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+    
+    .flow-item:hover {
+      background: #f8fafc;
+    }
+    
+    /* Two-column layout */
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .column {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    /* Navigation active item */
+    .nav-item.active {
+      background: #e9ecef;
+      font-weight: 500;
+    }
+    
+    /* Tabs for flow builder */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+    
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      position: relative;
+      font-weight: 500;
+    }
+    
+    .tab.active {
+      color: #5a67d8;
+    }
+    
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #5a67d8;
+    }
+    
+    /* Master prompt editor */
+    .editor-container {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .editor-toolbar {
+      background: #f8fafc;
+      padding: 10px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    /* Toggle switch for active/inactive */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: #5a67d8;
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 12px;
+    }
+    
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
-  <!-- Include Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Main container with sidebar and content area -->
-<div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
-  
-  <!-- Sidebar navigation -->
-  <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
-    <!-- Logo and brand -->
-    <div style="padding:20px; text-align:center;">
-      <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
-      <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
-    </div>
+  <!-- Main container with sidebar and content area -->
+  <div id="dashboardContainer" style="display:flex; font-family:'Segoe UI', Arial, sans-serif; color:#333; height:100vh; overflow:hidden; text-align:left;">
     
-    <!-- Navigation links -->
-    <nav>
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li class="nav-item" data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
-        </li>
-        <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
-        </li>
-        <li class="nav-item" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
-          <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
-        </li>
-        <li class="nav-item" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
-        </li><!-- 
-        <li class="nav-item" data-page="reports" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-chart-bar" style="margin-right:10px;"></i> Reportes
-        </li>
-        <li class="nav-item" data-page="appointments" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-calendar-alt" style="margin-right:10px;"></i> Citas
-        </li>
-        <li class="nav-item" data-page="campaigns" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-bullhorn" style="margin-right:10px;"></i> Campañas
-        </li>
-        <li class="nav-item" data-page="settings" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
-          <i class="fas fa-cog" style="margin-right:10px;"></i> Configuración
-        </li> -->
-      </ul>
-    </nav>
-  </div>
-  
-  <!-- Main content area -->
-  <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
-    
-    <!-- CRM Visual Page Content -->
-    <div id="crmPage" class="content-page">
-    </div>
-    
-    <!-- Automation Page Content -->
-    <div id="automationPage" class="content-page">
-      <!-- Flows List View - initially visible -->
-      <div id="flowsListView">
-        <h2>Automatizaciones</h2>
-        <button id="newFlowBtn" style="padding:8px 16px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer; margin-bottom:20px;">
-          <i class="fas fa-plus" style="margin-right:8px;"></i> Nuevo
-        </button>
-        
-        <div id="flowsList" style="border:1px solid #ddd; border-radius:5px; background:white;">
-          <!-- Empty flow list - items will be added dynamically -->
-        </div>
+    <!-- Sidebar navigation -->
+    <div id="sidebarCtn" style="width:240px; background:#f8f9fa; height:100%; border-right:1px solid #e9ecef; overflow-y:auto;">
+      <!-- Logo and brand -->
+      <div style="padding:20px; text-align:center;">
+        <h2 style="margin:0; color:#5a67d8;">Closer Digital</h2>
+        <p style="margin:5px 0 0; font-size:12px; color:#718096;">CRM Conversacional</p>
       </div>
       
-      <!-- Flow Builder View - initially hidden -->
-      <div id="flowBuilderView" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-          <div style="display:flex; align-items:center;">
-            <h2 id="flowBuilderTitle" style="margin:0;">Nuevo Flujo</h2>
-            <input id="flowNameInput" type="text" placeholder="Nombre del flujo" style="margin-left:15px; padding:8px; border:1px solid #ddd; border-radius:4px;">
+      <!-- Navigation links -->
+      <nav>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li class="nav-item" data-page="dashboard" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-home" style="margin-right:10px;"></i> Dashboard
+          </li>
+          <li class="nav-item" data-page="crm" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-user-friends" style="margin-right:10px;"></i> CRM Visual
+          </li>
+          <li class="nav-item active" data-page="automation" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer; background:#e9ecef;">
+            <i class="fas fa-robot" style="margin-right:10px;"></i> Automatizaciones
+          </li>
+          <li class="nav-item" data-page="inbox" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-inbox" style="margin-right:10px;"></i> Inbox Multicanal
+          </li><!-- 
+          <li class="nav-item" data-page="reports" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-chart-bar" style="margin-right:10px;"></i> Reportes
+          </li>
+          <li class="nav-item" data-page="appointments" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-calendar-alt" style="margin-right:10px;"></i> Citas
+          </li>
+          <li class="nav-item" data-page="campaigns" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-bullhorn" style="margin-right:10px;"></i> Campañas
+          </li>
+          <li class="nav-item" data-page="settings" style="padding:12px 20px; margin:4px 8px; border-radius:6px; cursor:pointer;">
+            <i class="fas fa-cog" style="margin-right:10px;"></i> Configuración
+          </li> -->
+        </ul>
+      </nav>
+    </div>
+    
+    <!-- Main content area -->
+    <div id="mainContentCtn" style="flex:1; height:100%; overflow-y:auto; background:#f5f7fa; padding:20px;">
+      
+      <!-- CRM Visual Page Content -->
+      <div id="crmPage" class="content-page">
+      </div>
+      
+      <!-- Automation Page Content -->
+      <div id="automationPage" class="content-page">
+        <!-- Flows List View - initially visible -->
+        <div id="flowsListView">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="margin:0;">Automatizaciones</h2>
+            <button id="newFlowBtn" class="btn btn-primary">
+              <i class="fas fa-plus"></i> Nuevo flujo
+            </button>
           </div>
-          <div style="display:flex; gap:10px;">
-            <button id="saveFlowBtn" style="padding:6px 12px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer;">
-              <i class="fas fa-save" style="margin-right:5px;"></i> Guardar
-            </button>
-            <button id="backToListBtn" style="padding:6px 12px; background:#f0f0f0; border:1px solid #ddd; border-radius:4px; cursor:pointer;">
-              <i class="fas fa-arrow-left" style="margin-right:5px;"></i> Volver
-            </button>
+          
+          <div class="flow-section">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+              <div>
+                <input type="text" placeholder="Buscar flujos..." style="width:250px; padding:8px 12px;">
+              </div>
+              <div>
+                <select style="padding:8px 12px; border:1px solid #e2e8f0; border-radius:6px;">
+                  <option>Todos los canales</option>
+                  <option>WhatsApp</option>
+                  <option>Instagram</option>
+                  <option>Messenger</option>
+                  <option>Web</option>
+                </select>
+              </div>
+            </div>
+            
+            <div id="flowsList" style="border:1px solid #edf2f7; border-radius:5px; background:white;">
+              <!-- Sample flow items - will be replaced dynamically -->
+              <div class="flow-item">
+                <div>
+                  <h4 style="margin:0; font-size:16px;">Bienvenida nuevos clientes</h4>
+                  <div style="display:flex; gap:8px; margin-top:4px;">
+                    <span style="background:#e9f7ef; color:#27ae60; padding:2px 6px; border-radius:4px; font-size:12px;">
+                      <i class="fab fa-whatsapp"></i> WhatsApp
+                    </span>
+                    <span style="background:#e3f2fd; color:#2196f3; padding:2px 6px; border-radius:4px; font-size:12px;">
+                      <i class="fab fa-instagram"></i> Instagram
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-secondary edit-flow-btn" data-flow-id="flow1" style="margin-right:5px;"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-secondary"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+              <div class="flow-item">
+                <div>
+                  <h4 style="margin:0; font-size:16px;">Recuperación carrito abandonado</h4>
+                  <div style="display:flex; gap:8px; margin-top:4px;">
+                    <span style="background:#e9f7ef; color:#27ae60; padding:2px 6px; border-radius:4px; font-size:12px;">
+                      <i class="fab fa-whatsapp"></i> WhatsApp
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-secondary edit-flow-btn" data-flow-id="flow2" style="margin-right:5px;"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-secondary"><i class="fas fa-trash-alt"></i></button>
+                </div>
+              </div>
+              <!-- End of sample items -->
+            </div>
           </div>
         </div>
         
-        <!-- Config section -->
-        <div style="padding:15px; background:white; border:1px solid #ddd; border-radius:5px;">
-          <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
+        <!-- Flow Builder View - initially hidden -->
+        <div id="flowBuilderView" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div style="display:flex; align-items:center;">
+              <button id="backToListBtn" class="btn btn-secondary" style="margin-right:15px;">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+              <h2 id="flowBuilderTitle" style="margin:0 15px 0 0;">Nuevo Flujo</h2>
+              <div class="tooltip">
+                <input id="flowNameInput" type="text" placeholder="Nombre del flujo" style="width:300px;">
+                <span class="tooltiptext">Usa un nombre descriptivo para identificar fácilmente el propósito de este flujo</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button id="previewFlowBtn" class="btn btn-secondary">
+                <i class="fas fa-eye"></i> Vista previa
+              </button>
+              <button id="saveFlowBtn" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </div>
+          
+          <!-- Tabs for flow builder -->
+          <div class="tabs">
+            <div id="configTab" class="tab active">Configuración</div>
+            <div id="triggersTab" class="tab">Disparadores</div>
+          </div>
+          
+          <!-- Config Tab Content -->
+          <div id="configTabContent">
+            <!-- Activation Status -->
+            <div class="flow-section">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0;">Estado del flujo</h4>
+                <label class="switch">
+                  <input type="checkbox" id="flowStatus" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <p style="color:#718096; margin-top:5px;">Un flujo desactivado no se ejecutará incluso si se cumplen las condiciones.</p>
+            </div>
+            
             <!-- Channels section -->
-            <div style="flex:1; min-width:200px;">
-              <h4 style="margin-top:0;">Canales de activación</h4>
-              <div style="display:flex; flex-direction:column; gap:8px;">
-                <label style="display:flex; align-items:center;">
-                  <input type="checkbox" id="whatsappChannel">
-                  <span style="margin-left:5px;">WhatsApp</span>
-                </label>
-                <label style="display:flex; align-items:center;">
-                  <input type="checkbox" id="instagramChannel">
-                  <span style="margin-left:5px;">Instagram</span>
-                </label>
-                <label style="display:flex; align-items:center;">
-                  <input type="checkbox" id="messengerChannel">
-                  <span style="margin-left:5px;">Messenger</span>
-                </label>
-                <label style="display:flex; align-items:center;">
-                  <input type="checkbox" id="webChannel">
-                  <span style="margin-left:5px;">Web</span>
-                </label>
-                <label style="display:flex; align-items:center;">
-                  <input type="checkbox" id="newsletterChannel">
-                  <span style="margin-left:5px;">Suscripción a Newsletter</span>
-                </label>
+            <div class="flow-section">
+              <h4>Canales de activación</h4>
+              <p style="color:#718096; margin-bottom:15px;">Selecciona los canales donde este flujo estará activo.</p>
+              
+              <div class="columns">
+                <div class="column">
+                  <label class="custom-control">
+                    <input type="checkbox" id="whatsappChannel">
+                    <div>
+                      <div style="display:flex; align-items:center;">
+                        <i class="fab fa-whatsapp" style="color:#25D366; margin-right:8px;"></i>
+                        <span style="font-weight:500;">WhatsApp</span>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:2px;">Activar para conversaciones de WhatsApp</span>
+                    </div>
+                  </label>
+                  
+                  <label class="custom-control">
+                    <input type="checkbox" id="instagramChannel">
+                    <div>
+                      <div style="display:flex; align-items:center;">
+                        <i class="fab fa-instagram" style="color:#E1306C; margin-right:8px;"></i>
+                        <span style="font-weight:500;">Instagram</span>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:2px;">Activar para mensajes de Instagram</span>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="column">
+                  <label class="custom-control">
+                    <input type="checkbox" id="messengerChannel">
+                    <div>
+                      <div style="display:flex; align-items:center;">
+                        <i class="fab fa-facebook-messenger" style="color:#0084FF; margin-right:8px;"></i>
+                        <span style="font-weight:500;">Messenger</span>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:2px;">Activar para mensajes de Facebook</span>
+                    </div>
+                  </label>
+                  
+                  <label class="custom-control">
+                    <input type="checkbox" id="webChannel">
+                    <div>
+                      <div style="display:flex; align-items:center;">
+                        <i class="fas fa-globe" style="color:#4a5568; margin-right:8px;"></i>
+                        <span style="font-weight:500;">Web</span>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:2px;">Activar para chat web y formularios</span>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="column">
+                  <label class="custom-control">
+                    <input type="checkbox" id="newsletterChannel">
+                    <div>
+                      <div style="display:flex; align-items:center;">
+                        <i class="fas fa-envelope" style="color:#4a5568; margin-right:8px;"></i>
+                        <span style="font-weight:500;">Newsletter</span>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:2px;">Activar para suscripciones a newsletter</span>
+                    </div>
+                  </label>
+                </div>
               </div>
             </div>
             
             <!-- Flow Activation section -->
-            <div style="flex:1; min-width:200px;">
-              <h4 style="margin-top:0;">Periodo de activación</h4>
-              <div style="display:flex; flex-direction:column; gap:8px;">
-                <label style="display:flex; align-items:center;">
-                  <input type="radio" name="activationPeriod" id="alwaysActive" checked>
-                  <span style="margin-left:5px;">Siempre activo</span>
-                </label>
-                <label style="display:flex; align-items:center;">
-                  <input type="radio" name="activationPeriod" id="periodActive">
-                  <span style="margin-left:5px;">Activo durante un periodo</span>
-                </label>
-                <div id="periodSelectionCtn" style="margin-left:20px; display:none;">
-                  <div style="margin-bottom:8px;">
-                    <label style="display:block; margin-bottom:5px;">Fecha de inicio:</label>
-                    <input type="datetime-local" id="startDateInput" style="padding:6px; border:1px solid #ddd; border-radius:4px;">
+            <div class="flow-section">
+              <h4>Periodo de activación</h4>
+              <p style="color:#718096; margin-bottom:15px;">Define cuándo estará activo este flujo.</p>
+              
+              <div class="columns">
+                <div class="column">
+                  <label class="custom-control">
+                    <input type="radio" name="activationPeriod" id="alwaysActive" checked>
+                    <div>
+                      <span style="font-weight:500;">Siempre activo</span>
+                      <span style="display:block; font-size:12px; color:#718096;">El flujo se ejecutará en cualquier momento</span>
+                    </div>
+                  </label>
+                  
+                  <label class="custom-control">
+                    <input type="radio" name="activationPeriod" id="periodActive">
+                    <div>
+                      <span style="font-weight:500;">Activo durante un periodo</span>
+                      <span style="display:block; font-size:12px; color:#718096;">Define un rango de fechas para la activación</span>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="column">
+                  <div id="periodSelectionCtn" style="margin-left:20px; display:none;" class="fade-in">
+                    <div style="margin-bottom:12px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Fecha de inicio:</label>
+                      <input type="datetime-local" id="startDateInput">
+                    </div>
+                    <div>
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Fecha de fin:</label>
+                      <input type="datetime-local" id="endDateInput">
+                    </div>
                   </div>
-                  <div>
-                    <label style="display:block; margin-bottom:5px;">Fecha de fin:</label>
-                    <input type="datetime-local" id="endDateInput" style="padding:6px; border:1px solid #ddd; border-radius:4px;">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Working Hours section -->
+            <div class="flow-section">
+              <h4>Horario de trabajo</h4>
+              <p style="color:#718096; margin-bottom:15px;">Define los horarios en los que el flujo estará activo.</p>
+              
+              <div class="columns">
+                <div class="column">
+                  <label class="custom-control">
+                    <input type="checkbox" id="useWorkingHours">
+                    <div>
+                      <span style="font-weight:500;">Usar horario de trabajo</span>
+                      <span style="display:block; font-size:12px; color:#718096;">El flujo solo se activará durante el horario configurado</span>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="column">
+                  <div id="workingHoursCtn" style="margin-left:0px; display:none;" class="fade-in">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Días de trabajo:</label>
+                      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workMonday" checked>
+                          <span>Lunes</span>
+                        </label>
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workTuesday" checked>
+                          <span>Martes</span>
+                        </label>
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workWednesday" checked>
+                          <span>Miércoles</span>
+                        </label>
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workThursday" checked>
+                          <span>Jueves</span>
+                        </label>
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workFriday" checked>
+                          <span>Viernes</span>
+                        </label>
+                        <label class="custom-control" style="margin-right:10px;">
+                          <input type="checkbox" id="workSaturday">
+                          <span>Sábado</span>
+                        </label>
+                        <label class="custom-control">
+                          <input type="checkbox" id="workSunday">
+                          <span>Domingo</span>
+                        </label>
+                      </div>
+                    </div>
+                    
+                    <div style="display:flex; gap:20px;">
+                      <div style="flex:1;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Hora de inicio:</label>
+                        <input type="time" id="workStartTime" value="08:00">
+                      </div>
+                      <div style="flex:1;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Hora de fin:</label>
+                        <input type="time" id="workEndTime" value="18:00">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Master Prompt section -->
+            <div class="flow-section">
+              <h4>Configurador de Prompt Maestro</h4>
+              <p style="color:#718096; margin-bottom:15px;">Define el comportamiento y personalidad de tu asistente.</p>
+              
+              <div class="columns">
+                <div class="column">
+                  <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:500;">Nombre del asistente:</label>
+                    <input type="text" id="briefName" placeholder="Ej. Bia">
+                  </div>
+                  
+                  <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:500;">Empresa o marca:</label>
+                    <input type="text" id="briefCompany" placeholder="Ej. Bieni Médico">
+                  </div>
+                  
+                  <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:500;">Público objetivo:</label>
+                    <input type="text" id="briefAudience" placeholder="Ej. Médicos, clínicas, centros de salud">
+                  </div>
+                </div>
+                
+                <div class="column">
+                  <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:500;">Dolores principales del cliente:</label>
+                    <textarea id="briefPains" placeholder="Ej. pérdida de tiempo, desorden clínico, desgaste post-consulta"></textarea>
+                  </div>
+                  
+                  <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:5px; font-weight:500;">Objetivo del asistente:</label>
+                    <input type="text" id="briefGoal" placeholder="Ej. Implementar Bieni Médico por 30 días sin costo">
+                  </div>
+                </div>
+              </div>
+              
+              <button id="generatePromptBtn" class="btn btn-primary" style="margin-top:10px;">
+                <i class="fas fa-magic"></i> Generar prompt automáticamente
+              </button>
+              
+              <!-- Prompt editor -->
+              <div style="margin-top:20px;">
+                <div class="editor-container">
+                  <div class="editor-toolbar">
+                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;"><i class="fas fa-bold"></i></button>
+                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;"><i class="fas fa-italic"></i></button>
+                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;"><i class="fas fa-list"></i></button>
+                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;"><i class="fas fa-link"></i></button>
+                  </div>
+                  <textarea id="masterPromptInput" style="width:100%; padding:15px; height:250px; border:none; resize:vertical; font-family:inherit;"></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                  <div class="tooltip">
+                    <button class="btn btn-secondary" style="padding:5px 10px; font-size:12px;"><i class="fas fa-question-circle"></i> Guía de prompting</button>
+                    <span class="tooltiptext">Aprende a crear prompts efectivos para mejorar las respuestas de tu asistente</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- Master Prompt section -->
-          <div style="margin-top:20px;">
-            <h4 style="margin-top:0;">Prompt Maestro</h4>
-            <p style="margin-top:5px; font-size:0.9em; color:#666;">Define un prompt completo con todas las instrucciones necesarias para que la IA sepa exactamente qué hacer y cómo interactuar con tus usuarios.</p>
-            
-            <div style="margin-bottom:15px;">
-              <label style="display:block; margin-bottom:5px;">Objetivo principal:</label>
-              <select id="objectiveTypeSelect" style="width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; margin-bottom:10px;">
-                <option value="">Selecciona un objetivo</option>
-                <option value="sales">Venta de productos</option>
-                <option value="support">Atención al cliente</option>
-                <option value="lead">Generación de leads</option>
-                <option value="info">Información / FAQ</option>
-                <option value="appointment">Reserva de citas</option>
-                <option value="feedback">Encuestas / Feedback</option>
-              </select>
+          <!-- Triggers Tab Content - Initially Hidden -->
+          <div id="triggersTabContent" style="display:none;">
+            <div class="flow-section">
+              <h4>Configuración de disparadores</h4>
+              <p style="color:#718096; margin-bottom:15px;">Define cuándo se iniciará este flujo.</p>
               
-              <label style="display:block; margin-bottom:5px;">Prompt maestro:</label>
-              <textarea id="masterPromptInput" placeholder="Escribe un prompt detallado con todas las instrucciones que el bot necesita para cumplir el objetivo..." style="width:100%; padding:12px; height:250px; border:1px solid #ddd; border-radius:4px; resize:vertical; font-family:inherit;"></textarea>
-              <p style="margin-top:8px; font-size:0.9em; color:#666;">Incluye detalles sobre el tono, personalidad, información específica de productos/servicios, pasos a seguir, cómo manejar preguntas comunes, límites de lo que el bot puede hacer, etc.</p>
-            </div>
-            
-            <!-- Prompt suggestions based on objective -->
-            <div id="promptSuggestionsCtn" style="margin-top:15px; padding:12px; background:#f8f9fa; border:1px solid #ddd; border-radius:4px; display:none;">
-              <h5 style="margin-top:0; margin-bottom:10px;">Sugerencias para tu prompt:</h5>
-              <div id="promptSuggestions" style="font-size:0.9em;"></div>
-              <button id="insertSuggestionBtn" style="margin-top:10px; padding:6px 12px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer;">
-                <i class="fas fa-plus" style="margin-right:5px;"></i> Insertar en prompt
-              </button>
-            </div>
-            
-            <!-- AI Test section -->
-            <div style="margin-top:20px;">
-              <h5 style="margin-bottom:10px;">Probar el prompt</h5>
-              <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input id="testMessageInput" placeholder="Escribe un mensaje de prueba..." style="flex:1; padding:8px; border:1px solid #ddd; border-radius:4px;">
-                <button id="testPromptBtn" style="padding:8px 16px; background:#5a67d8; color:white; border:none; border-radius:4px; cursor:pointer;">
-                  <i class="fas fa-vial" style="margin-right:5px;"></i> Probar
-                </button>
+              <!-- Triggers content example -->
+              <div class="columns">
+                <div class="column">
+                  <div style="margin-bottom:20px;">
+                    <label style="display:block; margin-bottom:10px; font-weight:500;">Tipo de disparador:</label>
+                    <select id="triggerTypeSelect" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                      <option value="message_received">Mensaje recibido</option>
+                      <option value="contact_created">Contacto creado</option>
+                      <option value="tag_added">Etiqueta añadida</option>
+                      <option value="form_submitted">Formulario enviado</option>
+                      <option value="scheduled">Programado</option>
+                      <option value="api_webhook">API / Webhook</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div id="testResultCtn" style="display:none; padding:12px; border:1px solid #ddd; border-radius:4px; background:white; margin-top:10px;">
-                <h6 style="margin-top:0; margin-bottom:8px;">Respuesta del bot:</h6>
-                <div id="testResultContent" style="font-size:0.9em; white-space:pre-wrap;"></div>
+              
+              <!-- Message Received Trigger -->
+              <div id="message_received_config" class="trigger-config fade-in">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: Mensaje recibido</h5>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label class="custom-control">
+                        <input type="checkbox" id="triggerOnFirstMessage" checked>
+                        <div>
+                          <span style="font-weight:500;">Solo en primer mensaje</span>
+                          <span style="display:block; font-size:12px; color:#718096;">Activar solo cuando el contacto envía su primer mensaje</span>
+                        </div>
+                      </label>
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Palabras clave (opcional):</label>
+                      <input type="text" id="keywordsInput" placeholder="Ej. hola, información, precio">
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">Separa las palabras con comas. El flujo se activará si el mensaje contiene alguna de estas palabras.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Contact Created Trigger -->
+              <div id="contact_created_config" class="trigger-config fade-in" style="display:none;">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: Contacto creado</h5>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Origen del contacto:</label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="contactOriginWhatsapp" checked>
+                        <div>
+                          <span style="font-weight:500;">WhatsApp</span>
+                        </div>
+                      </label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="contactOriginInstagram" checked>
+                        <div>
+                          <span style="font-weight:500;">Instagram</span>
+                        </div>
+                      </label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="contactOriginWeb" checked>
+                        <div>
+                          <span style="font-weight:500;">Formulario Web</span>
+                        </div>
+                      </label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="contactOriginManual">
+                        <div>
+                          <span style="font-weight:500;">Creado manualmente</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Demora en la activación:</label>
+                      <div style="display:flex; align-items:center; gap:10px;">
+                        <input type="number" id="contactCreatedDelay" value="0" min="0" style="width:80px; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                        <select id="contactCreatedDelayUnit" style="padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                          <option value="minutes">Minutos</option>
+                          <option value="hours">Horas</option>
+                          <option value="days">Días</option>
+                        </select>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">Esperar este tiempo después de la creación del contacto antes de activar el flujo.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Tag Added Trigger -->
+              <div id="tag_added_config" class="trigger-config fade-in" style="display:none;">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: Etiqueta añadida</h5>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Selecciona las etiquetas:</label>
+                      <div style="border:1px solid #e2e8f0; border-radius:6px; max-height:200px; overflow-y:auto; padding:10px;">
+                        <label class="custom-control">
+                          <input type="checkbox" id="tagInterested">
+                          <div>
+                            <span style="font-weight:500;">Interesado</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="tagLeadQualified">
+                          <div>
+                            <span style="font-weight:500;">Lead calificado</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="tagPending">
+                          <div>
+                            <span style="font-weight:500;">Pendiente</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="tagAbandonedCart">
+                          <div>
+                            <span style="font-weight:500;">Carrito abandonado</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="tagNewClient">
+                          <div>
+                            <span style="font-weight:500;">Nuevo cliente</span>
+                          </div>
+                        </label>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">El flujo se activará cuando cualquiera de estas etiquetas sea añadida a un contacto.</span>
+                    </div>
+                  </div>
+                  
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Opciones adicionales:</label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="tagAddedManualOnly">
+                        <div>
+                          <span style="font-weight:500;">Solo etiquetas añadidas manualmente</span>
+                          <span style="display:block; font-size:12px; color:#718096;">No activar si la etiqueta fue añadida por otro flujo</span>
+                        </div>
+                      </label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="tagRunOnce" checked>
+                        <div>
+                          <span style="font-weight:500;">Ejecutar solo una vez por contacto</span>
+                          <span style="display:block; font-size:12px; color:#718096;">Evita ejecutar este flujo múltiples veces para el mismo contacto</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Form Submitted Trigger -->
+              <div id="form_submitted_config" class="trigger-config fade-in" style="display:none;">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: Formulario enviado</h5>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Selecciona los formularios:</label>
+                      <div style="border:1px solid #e2e8f0; border-radius:6px; max-height:200px; overflow-y:auto; padding:10px;">
+                        <label class="custom-control">
+                          <input type="checkbox" id="formContact" checked>
+                          <div>
+                            <span style="font-weight:500;">Formulario de contacto</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="formNewsletter">
+                          <div>
+                            <span style="font-weight:500;">Suscripción newsletter</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="formCheckout">
+                          <div>
+                            <span style="font-weight:500;">Checkout</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="checkbox" id="formDemo">
+                          <div>
+                            <span style="font-weight:500;">Solicitud de demo</span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Campo requerido (opcional):</label>
+                      <select id="formRequiredField" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                        <option value="">Ninguno</option>
+                        <option value="phone">Teléfono</option>
+                        <option value="email">Email</option>
+                        <option value="company">Empresa</option>
+                      </select>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">El flujo solo se activará si este campo fue completado en el formulario.</span>
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                      <label class="custom-control">
+                        <input type="checkbox" id="formCreateContact" checked>
+                        <div>
+                          <span style="font-weight:500;">Crear contacto automáticamente</span>
+                          <span style="display:block; font-size:12px; color:#718096;">Crea un nuevo contacto en el CRM cuando se envía el formulario</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Scheduled Trigger -->
+              <div id="scheduled_config" class="trigger-config fade-in" style="display:none;">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: Programado</h5>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Tipo de programación:</label>
+                      <div>
+                        <label class="custom-control">
+                          <input type="radio" name="scheduleType" id="scheduleOneTime" checked>
+                          <div>
+                            <span style="font-weight:500;">Una sola vez</span>
+                          </div>
+                        </label>
+                        
+                        <label class="custom-control">
+                          <input type="radio" name="scheduleType" id="scheduleRecurring">
+                          <div>
+                            <span style="font-weight:500;">Recurrente</span>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                    
+                    <div id="oneTimeScheduleCtn">
+                      <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Fecha y hora:</label>
+                        <input type="datetime-local" id="scheduledDateTime" style="width:100%;">
+                      </div>
+                    </div>
+                    
+                    <div id="recurringScheduleCtn" style="display:none;">
+                      <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Frecuencia:</label>
+                        <select id="recurringFrequency" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                          <option value="daily">Diaria</option>
+                          <option value="weekly">Semanal</option>
+                          <option value="monthly">Mensual</option>
+                        </select>
+                      </div>
+                      
+                      <div id="weeklyOptions" style="margin-bottom:15px; display:none;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Días de la semana:</label>
+                        <div style="display:flex; flex-wrap:wrap; gap:5px;">
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Lun
+                          </label>
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Mar
+                          </label>
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Mié
+                          </label>
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Jue
+                          </label>
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Vie
+                          </label>
+                          <label style="display:flex; align-items:center; margin-right:10px;">
+                            <input type="checkbox" style="margin-right:5px;"> Sáb
+                          </label>
+                          <label style="display:flex; align-items:center;">
+                            <input type="checkbox" style="margin-right:5px;"> Dom
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div style="margin-bottom:15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:500;">Hora del día:</label>
+                        <input type="time" id="scheduledTime" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Segmento de contactos (opcional):</label>
+                      <select id="scheduledSegment" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                        <option value="">Todos los contactos</option>
+                        <option value="inactive">Inactivos (+30 días)</option>
+                        <option value="no_purchase">Sin compras</option>
+                        <option value="new">Nuevos (últimos 7 días)</option>
+                        <option value="high_value">Alto valor</option>
+                      </select>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">El flujo se ejecutará solo para los contactos en este segmento.</span>
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Zona horaria:</label>
+                      <select id="scheduledTimezone" style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:6px;">
+                        <option value="America/Panama">Panamá (UTC-5)</option>
+                        <option value="America/Mexico_City">Ciudad de México (UTC-6)</option>
+                        <option value="America/Bogota">Bogotá (UTC-5)</option>
+                        <option value="America/Santiago">Santiago (UTC-4)</option>
+                        <option value="Europe/Madrid">Madrid (UTC+1)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- API/Webhook Trigger -->
+              <div id="api_webhook_config" class="trigger-config fade-in" style="display:none;">
+                <h5 style="color:#4a5568; margin-top:0;">Configuración del disparador: API / Webhook</h5>
+                
+                <div style="margin-bottom:20px;">
+                  <p style="color:#718096; margin-bottom:15px;">Este flujo puede ser iniciado a través de una llamada a la API o webhook.</p>
+                  
+                  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:15px; font-family:monospace; margin-bottom:15px; overflow-x:auto;">
+                    <div style="margin-bottom:10px; font-weight:bold;">URL del Webhook:</div>
+                    <code style="display:block; margin-bottom:15px;">https://api.closer.digital/webhook/flow/5f8d43a1b2e3c42a9f8d7e6b</code>
+                    
+                    <div style="margin-bottom:10px; font-weight:bold;">Ejemplo de JSON:</div>
+<pre style="margin:0;">{
+  "contact_id": "c123456789",
+  "data": {
+    "name": "Juan Pérez",
+    "email": "juan@ejemplo.com",
+    "custom_field": "valor personalizado"
+  }
+}</pre>
+                  </div>
+                </div>
+                
+                <div class="columns">
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Campos requeridos:</label>
+                      <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                          <input type="text" placeholder="Nombre del campo" style="flex:1;">
+                          <button class="btn btn-secondary" style="padding:8px; font-size:12px;"><i class="fas fa-plus"></i></button>
+                        </div>
+                        
+                        <div style="display:flex; align-items:center; gap:10px;">
+                          <input type="text" value="email" style="flex:1;" readonly>
+                          <button class="btn btn-secondary" style="padding:8px; font-size:12px;"><i class="fas fa-trash"></i></button>
+                        </div>
+                        
+                        <div style="display:flex; align-items:center; gap:10px;">
+                          <input type="text" value="name" style="flex:1;" readonly>
+                          <button class="btn btn-secondary" style="padding:8px; font-size:12px;"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <span style="display:block; font-size:12px; color:#718096; margin-top:3px;">El webhook fallará si falta alguno de estos campos.</span>
+                    </div>
+                  </div>
+                  
+                  <div class="column">
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Opciones de seguridad:</label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="webhookRequireKey" checked>
+                        <div>
+                          <span style="font-weight:500;">Requerir clave API</span>
+                          <span style="display:block; font-size:12px; color:#718096;">Exigir una clave API válida para las solicitudes</span>
+                        </div>
+                      </label>
+                      
+                      <label class="custom-control">
+                        <input type="checkbox" id="webhookLogRequests">
+                        <div>
+                          <span style="font-weight:500;">Registrar todas las solicitudes</span>
+                          <span style="display:block; font-size:12px; color:#718096;">Guardar un registro de todas las llamadas a este webhook</span>
+                        </div>
+                      </label>
+                    </div>
+                    
+                    <div style="margin-bottom:15px;">
+                      <label style="display:block; margin-bottom:5px; font-weight:500;">Respuesta de error personalizada:</label>
+                      <textarea id="webhookErrorResponse" placeholder="Mensaje de error personalizado" style="height:80px;"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="margin-top:20px; text-align:right;">
+                <button class="btn btn-primary" id="saveTriggerBtn">
+                  <i class="fas fa-save"></i> Guardar configuración
+                </button>
               </div>
             </div>
           </div>
@@ -205,250 +1101,387 @@
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  const navItems = document.querySelectorAll('.nav-item');
+  <script>
+    const navItems = document.querySelectorAll('.nav-item');
 
-  navItems.forEach(item => {
-    item.addEventListener('click', function() {
-      window.location.href = `${item.getAttribute(`data-page`)}.html`;
+    navItems.forEach(item => {
+      item.addEventListener('click', function() {
+        window.location.href = `${item.getAttribute(`data-page`)}.html`;
+      });
     });
-  });
 
-  // UI Management
-  document.getElementById('newFlowBtn').addEventListener('click', function() {
-    showFlowBuilder('Nuevo Flujo');
-  });
-  
-  document.getElementById('backToListBtn').addEventListener('click', function() {
-    hideFlowBuilder();
-  });
-  
-  document.getElementById('saveFlowBtn').addEventListener('click', function() {
-    saveFlow();
-  });
-  
-  function showFlowBuilder(title, flowId) {
-    document.getElementById('flowsListView').style.display = 'none';
-    document.getElementById('flowBuilderView').style.display = 'block';
-    document.getElementById('flowBuilderTitle').textContent = title;
-    document.getElementById('flowNameInput').value = title.startsWith('Editar: ') ? title.substring(8) : '';
-  }
-  
-  function hideFlowBuilder() {
-    document.getElementById('flowBuilderView').style.display = 'none';
-    document.getElementById('flowsListView').style.display = 'block';
-  }
-  
-  function saveFlow() {
-    const flowName = document.getElementById('flowNameInput').value.trim();
-    if (!flowName) {
-      alert('Por favor, ingresa un nombre para el flujo.');
-      return;
-    }
+    // UI Management
+    document.getElementById('newFlowBtn').addEventListener('click', function() {
+      showFlowBuilder('Nuevo Flujo');
+    });
     
-    // Get channel configuration
-    const flowConfig = {
-      channels: {
-        whatsapp: document.getElementById('whatsappChannel').checked,
-        instagram: document.getElementById('instagramChannel').checked,
-        messenger: document.getElementById('messengerChannel').checked,
-        web: document.getElementById('webChannel').checked,
-        newsletter: document.getElementById('newsletterChannel').checked
-      },
-      activation: {
-        always: document.getElementById('alwaysActive').checked,
-        period: document.getElementById('periodActive').checked,
-        startDate: document.getElementById('startDateInput').value,
-        endDate: document.getElementById('endDateInput').value
-      },
-      objective: {
-        type: document.getElementById('objectiveTypeSelect').value,
-        masterPrompt: document.getElementById('masterPromptInput').value
+    document.getElementById('backToListBtn').addEventListener('click', function() {
+      if (hasUnsavedChanges()) {
+        if (confirm('Tienes cambios sin guardar. ¿Estás seguro de querer salir?')) {
+          hideFlowBuilder();
+        }
+      } else {
+        hideFlowBuilder();
       }
-    };
+    });
     
-    // Create flow data
-    const flowData = {
-      name: flowName,
-      config: flowConfig
-    };
+    document.getElementById('saveFlowBtn').addEventListener('click', function() {
+      saveFlow();
+    });
     
-    console.log('Saving flow:', flowData);
+    // Tab navigation
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = [
+      document.getElementById('configTabContent'),
+      document.getElementById('triggersTabContent')
+    ];
     
-    // Here you would send the flow data to your backend
-    // For now, just show a success message
-    alert(`Flujo "${flowName}" guardado con éxito.`);
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Hide all tab contents
+        tabContents.forEach(content => {
+          content.style.display = 'none';
+        });
+        
+        // Show corresponding tab content
+        tabContents[index].style.display = 'block';
+      });
+    });
     
-    hideFlowBuilder();
-  }
-
-  // Prompt suggestions based on objective type
-  document.getElementById('objectiveTypeSelect').addEventListener('change', function() {
-    const objectiveType = this.value;
-    const suggestionsCtn = document.getElementById('promptSuggestionsCtn');
-    const suggestionsContent = document.getElementById('promptSuggestions');
-    
-    if (!objectiveType) {
-      suggestionsCtn.style.display = 'none';
-      return;
-    }
-    
-    let suggestions = '';
-    switch(objectiveType) {
-      case 'sales':
-        suggestions = `
-          <p>- Eres un asistente de ventas para [nombre de la empresa] especializado en ayudar a los clientes a encontrar el producto perfecto.</p>
-          <p>- Tu objetivo es guiar al cliente hacia la compra de manera natural, respondiendo a sus preguntas y ofreciendo alternativas cuando sea necesario.</p>
-          <p>- Los productos disponibles son: [lista de productos con sus características y precios]</p>
-          <p>- Si el cliente muestra interés en un producto específico, pregunta si desea proceder con la compra.</p>
-          <p>- Si el cliente solicita información que no tienes, ofrece conectarlo con un representante humano.</p>
-        `;
-        break;
-      case 'support':
-        suggestions = `
-          <p>- Eres un asistente de soporte técnico para [nombre de la empresa] especializado en resolver problemas de los clientes.</p>
-          <p>- Primero intenta entender exactamente cuál es el problema del cliente haciendo preguntas específicas.</p>
-          <p>- Las categorías comunes de problemas incluyen: [lista de categorías]</p>
-          <p>- Para problemas técnicos comunes, sigue estos pasos de solución: [pasos de troubleshooting]</p>
-          <p>- Si no puedes resolver el problema después de intentar las soluciones estándar, ofrece escalar el caso a un técnico especializado.</p>
-        `;
-        break;
-      case 'lead':
-        suggestions = `
-          <p>- Eres un asistente virtual de [nombre de la empresa] cuyo objetivo es calificar leads potenciales.</p>
-          <p>- Debes recopilar la siguiente información: nombre, correo electrónico, teléfono, empresa, presupuesto estimado y timeline del proyecto.</p>
-          <p>- Haz las preguntas de manera conversacional, no todas a la vez.</p>
-          <p>- Explica brevemente los servicios/productos que ofrece la empresa: [descripción de servicios]</p>
-          <p>- Al finalizar la recopilación de datos, agradece al usuario y explica que un representante se pondrá en contacto pronto.</p>
-        `;
-        break;
-      case 'info':
-        suggestions = `
-          <p>- Eres un asistente informativo de [nombre de la empresa] especializado en responder preguntas sobre nuestros productos y servicios.</p>
-          <p>- La información que puedes proporcionar incluye: horarios de atención, ubicaciones, servicios disponibles, precios, y políticas de la empresa.</p>
-          <p>- Datos específicos importantes: [lista de datos clave como horarios, direcciones, etc.]</p>
-          <p>- Si te preguntan sobre algo que no está en tu base de conocimientos, ofrece tomar sus datos para que un representante pueda contactarlos con la información.</p>
-        `;
-        break;
-      case 'appointment':
-        suggestions = `
-          <p>- Eres un asistente de reservas para [nombre de la empresa] encargado de ayudar a los clientes a programar citas.</p>
-          <p>- Los tipos de servicios disponibles para reservar son: [lista de servicios]</p>
-          <p>- Horarios disponibles: [detalle de horarios]</p>
-          <p>- Solicita la siguiente información para completar la reserva: nombre completo, teléfono, tipo de servicio, fecha y hora preferida.</p>
-          <p>- Una vez confirmada la cita, proporciona un resumen de la reserva y explica la política de cancelación.</p>
-        `;
-        break;
-      case 'feedback':
-        suggestions = `
-          <p>- Eres un asistente de [nombre de la empresa] encargado de recopilar feedback de los clientes sobre nuestros productos/servicios.</p>
-          <p>- Haz preguntas específicas sobre: calidad del producto/servicio, atención al cliente, facilidad de uso, y sugerencias de mejora.</p>
-          <p>- Mantén un tono conversacional y amigable, agradeciendo siempre por los comentarios recibidos.</p>
-          <p>- Si el cliente menciona algún problema, muestra empatía y pregunta por más detalles para entender mejor la situación.</p>
-          <p>- Al finalizar, agradece al cliente por su tiempo y explica cómo su feedback ayudará a mejorar.</p>
-        `;
-        break;
-    }
-    
-    suggestionsContent.innerHTML = suggestions;
-    suggestionsCtn.style.display = 'block';
-  });
-  
-  // Insert suggestion into master prompt
-  document.getElementById('insertSuggestionBtn').addEventListener('click', function() {
-    const masterPromptInput = document.getElementById('masterPromptInput');
-    const suggestions = document.getElementById('promptSuggestions').innerText;
-    
-    // Insert at cursor position or append to end
-    if (masterPromptInput.selectionStart || masterPromptInput.selectionStart === 0) {
-      const startPos = masterPromptInput.selectionStart;
-      const endPos = masterPromptInput.selectionEnd;
+    function showFlowBuilder(title, flowId) {
+      document.getElementById('flowsListView').style.display = 'none';
+      document.getElementById('flowBuilderView').style.display = 'block';
+      document.getElementById('flowBuilderTitle').textContent = title;
+      document.getElementById('flowNameInput').value = title.startsWith('Editar: ') ? title.substring(8) : '';
       
-      masterPromptInput.value = masterPromptInput.value.substring(0, startPos) + 
-                              suggestions + 
-                              masterPromptInput.value.substring(endPos, masterPromptInput.value.length);
-      
-      masterPromptInput.focus();
-      masterPromptInput.selectionStart = startPos + suggestions.length;
-      masterPromptInput.selectionEnd = startPos + suggestions.length;
-    } else {
-      masterPromptInput.value += suggestions;
-    }
-  });
-  
-  // Test prompt functionality
-  document.getElementById('testPromptBtn').addEventListener('click', async function() {
-    const testMessage = document.getElementById('testMessageInput').value.trim();
-    const masterPrompt = document.getElementById('masterPromptInput').value.trim();
-    const objectiveType = document.getElementById('objectiveTypeSelect').value;
-    
-    if (!testMessage) {
-      alert('Por favor, escribe un mensaje de prueba.');
-      return;
-    }
-    
-    if (!masterPrompt) {
-      alert('Por favor, escribe un prompt maestro para probar.');
-      return;
-    }
-    
-    // Show loading state
-    const testBtn = document.getElementById('testPromptBtn');
-    const originalBtnText = testBtn.innerHTML;
-    testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
-    testBtn.disabled = true;
-    
-    // Here you would normally call your AI service with the prompt and test message
-    // For this example, we'll simulate a response after a delay
-    setTimeout(() => {
-      const resultCtn = document.getElementById('testResultCtn');
-      const resultContent = document.getElementById('testResultContent');
-      
-      // Generate a mock response based on the objective type
-      let response = '';
-      switch(objectiveType) {
-        case 'sales':
-          response = `¡Hola! Gracias por tu interés en nuestros productos. ${testMessage.includes('precio') ? 'El precio de ese producto es $99.99. ¿Te gustaría proceder con la compra?' : '¿Puedo ayudarte a encontrar algún producto específico hoy?'}`;
-          break;
-        case 'support':
-          response = `Entiendo que estás experimentando un problema. ${testMessage.includes('error') ? 'Para solucionar ese error, primero intenta reiniciar el dispositivo. Si el problema persiste, podemos revisar más a fondo.' : '¿Podrías darme más detalles sobre el problema que estás teniendo?'}`;
-          break;
-        case 'lead':
-          response = `Gracias por tu interés en nuestros servicios. ${testMessage.includes('nombre') ? 'He registrado tu nombre. ¿Podrías también compartir tu correo electrónico para que podamos enviarte información adicional?' : '¿Podrías compartir tu nombre para comenzar?'}`;
-          break;
-        case 'info':
-          response = `${testMessage.includes('horario') ? 'Nuestro horario de atención es de lunes a viernes de 9:00 a 18:00 y sábados de 10:00 a 14:00.' : '¿Qué información específica estás buscando sobre nuestra empresa?'}`;
-          break;
-        case 'appointment':
-          response = `${testMessage.includes('cita') ? 'Para agendar una cita, necesitaría saber qué día y hora te gustaría reservar. Tenemos disponibilidad los martes y jueves por la tarde.' : '¿Te gustaría agendar una cita con nosotros?'}`;
-          break;
-        case 'feedback':
-          response = `Agradecemos mucho tu feedback. ${testMessage.includes('mejorar') ? 'Tus sugerencias son muy valiosas para mejorar nuestro servicio. ¿Hay algo específico que crees que podríamos hacer mejor?' : '¿Cómo calificarías tu experiencia con nuestro producto/servicio?'}`;
-          break;
-        default:
-          response = `Gracias por tu mensaje: "${testMessage}". Como asistente virtual, estoy aquí para ayudarte con cualquier pregunta o solicitud que tengas.`;
+      // Reset form to default values when creating a new flow
+      if (!flowId) {
+        resetForm();
       }
       
-      resultContent.textContent = response;
-      resultCtn.style.display = 'block';
+      // Ensure first tab is active
+      tabs[0].click();
+    }
+    
+    function hideFlowBuilder() {
+      document.getElementById('flowBuilderView').style.display = 'none';
+      document.getElementById('flowsListView').style.display = 'block';
+    }
+    
+    function resetForm() {
+      // Reset checkboxes
+      document.getElementById('whatsappChannel').checked = false;
+      document.getElementById('instagramChannel').checked = false;
+      document.getElementById('messengerChannel').checked = false;
+      document.getElementById('webChannel').checked = false;
+      document.getElementById('newsletterChannel').checked = false;
       
-      // Reset button state
-      testBtn.innerHTML = originalBtnText;
-      testBtn.disabled = false;
-    }, 1500);
-  });
-  
-  // Setup activation period toggle
-  document.getElementById('alwaysActive').addEventListener('change', function() {
-    document.getElementById('periodSelectionCtn').style.display = 'none';
-  });
-  
-  document.getElementById('periodActive').addEventListener('change', function() {
-    document.getElementById('periodSelectionCtn').style.display = 'block';
-  });
-</script>
+      // Reset radio buttons
+      document.getElementById('alwaysActive').checked = true;
+      document.getElementById('periodActive').checked = false;
+      document.getElementById('periodSelectionCtn').style.display = 'none';
+      
+      // Reset date inputs
+      document.getElementById('startDateInput').value = '';
+      document.getElementById('endDateInput').value = '';
+      
+      // Reset working hours
+      document.getElementById('useWorkingHours').checked = false;
+      document.getElementById('workingHoursCtn').style.display = 'none';
+      document.getElementById('workMonday').checked = true;
+      document.getElementById('workTuesday').checked = true;
+      document.getElementById('workWednesday').checked = true;
+      document.getElementById('workThursday').checked = true;
+      document.getElementById('workFriday').checked = true;
+      document.getElementById('workSaturday').checked = false;
+      document.getElementById('workSunday').checked = false;
+      document.getElementById('workStartTime').value = '08:00';
+      document.getElementById('workEndTime').value = '18:00';
+      
+      // Reset prompt fields
+      document.getElementById('briefName').value = '';
+      document.getElementById('briefCompany').value = '';
+      document.getElementById('briefAudience').value = '';
+      document.getElementById('briefPains').value = '';
+      document.getElementById('briefGoal').value = '';
+      document.getElementById('masterPromptInput').value = '';
+    }
+    
+    function hasUnsavedChanges() {
+      // Check if any fields have values
+      if (document.getElementById('flowNameInput').value) return true;
+      if (document.getElementById('whatsappChannel').checked) return true;
+      if (document.getElementById('instagramChannel').checked) return true;
+      if (document.getElementById('messengerChannel').checked) return true;
+      if (document.getElementById('webChannel').checked) return true;
+      if (document.getElementById('newsletterChannel').checked) return true;
+      if (document.getElementById('periodActive').checked) return true;
+      if (document.getElementById('startDateInput').value) return true;
+      if (document.getElementById('endDateInput').value) return true;
+      if (document.getElementById('useWorkingHours').checked) return true;
+      if (document.getElementById('briefName').value) return true;
+      if (document.getElementById('briefCompany').value) return true;
+      if (document.getElementById('briefAudience').value) return true;
+      if (document.getElementById('briefPains').value) return true;
+      if (document.getElementById('briefGoal').value) return true;
+      if (document.getElementById('masterPromptInput').value) return true;
+      
+      return false;
+    }
+    
+    function saveFlow() {
+      const flowName = document.getElementById('flowNameInput').value.trim();
+      if (!flowName) {
+        alert('Por favor, ingresa un nombre para el flujo.');
+        document.getElementById('flowNameInput').focus();
+        return;
+      }
+      
+      // Get channel configuration
+      const flowConfig = {
+        status: document.getElementById('flowStatus').checked,
+        channels: {
+          whatsapp: document.getElementById('whatsappChannel').checked,
+          instagram: document.getElementById('instagramChannel').checked,
+          messenger: document.getElementById('messengerChannel').checked,
+          web: document.getElementById('webChannel').checked,
+          newsletter: document.getElementById('newsletterChannel').checked
+        },
+        activation: {
+          always: document.getElementById('alwaysActive').checked,
+          period: document.getElementById('periodActive').checked,
+          startDate: document.getElementById('startDateInput').value,
+          endDate: document.getElementById('endDateInput').value
+        },
+        workingHours: {
+          enabled: document.getElementById('useWorkingHours').checked,
+          days: {
+            monday: document.getElementById('workMonday').checked,
+            tuesday: document.getElementById('workTuesday').checked,
+            wednesday: document.getElementById('workWednesday').checked,
+            thursday: document.getElementById('workThursday').checked,
+            friday: document.getElementById('workFriday').checked,
+            saturday: document.getElementById('workSaturday').checked,
+            sunday: document.getElementById('workSunday').checked
+          },
+          startTime: document.getElementById('workStartTime').value,
+          endTime: document.getElementById('workEndTime').value
+        },
+        prompt: {
+          assistantName: document.getElementById('briefName').value,
+          company: document.getElementById('briefCompany').value,
+          audience: document.getElementById('briefAudience').value,
+          pains: document.getElementById('briefPains').value,
+          goal: document.getElementById('briefGoal').value,
+          masterPrompt: document.getElementById('masterPromptInput').value
+        }
+      };
+      
+      // Create flow data
+      const flowData = {
+        name: flowName,
+        config: flowConfig,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      console.log('Saving flow:', flowData);
+      
+      // Here you would send the flow data to your backend
+      // For now, simulate success with a delay to show loading state
+      document.getElementById('saveFlowBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+      document.getElementById('saveFlowBtn').disabled = true;
+      
+      setTimeout(() => {
+        document.getElementById('saveFlowBtn').innerHTML = '<i class="fas fa-check"></i> Guardado';
+        
+        setTimeout(() => {
+          document.getElementById('saveFlowBtn').innerHTML = '<i class="fas fa-save"></i> Guardar';
+          document.getElementById('saveFlowBtn').disabled = false;
+          
+          // Show success message
+          const successMessage = document.createElement('div');
+          successMessage.style.cssText = 'position:fixed; top:20px; right:20px; background:#4CAF50; color:white; padding:15px; border-radius:4px; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.2);';
+          successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Flujo "${flowName}" guardado con éxito.`;
+          document.body.appendChild(successMessage);
+          
+          setTimeout(() => {
+            successMessage.style.opacity = '0';
+            successMessage.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+              document.body.removeChild(successMessage);
+            }, 300);
+          }, 3000);
+          
+          hideFlowBuilder();
+        }, 1000);
+      }, 1500);
+    }
 
+    // Setup activation period toggle
+    document.getElementById('alwaysActive').addEventListener('change', function() {
+      document.getElementById('periodSelectionCtn').style.display = 'none';
+    });
+    
+    document.getElementById('periodActive').addEventListener('change', function() {
+      document.getElementById('periodSelectionCtn').style.display = 'block';
+    });
+    
+    // Setup working hours toggle
+    document.getElementById('useWorkingHours').addEventListener('change', function() {
+      document.getElementById('workingHoursCtn').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('generatePromptBtn').addEventListener('click', function () {
+      const name = document.getElementById('briefName').value.trim();
+      const company = document.getElementById('briefCompany').value.trim();
+      const audience = document.getElementById('briefAudience').value.trim();
+      const pains = document.getElementById('briefPains').value.trim();
+      const goal = document.getElementById('briefGoal').value.trim();
+      
+      if (!name || !company || !audience || !pains || !goal) {
+        alert('Por favor, completa todos los campos del brief para generar el prompt.');
+        return;
+      }
+
+      // Show loading state
+      document.getElementById('generatePromptBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+      document.getElementById('generatePromptBtn').disabled = true;
+      
+      setTimeout(() => {
+        const prompt = `
+Tu nombre es ${name}, parte del equipo de ${company}. Atiendes de forma cercana, profesional y conversacional a ${audience} que buscan trabajar con más orden y menos fricción. Si vendes, conversas. Te enfocas en el dolor real del cliente: ${pains}.
+
+Tu meta es lograr que consideren ${goal}. No hablas como robot ni usas tecnicismos. Eres fluida, clara y lógica. Siempre respondes con naturalidad, sin presionar.
+
+REGLAS DE ESTILO:
+- Nunca inicias con una venta. Siempre conectas desde lo humano.
+- Respuestas cortas y simplificadas.
+- Si desean visita o llamada, pide nombre, correo, dirección y fecha directo y claro.
+- Sé consultivo, verifica agenda y pregunta por horario.
+- Después de enviar datos, di que nuestro equipo se comunicará para instalar.
+- El propósito final es coordinar la implementación sí o sí.
+- Indaga más sobre por qué están interesados y usa eso a tu favor.
+- Nunca termines sin obtener el nombre del lead.
+- Si hay rechazo, sigue conversando sin presionar.
+- Hablas con el contexto local de Panamá.
+- No usas frases como "gratis", sino "implementación sin costo por 30 días".
+- No criticas a la competencia, diferencias con respeto.
+`;
+
+        // Add the prompt text character by character for a typing effect
+        const textarea = document.getElementById('masterPromptInput');
+        textarea.value = '';
+        let i = 0;
+        const typeEffect = () => {
+          if (i < prompt.trim().length) {
+            textarea.value += prompt.trim().charAt(i);
+            textarea.scrollTop = textarea.scrollHeight;
+            i++;
+            setTimeout(typeEffect, 5);
+          } else {
+            // Restore button state
+            document.getElementById('generatePromptBtn').innerHTML = '<i class="fas fa-magic"></i> Generar prompt automáticamente';
+            document.getElementById('generatePromptBtn').disabled = false;
+          }
+        };
+        
+        typeEffect();
+      }, 800);
+    });
+
+    // Initialize the page with sample data
+    function initializeFlowsList() {
+      // This would typically fetch data from your backend
+      // For now, we'll use the static sample data already in the HTML
+    }
+
+    // Initialize the page
+    initializeFlowsList();
+    
+    // Preview flow button (just a placeholder for now)
+    document.getElementById('previewFlowBtn').addEventListener('click', function() {
+      alert('La funcionalidad de vista previa estará disponible próximamente.');
+    });
+    
+    // Trigger type selection handling
+    document.getElementById('triggerTypeSelect').addEventListener('change', function() {
+      // Hide all trigger configs
+      document.querySelectorAll('.trigger-config').forEach(config => {
+        config.style.display = 'none';
+      });
+      
+      // Show the selected trigger config
+      const selectedTrigger = this.value;
+      const selectedConfig = document.getElementById(`${selectedTrigger}_config`);
+      if (selectedConfig) {
+        selectedConfig.style.display = 'block';
+      }
+    });
+    
+    // Schedule type toggle
+    document.getElementById('scheduleOneTime').addEventListener('change', function() {
+      document.getElementById('oneTimeScheduleCtn').style.display = 'block';
+      document.getElementById('recurringScheduleCtn').style.display = 'none';
+    });
+    
+    document.getElementById('scheduleRecurring').addEventListener('change', function() {
+      document.getElementById('oneTimeScheduleCtn').style.display = 'none';
+      document.getElementById('recurringScheduleCtn').style.display = 'block';
+    });
+    
+    // Recurring frequency options
+    document.getElementById('recurringFrequency').addEventListener('change', function() {
+      if (this.value === 'weekly') {
+        document.getElementById('weeklyOptions').style.display = 'block';
+      } else {
+        document.getElementById('weeklyOptions').style.display = 'none';
+      }
+    });
+    
+    // Save trigger button (placeholder functionality)
+    document.getElementById('saveTriggerBtn').addEventListener('click', function() {
+      this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+      this.disabled = true;
+      
+      setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-check"></i> Guardado';
+        
+        setTimeout(() => {
+          this.innerHTML = '<i class="fas fa-save"></i> Guardar configuración';
+          this.disabled = false;
+          
+          // Show success message
+          const successMessage = document.createElement('div');
+          successMessage.style.cssText = 'position:fixed; top:20px; right:20px; background:#4CAF50; color:white; padding:15px; border-radius:4px; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.2);';
+          successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Configuración de disparador guardada con éxito.';
+          document.body.appendChild(successMessage);
+          
+          setTimeout(() => {
+            successMessage.style.opacity = '0';
+            successMessage.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+              document.body.removeChild(successMessage);
+            }, 300);
+          }, 3000);
+        }, 1000);
+      }, 1000);
+    });
+    
+    // Add event listeners to edit flow buttons
+    document.querySelectorAll('.edit-flow-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const flowId = this.getAttribute('data-flow-id');
+        const flowName = this.closest('.flow-item').querySelector('h4').textContent;
+        showFlowBuilder(`Editar: ${flowName}`, flowId);
+      });
+    });
+  </script>
 </body>
 </html>
