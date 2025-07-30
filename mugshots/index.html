@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
     /* Reset and base styles */
     * {
@@ -642,6 +630,64 @@
       margin-top: 0.5rem;
     }
   
+    /* Statistics Section Styles */
+    .statistics-section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .statistics-section h2 {
+      color: #1a3a5f;
+      margin-bottom: 1.5rem;
+    }
+    
+    .statistics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .statistic-card {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .statistic-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .statistic-card .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #1a3a5f;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+    }
+    
+    .statistic-card .number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #1a3a5f;
+      margin-bottom: 0.5rem;
+    }
+    
+    .statistic-card .label {
+      color: #555;
+      font-size: 1rem;
+    }
+  
     /* Footer styles */
     footer {
       background-color: #1a3a5f;
@@ -685,6 +731,109 @@
   
     footer p {
       line-height: 1.8;
+    }
+
+    /* Ad Styles */
+    .ad-container {
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .ad-container::before {
+      content: "Advertisement";
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.1);
+      color: #666;
+      font-size: 0.7rem;
+      padding: 0.1rem 0.5rem;
+      border-bottom-left-radius: 4px;
+    }
+
+    .ad-banner {
+      width: 100%;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f8cb4a, #f0c030);
+      color: #1a3a5f;
+      font-weight: bold;
+    }
+
+    .ad-sidebar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #ffffff, #f5f5f5);
+      min-height: 250px;
+    }
+
+    .ad-footer {
+      width: 100%;
+      background: linear-gradient(135deg, #1a3a5f, #2c5282);
+      color: white;
+      font-weight: bold;
+      height: 90px;
+    }
+
+    .ad-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      height: 100%;
+      padding: 0.5rem;
+    }
+
+    .ad-image {
+      flex-shrink: 0;
+    }
+
+    .ad-text {
+      text-align: left;
+    }
+
+    .ad-text h3 {
+      margin: 0;
+      color: #1a3a5f;
+      font-size: 1.2rem;
+    }
+
+    .ad-text p {
+      margin: 0.5rem 0;
+      color: #555;
+    }
+
+    .ad-button {
+      background-color: #1a3a5f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .ad-button:hover {
+      background-color: #2c5282;
+    }
+
+    .ad-premium {
+      background-color: #f8cb4a;
+      color: #1a3a5f;
+    }
+
+    .ad-premium:hover {
+      background-color: #f0c030;
     }
   
     /* Responsive styles */
@@ -739,6 +888,14 @@
         flex-direction: column;
         gap: 1.5rem;
       }
+
+      .ad-content {
+        flex-direction: column;
+      }
+      
+      .ad-text {
+        text-align: center;
+      }
     }
   </style>
   
@@ -765,6 +922,22 @@
       </button>
     </div>
   </header>
+
+  <!-- Top Banner Ad -->
+  <div class="ad-container">
+    <div class="ad-banner">
+      <div class="ad-content">
+        <div class="ad-image">
+          <img src="https://placehold.co/80x80?text=AD" alt="Advertisement">
+        </div>
+        <div class="ad-text">
+          <h3>Premium Background Checks</h3>
+          <p>Get complete criminal history reports in seconds</p>
+        </div>
+        <button class="ad-button ad-premium" onclick="trackAdClick('top-banner')">Check Now</button>
+      </div>
+    </div>
+  </div>
   
   <main>
     <div class="hero-section">
@@ -828,6 +1001,51 @@
       <h2>Recent Mugshots</h2>
       <div class="results-grid" id="initialMugshotsGrid">
         <!-- Initial mugshots will be loaded here -->
+      </div>
+    </section>
+
+    <!-- Sidebar Ad -->
+    <div class="ad-container">
+      <div class="ad-sidebar">
+        <div class="ad-content">
+          <div class="ad-image">
+            <img src="https://placehold.co/120x120?text=LEGAL" alt="Legal Services">
+          </div>
+          <div class="ad-text">
+            <h3>Need Legal Help?</h3>
+            <p>Our attorneys specialize in criminal defense. Free consultation.</p>
+            <button class="ad-button" onclick="trackAdClick('sidebar')">Contact Us</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <section class="statistics-section">
+      <h2>Arrest Statistics</h2>
+      <div class="statistics-grid">
+        <div class="statistic-card">
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="number" id="totalArrestsEl">0</div>
+          <div class="label">Total Arrests</div>
+        </div>
+        
+        <div class="statistic-card">
+          <div class="icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="number" id="totalAgeEl">0</div>
+          <div class="label">Sum of Ages</div>
+        </div>
+        
+        <div class="statistic-card">
+          <div class="icon">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+          <div class="number" id="totalComplaintsEl">0</div>
+          <div class="label">Total Complaints</div>
+        </div>
       </div>
     </section>
   
@@ -919,6 +1137,22 @@
         </button>
       </div>
     </section>
+
+    <!-- Bottom Ad -->
+    <div class="ad-container">
+      <div class="ad-footer">
+        <div class="ad-content">
+          <div class="ad-image">
+            <img src="https://placehold.co/80x80?text=BOND" alt="Bail Bonds">
+          </div>
+          <div class="ad-text" style="color: white;">
+            <h3 style="color: white;">24/7 Bail Bonds Service</h3>
+            <p>Fast release - Payment plans available - Serving all Oklahoma counties</p>
+          </div>
+          <button class="ad-button ad-premium" onclick="trackAdClick('bottom')">Call Now</button>
+        </div>
+      </div>
+    </div>
   </main>
   
   <footer>
@@ -1086,6 +1320,19 @@
     let searchCount = 0;
     let viewedMugshotCount = 0;
     
+    // Ad tracking
+    let adImpressions = {
+      'top-banner': 0,
+      'sidebar': 0,
+      'bottom': 0
+    };
+    
+    let adClicks = {
+      'top-banner': 0,
+      'sidebar': 0,
+      'bottom': 0
+    };
+    
     // Initialize the page
     window.onload = function() {
       initHeaderScroll();
@@ -1096,7 +1343,61 @@
       
       // Display initial mugshots
       displayInitialMugshots();
+      
+      // Calculate and display statistics
+      calculateStatistics();
+      
+      // Track ad impressions
+      trackAdImpressions();
     };
+    
+    // Track ad impressions
+    function trackAdImpressions() {
+      // Increment impression counters
+      adImpressions['top-banner']++;
+      adImpressions['sidebar']++;
+      adImpressions['bottom']++;
+      
+      // You would normally send this data to an analytics server
+      console.log("Ad impressions:", adImpressions);
+    }
+    
+    // Track ad clicks
+    function trackAdClick(adId) {
+      adClicks[adId]++;
+      console.log(`Ad clicked: ${adId}`, adClicks);
+      
+      // Different actions based on which ad was clicked
+      switch(adId) {
+        case 'top-banner':
+          alert("Redirecting to background check service...");
+          break;
+        case 'sidebar':
+          alert("Connecting you with legal services...");
+          break;
+        case 'bottom':
+          alert("Connecting to bail bonds service...");
+          break;
+      }
+    }
+    
+    // Calculate statistics for the 3 addition operations
+    function calculateStatistics() {
+      // Addition 1: Total number of arrests
+      let totalArrests = mugshotData.length;
+      document.getElementById('totalArrestsEl').textContent = totalArrests;
+      
+      // Addition 2: Sum of all ages
+      let totalAge = mugshotData.reduce((sum, mugshot) => sum + mugshot.age, 0);
+      document.getElementById('totalAgeEl').textContent = totalAge;
+      
+      // Addition 3: Total number of complaints
+      let totalComplaints = mugshotData.reduce((sum, mugshot) => {
+        // Add the number of complaints for each mugshot to the sum
+        return sum + (mugshot.complaints ? mugshot.complaints.length : 0);
+      }, 0);
+      document.getElementById('totalComplaintsEl').textContent = totalComplaints;
+    }
     
     // Display initial 12 mugshots
     function displayInitialMugshots() {
@@ -1297,6 +1598,25 @@
       
       // Display the filtered results
       displaySearchResults(filteredResults, noResultsFound);
+      
+      // Update statistics based on the search results
+      updateSearchStatistics(filteredResults);
+    }
+    
+    // Update statistics based on search results
+    function updateSearchStatistics(results) {
+      // Addition 1: Total number of results
+      document.getElementById('totalArrestsEl').textContent = results.length;
+      
+      // Addition 2: Sum of ages in search results
+      let totalAge = results.reduce((sum, mugshot) => sum + mugshot.age, 0);
+      document.getElementById('totalAgeEl').textContent = totalAge;
+      
+      // Addition 3: Total complaints in search results
+      let totalComplaints = results.reduce((sum, mugshot) => {
+        return sum + (mugshot.complaints ? mugshot.complaints.length : 0);
+      }, 0);
+      document.getElementById('totalComplaintsEl').textContent = totalComplaints;
     }
     
     // Function to display search results
@@ -1502,5 +1822,3 @@
       }
     }
   </script>
-  
-  
