@@ -1,0 +1,1506 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      text-align: left;
+    }
+  
+    /* Header styles */
+    header {
+      background-color: #1a3a5f;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+  
+    header.scrolled {
+      background-color: rgba(26, 58, 95, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+  
+    header > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  
+    header > div > div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  
+    header img {
+      border-radius: 50%;
+    }
+  
+    header span {
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+  
+    /* Navigation */
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+  
+    nav a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      position: relative;
+      transition: color 0.3s;
+    }
+  
+    nav a:hover {
+      color: #f8cb4a;
+    }
+  
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #f8cb4a;
+      transition: width 0.3s;
+    }
+  
+    nav a:hover::after {
+      width: 100%;
+    }
+  
+    /* Hamburger menu */
+    button[aria-label="Toggle menu"] {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+  
+    button[aria-label="Toggle menu"] span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 5px 0;
+      transition: all 0.3s;
+    }
+  
+    /* Main content */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+  
+    /* Hero section */
+    .hero-section {
+      text-align: center;
+      padding: 3rem 1rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #1a3a5f, #2c5282);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    .hero-section h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+  
+    .hero-section p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+  
+    /* Search section */
+    section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+  
+    /* Search bar */
+    .search-section .search-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    .search-section .search-bar .search-input-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      padding: 0 1rem;
+    }
+  
+    .search-section .search-bar .search-input-container i {
+      color: #777;
+      margin-right: 0.5rem;
+    }
+  
+    /* Standardize input styles to ensure consistent height */
+    input, select {
+      height: 44px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+    }
+  
+    .search-section input[type="text"] {
+      width: 100%;
+      padding: 0 0.5rem;
+      border: none;
+      background: transparent;
+      height: 44px;
+    }
+  
+    .search-section .search-bar button {
+      background-color: #1a3a5f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0 1.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      height: 44px;
+    }
+  
+    .search-section .search-bar button:hover {
+      background-color: #2c5282;
+    }
+  
+    /* Filters */
+    .search-section .filters-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  
+    .search-section .filters-container .filter-group {
+      flex: 1;
+      min-width: 220px; /* Increased to prevent overlap on smaller screens */
+    }
+  
+    .search-section label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+  
+    .search-section select {
+      width: 100%;
+      padding: 0 0.8rem;
+      appearance: none;
+      background-color: white;
+    }
+  
+    .search-section .filters-container .filter-group .select-wrapper {
+      position: relative;
+    }
+  
+    .search-section .filters-container .filter-group .select-wrapper i.fa-chevron-down {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      pointer-events: none;
+    }
+  
+    /* Date range */
+    .search-section .filters-container .date-range-filter .date-inputs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  
+    .search-section .filters-container .date-range-filter .date-inputs .date-input-wrapper {
+      flex: 1;
+      position: relative;
+    }
+  
+    .search-section input[type="date"] {
+      width: 100%;
+      height: 44px;
+    }
+  
+    .search-section .filters-container .date-range-filter i.fa-calendar {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      pointer-events: none;
+    }
+  
+    /* Access Options */
+    .access-options-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  
+    .access-options-section .section-title {
+      width: 100%;
+      font-size: 1.5rem;
+      color: #1a3a5f;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  
+    .access-options-section .access-option {
+      flex: 1;
+      min-width: 300px;
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .access-options-section .free-option {
+      border-left: 4px solid #1a3a5f;
+    }
+  
+    .access-options-section .premium-option {
+      border-left: 4px solid #f8cb4a;
+    }
+  
+    .access-options-section .access-option .header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  
+    .access-options-section .access-option .header .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+  
+    .access-options-section .free-option .header .icon {
+      background-color: #1a3a5f;
+      color: white;
+    }
+  
+    .access-options-section .premium-option .header .icon {
+      background-color: #f8cb4a;
+      color: #1a3a5f;
+    }
+  
+    .access-options-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+  
+    .access-options-section ul {
+      list-style: none;
+      margin-bottom: 1rem;
+    }
+  
+    .access-options-section li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+  
+    .access-options-section li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #1a3a5f;
+    }
+  
+    .access-options-section button {
+      background-color: #1a3a5f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      white-space: nowrap;
+      margin-top: auto;
+      justify-content: center;
+    }
+  
+    .access-options-section .free-option button {
+      background-color: #1a3a5f;
+    }
+  
+    .access-options-section .free-option button:hover {
+      background-color: #2c5282;
+    }
+  
+    .access-options-section .premium-option button {
+      background-color: #f8cb4a;
+      color: #1a3a5f;
+    }
+  
+    .access-options-section .premium-option button:hover {
+      background-color: #f0c030;
+    }
+  
+    .access-options-section .pricing {
+      font-weight: bold;
+      color: #1a3a5f;
+      margin-top: 0.5rem;
+    }
+  
+    /* Facebook Snippet Styles */
+    .fb-snippet {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      margin: 2rem auto;
+      max-width: 550px;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+  
+    .fb-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #dddfe2;
+    }
+  
+    .fb-header img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  
+    .fb-header span {
+      font-weight: bold;
+      color: #1877f2;
+    }
+  
+    .fb-content {
+      padding: 12px;
+    }
+  
+    .fb-profile {
+      display: flex;
+      margin-bottom: 10px;
+    }
+  
+    .fb-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  
+    .fb-profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .fb-profile-name {
+      font-weight: bold;
+    }
+  
+    .fb-profile-meta {
+      font-size: 12px;
+      color: #65676b;
+    }
+  
+    .fb-post-text {
+      margin-bottom: 10px;
+    }
+  
+    .fb-post-image-container {
+      border: 1px solid #dddfe2;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+  
+    .fb-post-image-container img {
+      width: 100%;
+      display: block;
+    }
+  
+    .fb-post-link-preview {
+      padding: 12px;
+    }
+  
+    .fb-post-link-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #050505;
+    }
+  
+    .fb-post-link-description {
+      font-size: 14px;
+      color: #65676b;
+      margin-top: 4px;
+    }
+  
+    .fb-actions {
+      display: flex;
+      padding: 0 12px;
+      border-top: 1px solid #dddfe2;
+    }
+  
+    .fb-action-button {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #65676b;
+      font-weight: 600;
+    }
+  
+    .fb-action-button i {
+      margin-right: 6px;
+    }
+  
+    .fb-action-button:hover {
+      background-color: #f2f2f2;
+    }
+  
+    /* Search Results Styles */
+    .search-results {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+  
+    .search-results h2 {
+      color: #1a3a5f;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+  
+    .mugshot-card {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+  
+    .mugshot-card:hover {
+      transform: translateY(-5px);
+    }
+  
+    .mugshot-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  
+    .mugshot-info {
+      padding: 1rem;
+    }
+  
+    .mugshot-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1a3a5f;
+    }
+  
+    .mugshot-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .mugshot-details li {
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+    }
+  
+    .complaint-list {
+      margin-top: 0.5rem;
+    }
+  
+    .complaint-list h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+      color: #1a3a5f;
+    }
+  
+    .complaint-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .complaint-list li {
+      font-size: 0.8rem;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid #eee;
+    }
+  
+    .subscription-prompt {
+      font-size: 0.8rem;
+      color: #1a3a5f;
+      font-weight: bold;
+      margin-top: 0.5rem;
+      text-align: center;
+      padding: 0.5rem;
+      background-color: #f8cb4a26;
+      border-radius: 4px;
+    }
+  
+    .results-notice {
+      color: #1a3a5f;
+      font-weight: bold;
+      text-align: center;
+      margin: 1rem 0;
+    }
+  
+    .subscribe-banner {
+      background-color: #1a3a5f;
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      text-align: center;
+    }
+  
+    .subscribe-banner button {
+      background-color: #f8cb4a;
+      color: #1a3a5f;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+  
+    /* Footer styles */
+    footer {
+      background-color: #1a3a5f;
+      color: white;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+    }
+  
+    footer > div {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+  
+    footer > div > div {
+      flex: 1;
+      min-width: 300px;
+    }
+  
+    footer h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #f8cb4a;
+    }
+  
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+  
+    footer li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    footer li:last-child {
+      border-bottom: none;
+    }
+  
+    footer p {
+      line-height: 1.8;
+    }
+  
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      header > div {
+        padding: 1rem;
+      }
+  
+      nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: #1a3a5f;
+        padding: 5rem 2rem;
+        z-index: 90;
+        transition: right 0.3s ease;
+      }
+  
+      nav.open {
+        right: 0;
+      }
+  
+      nav ul {
+        flex-direction: column;
+        gap: 2rem;
+      }
+  
+      button[aria-label="Toggle menu"] {
+        display: block;
+        z-index: 100;
+      }
+  
+      .hero-section {
+        padding: 2rem 1rem;
+      }
+  
+      .hero-section h1 {
+        font-size: 1.8rem;
+      }
+  
+      .search-section .search-bar {
+        flex-direction: column;
+      }
+  
+      .access-options-section {
+        flex-direction: column;
+      }
+      
+      footer > div {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+  
+  <!-- Add Font Awesome for proper icon display -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <header>
+    <div>
+      <div>
+        <img src="https://placehold.co/40x40?text=OK" alt="Oklahoma State Seal">
+        <span>Oklahoma Mugshot Records</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
+          <li><a href="#"><i class="fas fa-bell"></i> Subscribe</a></li>
+          <li><a href="#"><i class="fas fa-user"></i> Login</a></li>
+        </ul>
+      </nav>
+      <button aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+  
+  <main>
+    <div class="hero-section">
+      <h1>Oklahoma Department of Corrections</h1>
+      <p>Official Mugshot Records Database</p>
+    </div>
+  
+    <section class="search-section">
+      <div class="search-bar">
+        <div class="search-input-container">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInputEl" placeholder="Search by name, location, or ID...">
+        </div>
+        <button onclick="searchMugshots()">
+          <span>Search</span>
+        </button>
+      </div>
+      
+      <div class="filters-container">
+        <div class="filter-group county-filter">
+          <label for="countyFilterEl">County:</label>
+          <div class="select-wrapper">
+            <select id="countyFilterEl">
+              <option value="">All Counties</option>
+              <option value="county1">Muskogee County</option>
+              <option value="county2">Oklahoma County</option>
+              <option value="county3">Tulsa County</option>
+            </select>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+        
+        <div class="filter-group date-range-filter">
+          <label for="dateFromEl">Date Range:</label>
+          <div class="date-inputs">
+            <div class="date-input-wrapper">
+              <input type="date" id="dateFromEl" placeholder="From">
+            </div>
+            <span>to</span>
+            <div class="date-input-wrapper">
+              <input type="date" id="dateToEl" placeholder="To">
+            </div>
+          </div>
+        </div>
+        
+        <div class="filter-group gender-filter">
+          <label for="genderFilterEl">Gender:</label>
+          <div class="select-wrapper">
+            <select id="genderFilterEl">
+              <option value="">All Genders</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <section class="search-results">
+      <h2>Recent Mugshots</h2>
+      <div class="results-grid" id="initialMugshotsGrid">
+        <!-- Initial mugshots will be loaded here -->
+      </div>
+    </section>
+  
+    <section class="access-options-section">
+      <h2 class="section-title">Access Options</h2>
+      <div class="access-option free-option">
+        <div class="header">
+          <div class="icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <h3>Free Access</h3>
+          </div>
+        </div>
+        <ul>
+          <li>View up to 10 mugshots</li>
+          <li>Limited to 3 searches</li>
+          <li>Basic information only</li>
+        </ul>
+        <button onclick="startFreeAccess()">
+          <span>Start Free</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      
+      <div class="access-option premium-option">
+        <div class="header">
+          <div class="icon">
+            <i class="fas fa-crown"></i>
+          </div>
+          <div>
+            <h3>Subscriber Access</h3>
+          </div>
+        </div>
+        <ul>
+          <li>Full site access</li>
+          <li>No viewing or search restrictions</li>
+          <li>Complete arrest details and charges</li>
+          <li>Regular updates</li>
+        </ul>
+        <div class="pricing">
+          $1/month or $10/year
+        </div>
+        <button onclick="subscribeNow()">
+          <span>Subscribe Now</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+  
+    <!-- Facebook Snippet Simulation -->
+    <section class="fb-snippet">
+      <div class="fb-header">
+        <img src="https://placehold.co/40x40?text=f" alt="Facebook">
+        <span>Facebook</span>
+      </div>
+      
+      <div class="fb-content">
+        <div class="fb-profile">
+          <img src="https://placehold.co/40x40?text=OK" alt="Oklahoma Mugshot Records">
+          <div class="fb-profile-info">
+            <div class="fb-profile-name">Oklahoma Mugshot Records</div>
+            <div class="fb-profile-meta">Just now · <i class="fas fa-globe-americas"></i></div>
+          </div>
+        </div>
+        
+        <div class="fb-post-text">
+          Latest arrest records from Muskogee County. Stay informed about recent bookings in your area.
+        </div>
+        
+        <div class="fb-post-image-container">
+          <img src="https://placehold.co/600x300?text=Mugshot+Records" alt="Mugshot Records">
+          <div class="fb-post-link-preview">
+            <div class="fb-post-link-title">OKLAHOMA MUGSHOT RECORDS</div>
+            <div class="fb-post-link-description">Access the latest arrest records and mugshots from across Oklahoma counties.</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fb-actions">
+        <button class="fb-action-button" id="fbLikeBtnEl" onclick="simulateFbInteraction('like')">
+          <i class="far fa-thumbs-up"></i> Like
+        </button>
+        <button class="fb-action-button" onclick="simulateFbInteraction('comment')">
+          <i class="far fa-comment"></i> Comment
+        </button>
+        <button class="fb-action-button" onclick="simulateFbInteraction('share')">
+          <i class="far fa-share-square"></i> Share
+        </button>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <div>
+      <div>
+        <h2>County List</h2>
+        <ul>
+          <li>Craig County</li>
+          <li>Mayes County</li>
+          <li>McIntosh County</li>
+          <li>Muskogee County</li>
+          <li>Rogers County</li>
+          <li>Tulsa County</li>
+          <li>Wagoner County</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal Disclaimer</h2>
+        <p>This is an arrest, not a conviction, and the accused is presumed innocent of the allegations. An accused may never be convicted of the crime they were arrested for.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Learn HTML here:   https://www.khanacademy.org/computing/computer-programming/html-css    -->
+  
+  <script>
+    // Sample data for demonstration
+    const mugshotData = [
+      { 
+        id: 1, 
+        name: "Trenton J Palmer", 
+        age: 24, 
+        gender: "Male", 
+        race: "", 
+        county: "county1", 
+        date: "2025-06-25", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["ASSAULT AND BATTERY", "NO TAG OR EXP TAG", "DEFECTIVE VEHICLE"]
+      },
+      { 
+        id: 2, 
+        name: "Jane A Smith", 
+        age: 27, 
+        gender: "Female", 
+        race: "White", 
+        county: "county2", 
+        date: "2023-06-14", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DRUG POSSESSION", "RESISTING ARREST"]
+      },
+      { 
+        id: 3, 
+        name: "Robert K Johnson", 
+        age: 45, 
+        gender: "Male", 
+        race: "Black", 
+        county: "county1", 
+        date: "2023-06-13", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DUI", "SPEEDING", "DRIVING WITH SUSPENDED LICENSE"]
+      },
+      { 
+        id: 4, 
+        name: "Emily L Davis", 
+        age: 22, 
+        gender: "Female", 
+        race: "Hispanic", 
+        county: "county3", 
+        date: "2023-06-15", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["SHOPLIFTING", "TRESPASSING"]
+      },
+      { 
+        id: 5, 
+        name: "Michael P Wilson", 
+        age: 38, 
+        gender: "Male", 
+        race: "White", 
+        county: "county2", 
+        date: "2023-06-12", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["ASSAULT", "PUBLIC INTOXICATION"]
+      },
+      { 
+        id: 6, 
+        name: "Sarah T Martinez", 
+        age: 29, 
+        gender: "Female", 
+        race: "Asian", 
+        county: "county1", 
+        date: "2023-06-11", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DRUG POSSESSION", "INTENT TO DISTRIBUTE"]
+      },
+      { 
+        id: 7, 
+        name: "David R Thompson", 
+        age: 31, 
+        gender: "Male", 
+        race: "White", 
+        county: "county3", 
+        date: "2023-06-10", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["THEFT", "BURGLARY", "CRIMINAL TRESPASSING"]
+      },
+      { 
+        id: 8, 
+        name: "Jessica M Brown", 
+        age: 26, 
+        gender: "Female", 
+        race: "Black", 
+        county: "county2", 
+        date: "2023-06-09", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DISORDERLY CONDUCT", "RESISTING ARREST"]
+      },
+      { 
+        id: 9, 
+        name: "Kevin L Garcia", 
+        age: 33, 
+        gender: "Male", 
+        race: "Hispanic", 
+        county: "county1", 
+        date: "2023-06-08", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DUI", "RECKLESS DRIVING"]
+      },
+      { 
+        id: 10, 
+        name: "Amanda P White", 
+        age: 29, 
+        gender: "Female", 
+        race: "White", 
+        county: "county3", 
+        date: "2023-06-07", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DRUG POSSESSION", "SHOPLIFTING"]
+      },
+      { 
+        id: 11, 
+        name: "Brian J Miller", 
+        age: 42, 
+        gender: "Male", 
+        race: "White", 
+        county: "county2", 
+        date: "2023-06-06", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["ASSAULT", "DOMESTIC VIOLENCE"]
+      },
+      { 
+        id: 12, 
+        name: "Olivia R Davis", 
+        age: 25, 
+        gender: "Female", 
+        race: "Black", 
+        county: "county1", 
+        date: "2023-06-05", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["PUBLIC INTOXICATION", "DISORDERLY CONDUCT"]
+      },
+    ];
+    
+    // User access tracking
+    let userAccessType = "free"; // free or subscriber
+    let searchCount = 0;
+    let viewedMugshotCount = 0;
+    
+    // Initialize the page
+    window.onload = function() {
+      initHeaderScroll();
+      initMobileMenu();
+      
+      // Check if user is already a subscriber (could use localStorage or similar)
+      checkUserAccessType();
+      
+      // Display initial mugshots
+      displayInitialMugshots();
+    };
+    
+    // Display initial 12 mugshots
+    function displayInitialMugshots() {
+      const mugshotsGrid = document.getElementById("initialMugshotsGrid");
+      
+      // Create and append mugshot cards
+      for (let i = 0; i < 12; i++) {
+        if (i < mugshotData.length) {
+          const mugshot = mugshotData[i];
+          
+          // Create result card
+          const card = document.createElement('div');
+          card.className = 'mugshot-card';
+          
+          // Mugshot image
+          const image = document.createElement('img');
+          image.src = mugshot.image;
+          image.alt = `Mugshot of ${mugshot.name}`;
+          image.className = 'mugshot-image';
+          card.appendChild(image);
+          
+          // Info container
+          const info = document.createElement('div');
+          info.className = 'mugshot-info';
+          
+          // Name
+          const name = document.createElement('h3');
+          name.textContent = mugshot.name;
+          name.className = 'mugshot-name';
+          info.appendChild(name);
+          
+          // Details
+          const details = document.createElement('ul');
+          details.className = 'mugshot-details';
+          
+          // Add detail items
+          const detailItems = [
+            `Age: ${mugshot.age}`,
+            `Gender: ${mugshot.gender}`,
+            `Date: ${new Date(mugshot.date).toLocaleDateString()}`,
+            mugshot.race ? `Race: ${mugshot.race}` : '',
+          ].filter(Boolean);
+          
+          detailItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            details.appendChild(li);
+          });
+          
+          info.appendChild(details);
+          
+          // If user is a subscriber, show complaints
+          if (userAccessType === "subscriber" && mugshot.complaints) {
+            const complaintsDiv = document.createElement('div');
+            complaintsDiv.className = 'complaint-list';
+            
+            const complaintsHeader = document.createElement('h4');
+            complaintsHeader.textContent = 'Complaints:';
+            complaintsDiv.appendChild(complaintsHeader);
+            
+            const complaintsList = document.createElement('ul');
+            
+            mugshot.complaints.forEach(complaint => {
+              const li = document.createElement('li');
+              li.textContent = complaint;
+              complaintsList.appendChild(li);
+            });
+            
+            complaintsDiv.appendChild(complaintsList);
+            info.appendChild(complaintsDiv);
+          } else if (mugshot.complaints) {
+            // Show subscription prompt for non-subscribers
+            const subPrompt = document.createElement('p');
+            subPrompt.textContent = 'Subscribe to view complaints';
+            subPrompt.className = 'subscription-prompt';
+            info.appendChild(subPrompt);
+          }
+          
+          card.appendChild(info);
+          mugshotsGrid.appendChild(card);
+        }
+      }
+      
+      // Count these as viewed mugshots for free users
+      if (userAccessType === "free") {
+        viewedMugshotCount += 12;
+        localStorage.viewedMugshotCount = viewedMugshotCount;
+      }
+    }
+    
+    // Check user access type
+    function checkUserAccessType() {
+      // In a real app, this would check cookies, localStorage, or a server session
+      // For demo purposes, we'll just use localStorage
+      if (localStorage.userAccessType === "subscriber") {
+        userAccessType = "subscriber";
+      } else {
+        userAccessType = "free";
+        // Initialize counters for free users
+        searchCount = parseInt(localStorage.searchCount || 0);
+        viewedMugshotCount = parseInt(localStorage.viewedMugshotCount || 0);
+      }
+    }
+    
+    // Initialize header scroll effect
+    function initHeaderScroll() {
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 10) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    }
+    
+    // Initialize mobile menu
+    function initMobileMenu() {
+      const menuBtn = document.querySelector('button[aria-label="Toggle menu"]');
+      const nav = document.querySelector('nav');
+      
+      if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+          nav.classList.toggle('open');
+          
+          // Toggle the hamburger to X animation
+          const spans = this.querySelectorAll('span');
+          if (nav.classList.contains('open')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+          } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+          }
+        });
+      }
+    }
+    
+    // Search functionality with date range support
+    function searchMugshots() {
+      const searchInput = document.getElementById("searchInputEl").value.toLowerCase();
+      const countyFilter = document.getElementById("countyFilterEl").value;
+      const genderFilter = document.getElementById("genderFilterEl").value;
+      const dateFrom = document.getElementById("dateFromEl").value;
+      const dateTo = document.getElementById("dateToEl").value;
+      
+      // Filter the mugshot data based on search criteria
+      let filteredResults = mugshotData.filter(mugshot => {
+        // Check name match
+        if (searchInput && !mugshot.name.toLowerCase().includes(searchInput)) {
+          return false;
+        }
+        
+        // Check county filter
+        if (countyFilter && mugshot.county !== countyFilter) {
+          return false;
+        }
+        
+        // Check gender filter
+        if (genderFilter && mugshot.gender.toLowerCase() !== genderFilter.toLowerCase()) {
+          return false;
+        }
+        
+        // Check date range
+        if (dateFrom && new Date(mugshot.date) < new Date(dateFrom)) {
+          return false;
+        }
+        
+        if (dateTo && new Date(mugshot.date) > new Date(dateTo)) {
+          return false;
+        }
+        
+        return true;
+      });
+      
+      let originalResultsCount = filteredResults.length;
+      let noResultsFound = originalResultsCount === 0;
+      
+      // Simulate search results if none found
+      if (noResultsFound) {
+        // Add simulated results
+        filteredResults = [mugshotData[0], mugshotData[1], mugshotData[2]];
+      }
+      
+      // For free users, check search limits and increment search count
+      if (userAccessType === "free") {
+        // Increment search count for all searches
+        searchCount++;
+        localStorage.searchCount = searchCount;
+        
+        if (searchCount > 3) {
+          alert("You have reached your search limit. Please subscribe for unlimited searches.");
+          return;
+        }
+      }
+      
+      // Display the filtered results
+      displaySearchResults(filteredResults, noResultsFound);
+    }
+    
+    // Function to display search results
+    function displaySearchResults(results, simulatedResults = false) {
+      // Check if there's already a results section and remove it
+      const existingResults = document.querySelector('.search-results');
+      if (existingResults) {
+        existingResults.remove();
+      }
+      
+      // Create results section
+      const resultsSection = document.createElement('section');
+      resultsSection.className = 'search-results';
+      
+      // Create header for results
+      const header = document.createElement('h2');
+      
+      if (simulatedResults) {
+        header.textContent = `No exact matches found. Showing similar results (${results.length})`;
+      } else {
+        header.textContent = `Found ${results.length} results`;
+      }
+      
+      resultsSection.appendChild(header);
+      
+      // For free users, limit the number of displayed results
+      let displayResults = results;
+      if (userAccessType === "free" && results.length > 10) {
+        displayResults = results.slice(0, 10);
+        const notice = document.createElement('p');
+        notice.textContent = `Showing 10 of ${results.length} results. Subscribe for full access.`;
+        notice.className = 'results-notice';
+        resultsSection.appendChild(notice);
+      }
+      
+      // Create results grid
+      const resultsGrid = document.createElement('div');
+      resultsGrid.className = 'results-grid';
+      
+      // Add each result
+      if (displayResults.length === 0) {
+        const noResults = document.createElement('p');
+        noResults.textContent = 'No results found. Try adjusting your search criteria.';
+        noResults.style.gridColumn = '1 / -1';
+        noResults.style.textAlign = 'center';
+        noResults.style.padding = '2rem';
+        resultsGrid.appendChild(noResults);
+      } else {
+        displayResults.forEach((mugshot) => {
+          // Create result card
+          const card = document.createElement('div');
+          card.className = 'mugshot-card';
+          
+          // Mugshot image
+          const image = document.createElement('img');
+          image.src = mugshot.image;
+          image.alt = `Mugshot of ${mugshot.name}`;
+          image.className = 'mugshot-image';
+          card.appendChild(image);
+          
+          // Info container
+          const info = document.createElement('div');
+          info.className = 'mugshot-info';
+          
+          // Name
+          const name = document.createElement('h3');
+          name.textContent = mugshot.name;
+          name.className = 'mugshot-name';
+          info.appendChild(name);
+          
+          // Details
+          const details = document.createElement('ul');
+          details.className = 'mugshot-details';
+          
+          // Add detail items
+          const detailItems = [
+            `Age: ${mugshot.age}`,
+            `Gender: ${mugshot.gender}`,
+            `Date: ${new Date(mugshot.date).toLocaleDateString()}`,
+            mugshot.race ? `Race: ${mugshot.race}` : '',
+          ].filter(Boolean);
+          
+          detailItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            details.appendChild(li);
+          });
+          
+          info.appendChild(details);
+          
+          // If user is a subscriber, show complaints
+          if (userAccessType === "subscriber" && mugshot.complaints) {
+            const complaintsDiv = document.createElement('div');
+            complaintsDiv.className = 'complaint-list';
+            
+            const complaintsHeader = document.createElement('h4');
+            complaintsHeader.textContent = 'Complaints:';
+            complaintsDiv.appendChild(complaintsHeader);
+            
+            const complaintsList = document.createElement('ul');
+            
+            mugshot.complaints.forEach(complaint => {
+              const li = document.createElement('li');
+              li.textContent = complaint;
+              complaintsList.appendChild(li);
+            });
+            
+            complaintsDiv.appendChild(complaintsList);
+            info.appendChild(complaintsDiv);
+          } else if (mugshot.complaints) {
+            // Show subscription prompt for non-subscribers
+            const subPrompt = document.createElement('p');
+            subPrompt.textContent = 'Subscribe to view complaints';
+            subPrompt.className = 'subscription-prompt';
+            info.appendChild(subPrompt);
+          }
+          
+          card.appendChild(info);
+          resultsGrid.appendChild(card);
+        });
+      }
+      
+      resultsSection.appendChild(resultsGrid);
+      
+      // Show subscription banner after 3 searches for free users
+      if (userAccessType === "free" && searchCount >= 3) {
+        const subscribePrompt = document.createElement('div');
+        subscribePrompt.className = 'subscribe-banner';
+        
+        const promptText = document.createElement('p');
+        promptText.textContent = 'Subscribe now for unlimited access.';
+        subscribePrompt.appendChild(promptText);
+        
+        const subscribeBtn = document.createElement('button');
+        subscribeBtn.textContent = 'Subscribe Now';
+        subscribeBtn.onclick = subscribeNow;
+        
+        subscribePrompt.appendChild(subscribeBtn);
+        resultsSection.appendChild(subscribePrompt);
+      }
+      
+      // Add the results section to the page after the search form
+      const searchForm = document.querySelector('.search-section');
+      searchForm.parentNode.insertBefore(resultsSection, searchForm.nextSibling);
+      
+      // If the user is free and has viewed their max, show a subscription prompt
+      if (userAccessType === "free") {
+        viewedMugshotCount += displayResults.length;
+        localStorage.viewedMugshotCount = viewedMugshotCount;
+        
+        if (viewedMugshotCount >= 10) {
+          const subscribePrompt = document.createElement('div');
+          subscribePrompt.className = 'subscribe-banner';
+          
+          const promptText = document.createElement('p');
+          promptText.textContent = 'You have reached your limit of 10 mugshot views. Subscribe now for unlimited access.';
+          subscribePrompt.appendChild(promptText);
+          
+          const subscribeBtn = document.createElement('button');
+          subscribeBtn.textContent = 'Subscribe Now';
+          subscribeBtn.onclick = subscribeNow;
+          
+          subscribePrompt.appendChild(subscribeBtn);
+          resultsSection.appendChild(subscribePrompt);
+        }
+      }
+    }
+    
+    // Start free access
+    function startFreeAccess() {
+      userAccessType = "free";
+      localStorage.userAccessType = "free";
+      localStorage.searchCount = 0;
+      localStorage.viewedMugshotCount = 0;
+      
+      alert("You are now using Free Access. You can view up to 10 mugshots with a 3-search limit.");
+    }
+    
+    // Subscribe now
+    function subscribeNow() {
+      userAccessType = "subscriber";
+      localStorage.userAccessType = "subscriber";
+      
+      // In a real application, this would redirect to a payment page
+      alert("Redirecting to subscription payment page. Subscribe for $1/month or $10/year for unlimited access.");
+    }
+    
+    // Facebook snippet interaction simulation
+    function simulateFbInteraction(type) {
+      if (type === 'like') {
+        const likeBtn = document.getElementById('fbLikeBtnEl');
+        if (likeBtn.style.color === 'rgb(24, 119, 242)') {
+          likeBtn.style.color = '#65676b';
+          likeBtn.innerHTML = '<i class="far fa-thumbs-up"></i> Like';
+        } else {
+          likeBtn.style.color = '#1877f2';
+          likeBtn.innerHTML = '<i class="fas fa-thumbs-up"></i> Like';
+        }
+      } else if (type === 'comment') {
+        alert('Comment functionality would open a comment box in a real Facebook interface.');
+      } else if (type === 'share') {
+        alert('This would open Facebook sharing options in a real implementation.');
+      }
+    }
+  </script>
+  
+  

@@ -1,0 +1,1230 @@
+
+
+
+
+<style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+      text-align: left;
+    }
+  
+    /* Header styles */
+    header {
+      background-color: #1a3a5f;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+  
+    header.scrolled {
+      background-color: rgba(26, 58, 95, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+  
+    header > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  
+    header > div > div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  
+    header img {
+      border-radius: 50%;
+    }
+  
+    header span {
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    /* Facebook Snippet Styles */
+    .fb-snippet {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      margin: 2rem auto;
+      max-width: 550px;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+  
+    .fb-header {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #dddfe2;
+    }
+  
+    .fb-header img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  
+    .fb-header span {
+      font-weight: bold;
+      color: #1877f2;
+    }
+  
+    .fb-content {
+      padding: 12px;
+    }
+  
+    .fb-profile {
+      display: flex;
+      margin-bottom: 10px;
+    }
+  
+    .fb-profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  
+    .fb-profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .fb-profile-name {
+      font-weight: bold;
+    }
+  
+    .fb-profile-meta {
+      font-size: 12px;
+      color: #65676b;
+    }
+  
+    .fb-post-text {
+      margin-bottom: 10px;
+    }
+  
+    .fb-post-image-container {
+      border: 1px solid #dddfe2;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+  
+    .fb-post-image-container img {
+      width: 100%;
+      display: block;
+    }
+  
+    .fb-post-link-preview {
+      padding: 12px;
+    }
+  
+    .fb-post-link-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #050505;
+    }
+  
+    .fb-post-link-description {
+      font-size: 14px;
+      color: #65676b;
+      margin-top: 4px;
+    }
+  
+    .fb-actions {
+      display: flex;
+      padding: 0 12px;
+      border-top: 1px solid #dddfe2;
+    }
+  
+    .fb-action-button {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 12px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #65676b;
+      font-weight: 600;
+    }
+  
+    .fb-action-button i {
+      margin-right: 6px;
+    }
+  
+    .fb-action-button:hover {
+      background-color: #f2f2f2;
+    }
+  
+    /* Navigation */
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+  
+    nav a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      position: relative;
+      transition: color 0.3s;
+    }
+  
+    nav a:hover {
+      color: #f8cb4a;
+    }
+  
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #f8cb4a;
+      transition: width 0.3s;
+    }
+  
+    nav a:hover::after {
+      width: 100%;
+    }
+  
+    /* Hamburger menu */
+    button[aria-label="Toggle menu"] {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+  
+    button[aria-label="Toggle menu"] span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 5px 0;
+      transition: all 0.3s;
+    }
+  
+    /* Main content */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+  
+    /* Hero section */
+    main > div:first-child {
+      text-align: center;
+      padding: 3rem 1rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #1a3a5f, #2c5282);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  
+    main > div:first-child h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+  
+    main > div:first-child p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+  
+    /* Search section */
+    section {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+  
+    /* Search bar */
+    section:nth-of-type(1) > div:first-child {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    section:nth-of-type(1) > div:first-child > div {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      padding: 0 1rem;
+    }
+  
+    section:nth-of-type(1) > div:first-child > div i {
+      color: #777;
+      margin-right: 0.5rem;
+    }
+  
+    /* Standardize input styles to ensure consistent height */
+    input, select {
+      height: 44px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+    }
+  
+    section:nth-of-type(1) input[type="text"] {
+      width: 100%;
+      padding: 0 0.5rem;
+      border: none;
+      background: transparent;
+      height: 44px;
+    }
+  
+    section:nth-of-type(1) > div:first-child button {
+      background-color: #1a3a5f;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 0 1.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      height: 44px;
+    }
+  
+    section:nth-of-type(1) > div:first-child button:hover {
+      background-color: #2c5282;
+    }
+  
+    /* Filters */
+    section:nth-of-type(1) > div:last-child {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  
+    section:nth-of-type(1) > div:last-child > div {
+      flex: 1;
+      min-width: 220px; /* Increased to prevent overlap on smaller screens */
+    }
+  
+    section:nth-of-type(1) label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+  
+    section:nth-of-type(1) select {
+      width: 100%;
+      padding: 0 0.8rem;
+      appearance: none;
+      background-color: white;
+    }
+  
+    section:nth-of-type(1) > div:last-child > div > div {
+      position: relative;
+    }
+  
+    section:nth-of-type(1) > div:last-child > div > div i.fa-chevron-down {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      pointer-events: none;
+    }
+  
+    /* Date range */
+    section:nth-of-type(1) > div:last-child > div:nth-child(2) > div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  
+    section:nth-of-type(1) > div:last-child > div:nth-child(2) > div > div {
+      flex: 1;
+      position: relative;
+    }
+  
+    section:nth-of-type(1) input[type="date"] {
+      width: 100%;
+      height: 44px;
+    }
+  
+    section:nth-of-type(1) > div:last-child > div:nth-child(2) i.fa-calendar {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      pointer-events: none;
+    }
+  
+    /* Results section */
+    #resultsEl {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+  
+    #resultsEl > div {
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+  
+    #resultsEl > div:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  
+    #resultsEl img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+  
+    #resultsEl > div > div {
+      padding: 1rem;
+    }
+  
+    #resultsEl > div > div > div:first-child {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #1a3a5f;
+    }
+  
+    #resultsEl > div > div > div:nth-child(2) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+  
+    #resultsEl > div > div > div:nth-child(2) strong {
+      color: #555;
+    }
+  
+    #resultsEl > div > div > div:nth-child(3) {
+      border-top: 1px solid #eee;
+      padding-top: 0.8rem;
+    }
+  
+    #resultsEl > div > div > div:nth-child(3) > div {
+      font-weight: 600;
+      color: #e74c3c;
+      margin-bottom: 0.5rem;
+    }
+  
+    #resultsEl > div > div > div:nth-child(3) ul {
+      list-style: none;
+      font-size: 0.9rem;
+    }
+  
+    #resultsEl > div > div > div:nth-child(3) li {
+      padding: 0.3rem 0;
+      border-bottom: 1px dashed #eee;
+    }
+  
+    #resultsEl > div > div > div:nth-child(3) li:last-child {
+      border-bottom: none;
+    }
+  
+    /* Pagination */
+    section:nth-of-type(2) > div:last-child {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+  
+    section:nth-of-type(2) > div:last-child button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+  
+    section:nth-of-type(2) > div:last-child button:hover {
+      background-color: #1a3a5f;
+      color: white;
+      border-color: #1a3a5f;
+    }
+  
+    /* Randomize button */
+    main > button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #1a3a5f;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 auto 2rem;
+      font-weight: 600;
+      transition: background-color 0.3s;
+    }
+  
+    main > button:hover {
+      background-color: #2c5282;
+    }
+  
+    /* Footer styles */
+    footer {
+      background-color: #1a3a5f;
+      color: white;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+    }
+  
+    footer > div {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+  
+    footer > div > div {
+      flex: 1;
+      min-width: 300px;
+    }
+  
+    footer h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #f8cb4a;
+    }
+  
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+  
+    footer li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    footer li:last-child {
+      border-bottom: none;
+    }
+  
+    footer p {
+      line-height: 1.8;
+    }
+  
+    /* Modal */
+    #modalEl {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 200;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    #modalEl > div:first-child {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+  
+    #modalEl > div:last-child {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      background-color: white;
+      border-radius: 8px;
+      overflow: auto;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      animation: modalFadeIn 0.3s ease;
+    }
+  
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    #modalEl button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #555;
+      cursor: pointer;
+      z-index: 10;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.3s;
+    }
+  
+    #modalEl button:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  
+    #modalContentEl > div {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+    }
+  
+    @media (min-width: 768px) {
+      #modalContentEl > div {
+        flex-direction: row;
+        gap: 2rem;
+      }
+    }
+  
+    #modalContentEl img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+  
+    @media (min-width: 768px) {
+      #modalContentEl img {
+        margin-bottom: 0;
+      }
+    }
+  
+    #modalContentEl > div > div:last-child {
+      flex: 1;
+    }
+  
+    #modalContentEl > div > div:last-child > div:first-child {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #1a3a5f;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(2) {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(2) > div {
+      padding: 0.5rem;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(3) {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      border-left: 4px solid #e74c3c;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(3) > div {
+      font-weight: 600;
+      color: #e74c3c;
+      margin-bottom: 0.5rem;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(3) ul {
+      list-style: none;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(3) li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed #ddd;
+    }
+  
+    #modalContentEl > div > div:last-child > div:nth-child(3) li:last-child {
+      border-bottom: none;
+    }
+  
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      header > div {
+        padding: 1rem;
+      }
+  
+      nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: #1a3a5f;
+        padding: 5rem 2rem;
+        z-index: 90;
+        transition: right 0.3s ease;
+      }
+  
+      nav.open {
+        right: 0;
+      }
+  
+      nav ul {
+        flex-direction: column;
+        gap: 2rem;
+      }
+  
+      button[aria-label="Toggle menu"] {
+        display: block;
+        z-index: 100;
+      }
+  
+      main > div:first-child {
+        padding: 2rem 1rem;
+      }
+  
+      main > div:first-child h1 {
+        font-size: 1.8rem;
+      }
+  
+      section:nth-of-type(1) > div:first-child {
+        flex-direction: column;
+      }
+  
+
+      #resultsEl {
+        grid-template-columns: 1fr;
+      }
+      
+      footer > div {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+  
+  <!-- Add Font Awesome for proper icon display -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <header>
+    <div>
+      <div>
+        <img src="https://placehold.co/40x40?text=OK" alt="Oklahoma State Seal">
+        <span>Oklahoma Mugshot Records</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
+          <li><a href="#"><i class="fas fa-bell"></i> Subscribe</a></li>
+          <li><a href="#"><i class="fas fa-user"></i> Login</a></li>
+        </ul>
+      </nav>
+      <button aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+  
+  <main>
+    <div>
+      <h1>Oklahoma Department of Corrections</h1>
+      <p>Official Mugshot Records Database</p>
+    </div>
+  
+    <section>
+      <div>
+        <div>
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInputEl" placeholder="Search by name, location, or ID...">
+        </div>
+        <button onclick="searchMugshots()">
+          <span>Search</span>
+        </button>
+      </div>
+      
+      <div>
+        <div>
+          <label for="countyFilterEl">County:</label>
+          <div>
+            <select id="countyFilterEl">
+              <option value="">All Counties</option>
+              <option value="county1">Muskogee County</option>
+              <option value="county2">Oklahoma County</option>
+              <option value="county3">Tulsa County</option>
+            </select>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+        
+        <div>
+          <label for="dateFromEl">Date Range:</label>
+          <div>
+            <div>
+              <input type="date" id="dateFromEl" placeholder="From">
+            </div>
+            <span>to</span>
+            <div>
+              <input type="date" id="dateToEl" placeholder="To">
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <label for="genderFilterEl">Gender:</label>
+          <div>
+            <select id="genderFilterEl">
+              <option value="">All Genders</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+
+  
+    <section>
+      <div id="resultsEl"></div>
+      
+      <div>
+        <button onclick="update()"><i class="fas fa-chevron-left"></i></button>
+        <button onclick="update()">1</button>
+        <button onclick="update()">2</button>
+        <button onclick="update()">3</button>
+        <button onclick="update()">4</button>
+        <button onclick="update()"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <section class="fb-snippet">
+      <div class="fb-header">
+        <img src="https://placehold.co/40x40?text=f" alt="Facebook">
+        <span>Facebook</span>
+      </div>
+      
+      <div class="fb-content">
+        <div class="fb-profile">
+          <img src="https://placehold.co/40x40?text=OK" alt="Oklahoma Mugshot Records">
+          <div class="fb-profile-info">
+            <div class="fb-profile-name">Oklahoma Mugshot Records</div>
+            <div class="fb-profile-meta">Just now · <i class="fas fa-globe-americas"></i></div>
+          </div>
+        </div>
+        
+        <div class="fb-post-text">
+          Latest arrest records from Muskogee County. Stay informed about recent bookings in your area.
+        </div>
+        
+        <div class="fb-post-image-container">
+          <img src="https://placehold.co/600x300?text=Mugshot+Records" alt="Mugshot Records">
+          <div class="fb-post-link-preview">
+            <div class="fb-post-link-title">OKLAHOMA MUGSHOT RECORDS</div>
+            <div class="fb-post-link-description">Access the latest arrest records and mugshots from across Oklahoma counties.</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fb-actions">
+        <button class="fb-action-button" id="fbLikeBtnEl" onclick="simulateFbInteraction('like')">
+          <i class="far fa-thumbs-up"></i> Like
+        </button>
+        <button class="fb-action-button" onclick="simulateFbInteraction('comment')">
+          <i class="far fa-comment"></i> Comment
+        </button>
+        <button class="fb-action-button" onclick="simulateFbInteraction('share')">
+          <i class="far fa-share-square"></i> Share
+        </button>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <div>
+      <div>
+        <h2>County List</h2>
+        <ul>
+          <li>Craig County</li>
+          <li>Mayes County</li>
+          <li>McIntosh County</li>
+          <li>Muskogee County</li>
+          <li>Rogers County</li>
+          <li>Tulsa County</li>
+          <li>Wagoner County</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal Disclaimer</h2>
+        <p>This is an arrest, not a conviction, and the accused is presumed innocent of the allegations. An accused may never be convicted of the crime they were arrested for.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Modal for displaying full mugshot details -->
+  <div id="modalEl" hidden>
+    <div></div>
+    <div>
+      <button onclick="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <div id="modalContentEl"></div>
+    </div>
+    
+  </div>
+  
+  <!-- Learn HTML here:   https://www.khanacademy.org/computing/computer-programming/html-css    -->
+  
+  <script>
+    // Sample data for demonstration
+    const mugshotData = [
+      { 
+        id: 1, 
+        name: "Trenton J Palmer", 
+        age: 24, 
+        gender: "Male", 
+        race: "", 
+        county: "county1", 
+        date: "2025-06-25", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["ASSAULT AND BATTERY", "NO TAG OR EXP TAG", "DEFECTIVE VEHICLE"]
+      },
+      { 
+        id: 2, 
+        name: "Jane A Smith", 
+        age: 27, 
+        gender: "Female", 
+        race: "White", 
+        county: "county2", 
+        date: "2023-06-14", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DRUG POSSESSION", "RESISTING ARREST"]
+      },
+      { 
+        id: 3, 
+        name: "Robert K Johnson", 
+        age: 45, 
+        gender: "Male", 
+        race: "Black", 
+        county: "county1", 
+        date: "2023-06-13", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DUI", "SPEEDING", "DRIVING WITH SUSPENDED LICENSE"]
+      },
+      { 
+        id: 4, 
+        name: "Emily L Davis", 
+        age: 22, 
+        gender: "Female", 
+        race: "Hispanic", 
+        county: "county3", 
+        date: "2023-06-15", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["SHOPLIFTING", "TRESPASSING"]
+      },
+      { 
+        id: 5, 
+        name: "Michael P Wilson", 
+        age: 38, 
+        gender: "Male", 
+        race: "White", 
+        county: "county2", 
+        date: "2023-06-12", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["ASSAULT", "PUBLIC INTOXICATION"]
+      },
+      { 
+        id: 6, 
+        name: "Sarah T Martinez", 
+        age: 29, 
+        gender: "Female", 
+        race: "Asian", 
+        county: "county1", 
+        date: "2023-06-11", 
+        image: "https://placehold.co/300x350?text=Mugshot",
+        complaints: ["DRUG POSSESSION", "INTENT TO DISTRIBUTE"]
+      },
+    ];
+    
+    // Initialize the page
+    window.onload = function() {
+      displayMugshots(mugshotData);
+      initHeaderScroll();
+      initMobileMenu();
+    };
+    
+    // Initialize header scroll effect
+    function initHeaderScroll() {
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 10) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+    }
+    
+    // Initialize mobile menu
+    function initMobileMenu() {
+      const menuBtn = document.querySelector('button[aria-label="Toggle menu"]');
+      const nav = document.querySelector('nav');
+      
+      if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+          nav.classList.toggle('open');
+          
+          // Toggle the hamburger to X animation
+          const spans = this.querySelectorAll('span');
+          if (nav.classList.contains('open')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+          } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+          }
+        });
+      }
+    }
+    
+    // Display mugshots in the results container
+    function displayMugshots(data) {
+      const resultsContainer = document.getElementById("resultsEl");
+      resultsContainer.innerHTML = "";
+      
+      if (data.length === 0) {
+        resultsContainer.innerHTML = "<div><i class='fas fa-search'></i><p>No results found. Try adjusting your search criteria.</p></div>";
+        return;
+      }
+      
+      data.forEach(person => {
+        const card = document.createElement("div");
+        
+        let countyName = "";
+        switch(person.county) {
+          case "county1": countyName = "Muskogee County"; break;
+          case "county2": countyName = "Oklahoma County"; break;
+          case "county3": countyName = "Tulsa County"; break;
+          default: countyName = person.county;
+        }
+        
+        // Create complaints HTML
+        let complaintsHtml = '';
+        if (person.complaints && person.complaints.length > 0) {
+          complaintsHtml = `
+            <div>
+              <div>COMPLAINT</div>
+              <ul>
+                ${person.complaints.map(complaint => `<li>${complaint}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        }
+        
+        card.innerHTML = `
+          <img src="${person.image}" alt="${person.name}">
+          <div>
+            <div>${person.name}</div>
+            <div>
+              <div><strong>BOOKED:</strong> <span>${person.date}</span></div>
+              <div><strong>GENDER:</strong> <span>${person.gender}</span></div>
+              <div><strong>RACE:</strong> <span>${person.race || 'Not specified'}</span></div>
+              <div><strong>AGE:</strong> <span>${person.age}</span></div>
+              <div><strong>COUNTY:</strong> <span>${countyName}</span></div>
+            </div>
+            ${complaintsHtml}
+          </div>
+        `;
+        
+        // Add click event to open modal
+        card.addEventListener("click", function() {
+          openModal(person);
+        });
+        
+        resultsContainer.appendChild(card);
+      });
+    }
+    
+    // Open modal with full mugshot details
+    function openModal(person) {
+      const modalContent = document.getElementById("modalContentEl");
+      
+      let countyName = "";
+      switch(person.county) {
+        case "county1": countyName = "Muskogee County"; break;
+        case "county2": countyName = "Oklahoma County"; break;
+        case "county3": countyName = "Tulsa County"; break;
+        default: countyName = person.county;
+      }
+      
+      // Create complaints HTML
+      let complaintsHtml = '';
+      if (person.complaints && person.complaints.length > 0) {
+        complaintsHtml = `
+          <div>
+            <div>COMPLAINT</div>
+            <ul>
+              ${person.complaints.map(complaint => `<li>${complaint}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+      
+      modalContent.innerHTML = `
+        <div>
+          <img src="${person.image}" alt="${person.name}">
+          <div>
+            <div>${person.name}</div>
+            <div>
+              <div><strong>BOOKED:</strong> <span>${person.date}</span></div>
+              <div><strong>GENDER:</strong> <span>${person.gender}</span></div>
+              <div><strong>RACE:</strong> <span>${person.race || 'Not specified'}</span></div>
+              <div><strong>AGE:</strong> <span>${person.age}</span></div>
+              <div><strong>COUNTY:</strong> <span>${countyName}</span></div>
+            </div>
+            ${complaintsHtml}
+          </div>
+        </div>
+      `;
+      
+      document.getElementById("modalEl").hidden = false;
+      document.getElementById("modalEl").style.display = "flex";
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    }
+    
+    // Close the modal
+    function closeModal() {
+      document.getElementById("modalEl").hidden = true;
+      document.getElementById("modalEl").style.display = "none";
+      document.body.style.overflow = ''; // Restore scrolling
+    }
+    
+    // Close modal when clicking outside the content
+    window.onclick = function(event) {
+      const modal = document.getElementById("modalEl");
+      if (event.target === modal || event.target.classList.contains('modal-backdrop')) {
+        closeModal();
+      }
+    };
+    
+    // Search functionality with date range support
+    function searchMugshots() {
+      const searchInput = document.getElementById("searchInputEl").value.toLowerCase();
+      const countyFilter = document.getElementById("countyFilterEl").value;
+      const genderFilter = document.getElementById("genderFilterEl").value;
+      const dateFrom = document.getElementById("dateFromEl").value;
+      const dateTo = document.getElementById("dateToEl").value;
+      
+      // Filter the data based on search input and filters
+      const filteredData = mugshotData.filter(person => {
+        const matchesSearch = searchInput === "" || 
+                           person.name.toLowerCase().includes(searchInput) || 
+                           person.county.toLowerCase().includes(searchInput);
+        
+        const matchesCounty = countyFilter === "" || person.county === countyFilter;
+        const matchesGender = genderFilter === "" || person.gender.toLowerCase() === genderFilter.toLowerCase();
+        
+        // Date range filter logic
+        let matchesDateRange = true;
+        const personDate = new Date(person.date);
+        
+        if (dateFrom && !isNaN(new Date(dateFrom))) {
+          const fromDate = new Date(dateFrom);
+          matchesDateRange = personDate >= fromDate;
+        }
+        
+        if (dateTo && !isNaN(new Date(dateTo))) {
+          const toDate = new Date(dateTo);
+          // Set to end of day
+          toDate.setHours(23, 59, 59, 999);
+          matchesDateRange = matchesDateRange && (personDate <= toDate);
+        }
+        
+        return matchesSearch && matchesCounty && matchesGender && matchesDateRange;
+      });
+      
+      displayMugshots(filteredData);
+    }
+    
+    // Preserved original update function
+    function update() {
+      // Randomize the mugshot data display
+      const shuffledData = [...mugshotData].sort(() => 0.5 - Math.random());
+      displayMugshots(shuffledData);
+    }
+    // Facebook snippet interaction simulation
+    function simulateFbInteraction(type) {
+    if (type === 'like') {
+      const likeBtn = document.getElementById('fbLikeBtnEl');
+      if (likeBtn.style.color === 'rgb(24, 119, 242)') {
+        likeBtn.style.color = '#65676b';
+        likeBtn.innerHTML = '<i class="far fa-thumbs-up"></i> Like';
+      } else {
+        likeBtn.style.color = '#1877f2';
+        likeBtn.innerHTML = '<i class="fas fa-thumbs-up"></i> Like';
+      }
+    } else if (type === 'comment') {
+      alert('Comment functionality would open a comment box in a real Facebook interface.');
+    } else if (type === 'share') {
+      alert('This would open Facebook sharing options in a real implementation.');
+    }
+  }
+
+  </script>
+  
