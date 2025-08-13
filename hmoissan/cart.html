@@ -1,475 +1,495 @@
-<!-- Added Font Awesome CDN for modern icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-    .cart-item {
-        display: flex;
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-        align-items: center;
-    }
-    .cart-item img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-right: 15px;
-    }
-    .item-details {
-        flex: 1;
-    }
-    .item-name {
-        font-weight: 600;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-    .item-price {
-        color: #0d5d56;
-        font-weight: 700;
-        font-size: 18px;
-    }
-    .quantity-controls {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .quantity-btn {
-        width: 30px;
-        height: 30px;
-        border: 1px solid #ddd;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-    .quantity-btn:hover {
-        background: #f5f5f5;
-    }
-    .remove-btn {
-        color: #ff4444;
-        border: none;
-        background: none;
-        cursor: pointer;
-        padding: 5px;
-        margin-left: 10px;
-    }
-    .cart-summary {
-        padding: 20px;
-        background: #f9f9f9;
-        border-top: 1px solid #eee;
-    }
-    .summary-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-    .total-row {
-        font-weight: 700;
-        font-size: 18px;
-        color: #0d5d56;
-        border-top: 1px solid #ddd;
-        padding-top: 10px;
-    }
-    .checkout-btn {
-        width: 100%;
-        background: linear-gradient(145deg, #0d5d56, #0a4742);
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 15px;
-        transition: all 0.3s ease;
-    }
-    .checkout-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(13, 93, 86, 0.3);
-    }
-    .empty-cart {
-        text-align: center;
-        padding: 60px 20px;
-        color: #666;
-    }
-    .empty-cart i {
-        font-size: 64px;
-        margin-bottom: 20px;
-        color: #ddd;
-    }
-    .continue-shopping-btn {
-        background: #0d5d56;
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 6px;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-</style>
-
-<mobile-view>
-    <div>
-        <!-- Header -->
-        <div style="background-color: #0d5d56; padding: 15px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
-                    <span style="font-weight: bold; font-size: 18px;">Mi Carrito</span>
-                </div>
-                <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
-                    <i class="fas fa-bell" style="font-size: 24px;"></i>
-                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cart Items Container -->
-        <div id="cartItemsContainer">
-            <!-- Cart items will be populated by JavaScript -->
-        </div>
-
-        <!-- Cart Summary (shown when items exist) -->
-        <div id="cartSummary" class="cart-summary" style="display: none;">
-            <div class="summary-row">
-                <span>Subtotal:</span>
-                <span id="subtotal">$0</span>
-            </div>
-            <div class="summary-row">
-                <span>Envío:</span>
-                <span>Gratis</span>
-            </div>
-            <div class="summary-row">
-                <span>Impuestos:</span>
-                <span id="taxes">$0</span>
-            </div>
-            <div class="summary-row total-row">
-                <span>Total:</span>
-                <span id="total">$0</span>
-            </div>
-            <button class="checkout-btn" onclick="goToCheckout()">
-                <i class="fas fa-credit-card" style="margin-right: 8px;"></i>
-                Proceder al Pago
-            </button>
-        </div>
-
-        <!-- Empty Cart Message -->
-        <div id="emptyCart" class="empty-cart">
-            <i class="fas fa-shopping-cart"></i>
-            <h3>Tu carrito está vacío</h3>
-            <p>¡Explora nuestras hermosas colecciones y encuentra la joya perfecta!</p>
-            <button class="continue-shopping-btn" onclick="goToCategories()">
-                Continuar Comprando
-            </button>
-        </div>
-    </div>
-</mobile-view>
-
-<script>
-    class MobileView extends HTMLElement {
-        constructor() {
-            super();
-            const shadow = this.attachShadow({ mode: 'open' });
-
-            // Add Font Awesome CDN to shadow DOM
-            const fontAwesomeLink = document.createElement('link');
-            fontAwesomeLink.setAttribute('rel', 'stylesheet');
-            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-            shadow.appendChild(fontAwesomeLink);
-
-            // Main container
-            const wrapper = document.createElement('div');
-            wrapper.id = 'mobileFrameCtn';
-            wrapper.innerHTML = `
-                <div id="mobileFrameEl">
-                    <!-- Status Bar -->
-                    <div id="statusBarEl">
-                        <span>9:41</span>
-                        <div style="display: flex; gap: 6px;">
-                            <i class="fas fa-signal"></i>
-                            <i class="fas fa-battery-three-quarters"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- App Content Area -->
-                    <div id="screenContentEl">
-                        <slot></slot>
-                    </div>
-                    
-                    <!-- Bottom Navigation Bar -->
-                    <div id="navBarEl">
-                        <div class="nav-item" onclick="goToHome()">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </div>
-                        <div class="nav-item active">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Carrito</span>
-                        </div>
-                        <div class="nav-item" onclick="goToProfile()">
-                            <i class="fas fa-user"></i>
-                            <span>Perfil</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Internal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                #mobileFrameCtn {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-                #mobileFrameEl {
-                    width: 375px;
-                    height: 667px;
-                    border-radius: 36px;
-                    overflow: hidden;
-                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                }
-                #statusBarEl {
-                    height: 44px;
-                    background: #000;
-                    color: #fff;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 20px;
-                    font-size: 14px;
-                }
-                #screenContentEl {
-                    flex: 1;
-                    overflow-y: auto;
-                    background: #fff;
-                    padding-bottom: 60px;
-                }
-                #navBarEl {
-                    height: 60px;
-                    background: #fff;
-                    color: #333;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    border-top: 1px solid #ddd;
-                    z-index: 1;
-                }
-                .nav-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                    transition: color 0.3s;
-                }
-                .nav-item.active {
-                    color: #0d5d56;
-                }
-                .nav-item i {
-                    font-size: 20px;
-                    margin-bottom: 4px;
-                }
-                .nav-item span {
-                    font-size: 12px;
-                }
-                @media (max-width: 420px) {
-                    #mobileFrameEl {
-                        width: 100%;
-                        max-width: 375px;
-                        height: 100vh;
-                        max-height: 667px;
-                        border-radius: 0;
-                    }
-                }
-            `;
-
-            shadow.appendChild(style);
-            shadow.appendChild(wrapper);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0d5d56">
+    
+    <title>Hmoissan - Joyería Fina</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <style>
+        .cart-item {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
         }
-    }
-
-    customElements.define('mobile-view', MobileView);
-
-    // Sample cart data for demo
-    let cartItems = [
-        {
-            id: 1,
-            name: 'Elegant Diamond Ring',
-            price: 2450,
-            quantity: 1,
-            image: 'https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640'
-        },
-        {
-            id: 2,
-            name: 'Pearl Necklace',
-            price: 1890,
-            quantity: 1,
-            image: 'https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640'
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
         }
-    ];
-
-    // Initialize cart on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        renderCart();
-    });
-
-    function renderCart() {
-        const container = document.getElementById('cartItemsContainer');
-        const summary = document.getElementById('cartSummary');
-        const emptyCart = document.getElementById('emptyCart');
-
-        if (cartItems.length === 0) {
-            container.innerHTML = '';
-            summary.style.display = 'none';
-            emptyCart.style.display = 'block';
-            return;
+        .item-details {
+            flex: 1;
         }
-
-        emptyCart.style.display = 'none';
-        summary.style.display = 'block';
-
-        // Render cart items
-        container.innerHTML = cartItems.map(item => `
-            <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}">
-                <div class="item-details">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">$${item.price.toLocaleString()}</div>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <span style="min-width: 20px; text-align: center;">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">
-                            <i class="fas fa-plus"></i>
-                        </button>
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .item-price {
+            color: #0d5d56;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .quantity-btn:hover {
+            background: #f5f5f5;
+        }
+        .remove-btn {
+            color: #ff4444;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .cart-summary {
+            padding: 20px;
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .total-row {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0d5d56;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #0d5d56, #0a4742);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 93, 86, 0.3);
+        }
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .empty-cart i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        .continue-shopping-btn {
+            background: #0d5d56;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+    
+    <mobile-view>
+        <div>
+            <!-- Header -->
+            <div style="background-color: #0d5d56; padding: 15px; color: white;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
+                        <span style="font-weight: bold; font-size: 18px;">Mi Carrito</span>
+                    </div>
+                    <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                        <i class="fas fa-bell" style="font-size: 24px;"></i>
+                        <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
                     </div>
                 </div>
-                <button class="remove-btn" onclick="removeItem(${item.id})">
-                    <i class="fas fa-trash"></i>
+            </div>
+    
+            <!-- Cart Items Container -->
+            <div id="cartItemsContainer">
+                <!-- Cart items will be populated by JavaScript -->
+            </div>
+    
+            <!-- Cart Summary (shown when items exist) -->
+            <div id="cartSummary" class="cart-summary" style="display: none;">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Envío:</span>
+                    <span>Gratis</span>
+                </div>
+                <div class="summary-row">
+                    <span>Impuestos:</span>
+                    <span id="taxes">$0</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>Total:</span>
+                    <span id="total">$0</span>
+                </div>
+                <button class="checkout-btn" onclick="goToCheckout()">
+                    <i class="fas fa-credit-card" style="margin-right: 8px;"></i>
+                    Proceder al Pago
                 </button>
             </div>
-        `).join('');
-
-        // Update summary
-        updateSummary();
-    }
-
-    function updateQuantity(itemId, change) {
-        const item = cartItems.find(item => item.id === itemId);
-        if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                removeItem(itemId);
-            } else {
-                renderCart();
+    
+            <!-- Empty Cart Message -->
+            <div id="emptyCart" class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h3>Tu carrito está vacío</h3>
+                <p>¡Explora nuestras hermosas colecciones y encuentra la joya perfecta!</p>
+                <button class="continue-shopping-btn" onclick="goToCategories()">
+                    Continuar Comprando
+                </button>
+            </div>
+        </div>
+    </mobile-view>
+    
+    <script>
+        class MobileView extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+    
+                // Add Font Awesome CDN to shadow DOM
+                const fontAwesomeLink = document.createElement('link');
+                fontAwesomeLink.setAttribute('rel', 'stylesheet');
+                fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+                shadow.appendChild(fontAwesomeLink);
+    
+                // Main container
+                const wrapper = document.createElement('div');
+                wrapper.id = 'mobileFrameCtn';
+                wrapper.innerHTML = `
+                    <div id="mobileFrameEl">
+                        <!-- Status Bar -->
+                        <div id="statusBarEl">
+                            <span>9:41</span>
+                            <div style="display: flex; gap: 6px;">
+                                <i class="fas fa-signal"></i>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- App Content Area -->
+                        <div id="screenContentEl">
+                            <slot></slot>
+                        </div>
+                        
+                        <!-- Bottom Navigation Bar -->
+                        <div id="navBarEl">
+                            <div class="nav-item" onclick="goToHome()">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </div>
+                            <div class="nav-item active">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Carrito</span>
+                            </div>
+                            <div class="nav-item" onclick="goToProfile()">
+                                <i class="fas fa-user"></i>
+                                <span>Perfil</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                // Internal styles
+                const style = document.createElement('style');
+                style.textContent = `
+                    #mobileFrameCtn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        background-color: #f5f5f5;
+                    }
+                    #mobileFrameEl {
+                        width: 375px;
+                        height: 667px;
+                        border-radius: 36px;
+                        overflow: hidden;
+                        box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    #statusBarEl {
+                        height: 44px;
+                        background: #000;
+                        color: #fff;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 20px;
+                        font-size: 14px;
+                    }
+                    #screenContentEl {
+                        flex: 1;
+                        overflow-y: auto;
+                        background: #fff;
+                        padding-bottom: 60px;
+                    }
+                    #navBarEl {
+                        height: 60px;
+                        background: #fff;
+                        color: #333;
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        border-top: 1px solid #ddd;
+                        z-index: 1;
+                    }
+                    .nav-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+                    .nav-item.active {
+                        color: #0d5d56;
+                    }
+                    .nav-item i {
+                        font-size: 20px;
+                        margin-bottom: 4px;
+                    }
+                    .nav-item span {
+                        font-size: 12px;
+                    }
+                    @media (max-width: 420px) {
+                        #mobileFrameEl {
+                            width: 100%;
+                            max-width: 375px;
+                            height: 100vh;
+                            max-height: 667px;
+                            border-radius: 0;
+                        }
+                    }
+                `;
+    
+                shadow.appendChild(style);
+                shadow.appendChild(wrapper);
             }
         }
-    }
-
-    function removeItem(itemId) {
-        cartItems = cartItems.filter(item => item.id !== itemId);
-        renderCart();
-    }
-
-    function updateSummary() {
-        const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const taxes = Math.round(subtotal * 0.16); // 16% tax
-        const total = subtotal + taxes;
-
-        document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString()}`;
-        document.getElementById('taxes').textContent = `$${taxes.toLocaleString()}`;
-        document.getElementById('total').textContent = `$${total.toLocaleString()}`;
-    }
-
-    function goBack() {
-        window.history.back();
-    }
-
-    function goToHome() {
-        window.location.href = './index.html';
-    }
-
-    function goToProfile() {
-        window.location.href = './profile.html';
-    }
-
-    function goToNotifications() {
-        window.location.href = './notifications.html';
-    }
-
-    // Detect if viewing on mobile device
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    }
-
-    // Update notification badge
-    window.addEventListener('DOMContentLoaded', function() {
-        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
-        const badge = document.getElementById('notificationBadge');
-        if (badge && unreadCount > 0) {
-            badge.textContent = unreadCount;
-            badge.style.display = 'flex';
-        } else if (badge) {
-            badge.style.display = 'none';
+    
+        customElements.define('mobile-view', MobileView);
+    
+        // Sample cart data for demo
+        let cartItems = [
+            {
+                id: 1,
+                name: 'Elegant Diamond Ring',
+                price: 2450,
+                quantity: 1,
+                image: 'https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640'
+            },
+            {
+                id: 2,
+                name: 'Pearl Necklace',
+                price: 1890,
+                quantity: 1,
+                image: 'https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640'
+            }
+        ];
+    
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCart();
+        });
+    
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const summary = document.getElementById('cartSummary');
+            const emptyCart = document.getElementById('emptyCart');
+    
+            if (cartItems.length === 0) {
+                container.innerHTML = '';
+                summary.style.display = 'none';
+                emptyCart.style.display = 'block';
+                return;
+            }
+    
+            emptyCart.style.display = 'none';
+            summary.style.display = 'block';
+    
+            // Render cart items
+            container.innerHTML = cartItems.map(item => `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-details">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">$${item.price.toLocaleString()}</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <span style="min-width: 20px; text-align: center;">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+    
+            // Update summary
+            updateSummary();
         }
-        
-        // If on mobile device, hide mobile-view frame and show full screen
-        if (isMobileDevice()) {
-            const mobileView = document.querySelector('mobile-view');
-            if (mobileView) {
-                mobileView.style.cssText = `
-                    display: block;
-                    width: 100vw;
-                    height: 100vh;
-                    margin: 0;
-                    border-radius: 0;
-                    box-shadow: none;
-                    background: white;
-                `;
-                
-                // Override shadow DOM styles for mobile
-                const shadowRoot = mobileView.shadowRoot;
-                if (shadowRoot) {
-                    const style = shadowRoot.querySelector('style');
-                    if (style) {
-                        style.textContent += `
-                            #mobileFrameEl {
-                                width: 100vw !important;
-                                height: 100vh !important;
-                                border-radius: 0 !important;
-                                box-shadow: none !important;
-                            }
-                        `;
-                    }
+    
+        function updateQuantity(itemId, change) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeItem(itemId);
+                } else {
+                    renderCart();
                 }
             }
-            
-            // Also hide body margins on mobile
-            document.body.style.margin = '0';
-            document.body.style.padding = '0';
-            document.body.style.overflow = 'hidden';
         }
-    });
+    
+        function removeItem(itemId) {
+            cartItems = cartItems.filter(item => item.id !== itemId);
+            renderCart();
+        }
+    
+        function updateSummary() {
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const taxes = Math.round(subtotal * 0.16); // 16% tax
+            const total = subtotal + taxes;
+    
+            document.getElementById('subtotal').textContent = `$${subtotal.toLocaleString()}`;
+            document.getElementById('taxes').textContent = `$${taxes.toLocaleString()}`;
+            document.getElementById('total').textContent = `$${total.toLocaleString()}`;
+        }
+    
+        function goBack() {
+            window.history.back();
+        }
+    
+        function goToHome() {
+            window.location.href = './index.html';
+        }
+    
+        function goToProfile() {
+            window.location.href = './profile.html';
+        }
+    
+        function goToNotifications() {
+            window.location.href = './notifications.html';
+        }
+    
+        // Detect if viewing on mobile device
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+    
+        // Update notification badge
+        window.addEventListener('DOMContentLoaded', function() {
+            const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+            const badge = document.getElementById('notificationBadge');
+            if (badge && unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else if (badge) {
+                badge.style.display = 'none';
+            }
+            
+            // If on mobile device, hide mobile-view frame and show full screen
+            if (isMobileDevice()) {
+                const mobileView = document.querySelector('mobile-view');
+                if (mobileView) {
+                    mobileView.style.cssText = `
+                        display: block;
+                        width: 100vw;
+                        height: 100vh;
+                        margin: 0;
+                        border-radius: 0;
+                        box-shadow: none;
+                        background: white;
+                    `;
+                    
+                    // Override shadow DOM styles for mobile
+                    const shadowRoot = mobileView.shadowRoot;
+                    if (shadowRoot) {
+                        const style = shadowRoot.querySelector('style');
+                        if (style) {
+                            style.textContent += `
+                                #mobileFrameEl {
+                                    width: 100vw !important;
+                                    height: 100vh !important;
+                                    border-radius: 0 !important;
+                                    box-shadow: none !important;
+                                }
+                            `;
+                        }
+                    }
+                }
+                
+                // Also hide body margins on mobile
+                document.body.style.margin = '0';
+                document.body.style.padding = '0';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    
+        function goToCategories() {
+            window.location.href = './categories.html';
+        }
+    
+        function goToCheckout() {
+            window.location.href = './checkout.html';
+        }
+    </script>
+</body>
+</html>
 
-    function goToCategories() {
-        window.location.href = './categories.html';
-    }
 
-    function goToCheckout() {
-        window.location.href = './checkout.html';
-    }
-</script>
+
+

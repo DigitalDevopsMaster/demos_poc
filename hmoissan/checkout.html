@@ -1,416 +1,433 @@
 <!-- Added Font Awesome CDN for modern icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-    .checkout-section {
-        padding: 20px;
-        border-bottom: 8px solid #f5f5f5;
-    }
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        color: #333;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .form-label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 5px;
-        color: #333;
-    }
-    .form-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 16px;
-        box-sizing: border-box;
-    }
-    .form-input:focus {
-        outline: none;
-        border-color: #0d5d56;
-        box-shadow: 0 0 0 2px rgba(13, 93, 86, 0.1);
-    }
-    .form-row {
-        display: flex;
-        gap: 10px;
-    }
-    .form-row .form-group {
-        flex: 1;
-    }
-    .address-card {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 10px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .address-card.selected {
-        border-color: #0d5d56;
-        background: rgba(13, 93, 86, 0.05);
-    }
-    .address-card:hover {
-        border-color: #0d5d56;
-    }
-    .payment-method {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-    .payment-method.selected {
-        border-color: #0d5d56;
-        background: rgba(13, 93, 86, 0.05);
-    }
-    .payment-method i {
-        font-size: 24px;
-        margin-right: 15px;
-        color: #0d5d56;
-    }
-    .order-summary {
-        background: #f9f9f9;
-        padding: 20px;
-        margin: 20px;
-        border-radius: 8px;
-    }
-    .summary-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-    .summary-total {
-        font-weight: 700;
-        font-size: 18px;
-        color: #0d5d56;
-        border-top: 1px solid #ddd;
-        padding-top: 10px;
-        margin-top: 10px;
-    }
-    .place-order-btn {
-        width: calc(100% - 40px);
-        background: linear-gradient(145deg, #0d5d56, #0a4742);
-        color: white;
-        border: none;
-        padding: 18px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 18px;
-        cursor: pointer;
-        margin: 20px;
-        transition: all 0.3s ease;
-    }
-    .place-order-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(13, 93, 86, 0.3);
-    }
-    .security-info {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        color: #666;
-        font-size: 12px;
-        margin: 10px 20px;
-    }
-</style>
-
-<mobile-view>
-    <div>
-        <!-- Header -->
-        <div style="background-color: #0d5d56; padding: 15px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
-                    <span style="font-weight: bold; font-size: 18px;">Checkout</span>
-                </div>
-                <i class="fas fa-shield-alt" style="font-size: 18px; color: #4CAF50;"></i>
-            </div>
-        </div>
-
-        <!-- Shipping Address Section -->
-        <div class="checkout-section">
-            <div class="section-title">
-                <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #0d5d56;"></i>
-                Dirección de Envío
-            </div>
-            
-            <div class="address-card selected">
-                <div style="font-weight: 600; margin-bottom: 5px;">María González</div>
-                <div style="color: #666; font-size: 14px;">
-                    Calle Principal 123<br>
-                    Colonia Centro, Ciudad de México<br>
-                    CP 01000, México<br>
-                    Tel: +52 55 1234 5678
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 15px;">
-                <button style="color: #0d5d56; background: none; border: none; text-decoration: underline; cursor: pointer;">
-                    + Agregar nueva dirección
-                </button>
-            </div>
-        </div>
-
-        <!-- Payment Method Section -->
-        <div class="checkout-section">
-            <div class="section-title">
-                <i class="fas fa-credit-card" style="margin-right: 8px; color: #0d5d56;"></i>
-                Método de Pago
-            </div>
-            
-            <div class="payment-method selected" onclick="selectPayment('paypal')">
-                <i class="fab fa-paypal" style="color: #003087;"></i>
-                <div>
-                    <div style="font-weight: 600;">PayPal</div>
-                    <div style="color: #666; font-size: 14px;">maria.gonzalez@email.com</div>
-                </div>
-            </div>
-            
-            <div class="payment-method" onclick="selectPayment('googlepay')">
-                <i class="fab fa-google-pay" style="color: #4285F4;"></i>
-                <div>
-                    <div style="font-weight: 600;">Google Pay</div>
-                    <div style="color: #666; font-size: 14px;">Pago rápido y seguro</div>
-                </div>
-            </div>
-            
-            <div class="payment-method" onclick="selectPayment('stripe')">
-                <i class="fas fa-credit-card" style="color: #635BFF;"></i>
-                <div>
-                    <div style="font-weight: 600;">Stripe</div>
-                    <div style="color: #666; font-size: 14px;">Tarjeta de crédito/débito</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="order-summary">
-            <div class="section-title" style="margin-bottom: 15px;">Resumen del Pedido</div>
-            
-            <div class="summary-item">
-                <span>Elegant Diamond Ring (1x)</span>
-                <span>$2,450</span>
-            </div>
-            <div class="summary-item">
-                <span>Pearl Necklace (1x)</span>
-                <span>$1,890</span>
-            </div>
-            <div class="summary-item">
-                <span>Subtotal:</span>
-                <span>$4,340</span>
-            </div>
-            <div class="summary-item">
-                <span>Envío:</span>
-                <span style="color: #4CAF50;">Gratis</span>
-            </div>
-            <div class="summary-item">
-                <span>Impuestos:</span>
-                <span>$694</span>
-            </div>
-            <div class="summary-item summary-total">
-                <span>Total:</span>
-                <span>$5,034</span>
-            </div>
-        </div>
-
-        <!-- Security Info -->
-        <div class="security-info">
-            <i class="fas fa-lock"></i>
-            <span>Transacción segura con encriptación SSL</span>
-        </div>
-
-        <!-- Place Order Button -->
-        <button class="place-order-btn" onclick="placeOrder()">
-            <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
-            Realizar Pedido
-        </button>
-    </div>
-</mobile-view>
-
-<script>
-    class MobileView extends HTMLElement {
-        constructor() {
-            super();
-            const shadow = this.attachShadow({ mode: 'open' });
-
-            // Add Font Awesome CDN to shadow DOM
-            const fontAwesomeLink = document.createElement('link');
-            fontAwesomeLink.setAttribute('rel', 'stylesheet');
-            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-            shadow.appendChild(fontAwesomeLink);
-
-            // Main container
-            const wrapper = document.createElement('div');
-            wrapper.id = 'mobileFrameCtn';
-            wrapper.innerHTML = `
-                <div id="mobileFrameEl">
-                    <!-- Status Bar -->
-                    <div id="statusBarEl">
-                        <span>9:41</span>
-                        <div style="display: flex; gap: 6px;">
-                            <i class="fas fa-signal"></i>
-                            <i class="fas fa-battery-three-quarters"></i>
-                        </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0d5d56">
+    
+    <title>Hmoissan - Joyería Fina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <style>
+        .checkout-section {
+            padding: 20px;
+            border-bottom: 8px solid #f5f5f5;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #0d5d56;
+            box-shadow: 0 0 0 2px rgba(13, 93, 86, 0.1);
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .address-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .address-card.selected {
+            border-color: #0d5d56;
+            background: rgba(13, 93, 86, 0.05);
+        }
+        .address-card:hover {
+            border-color: #0d5d56;
+        }
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .payment-method.selected {
+            border-color: #0d5d56;
+            background: rgba(13, 93, 86, 0.05);
+        }
+        .payment-method i {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #0d5d56;
+        }
+        .order-summary {
+            background: #f9f9f9;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .summary-total {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0d5d56;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        .place-order-btn {
+            width: calc(100% - 40px);
+            background: linear-gradient(145deg, #0d5d56, #0a4742);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 20px;
+            transition: all 0.3s ease;
+        }
+        .place-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(13, 93, 86, 0.3);
+        }
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #666;
+            font-size: 12px;
+            margin: 10px 20px;
+        }
+    </style>
+    
+    <mobile-view>
+        <div>
+            <!-- Header -->
+            <div style="background-color: #0d5d56; padding: 15px; color: white;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
+                        <span style="font-weight: bold; font-size: 18px;">Checkout</span>
                     </div>
-                    
-                    <!-- App Content Area -->
-                    <div id="screenContentEl">
-                        <slot></slot>
-                    </div>
-                    
-                    <!-- Bottom Navigation Bar -->
-                    <div id="navBarEl">
-                        <div class="nav-item" onclick="goToHome()">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </div>
-                        <div class="nav-item" onclick="goToCart()">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Carrito</span>
-                        </div>
-                        <div class="nav-item" onclick="goToProfile()">
-                            <i class="fas fa-user"></i>
-                            <span>Perfil</span>
-                        </div>
+                    <i class="fas fa-shield-alt" style="font-size: 18px; color: #4CAF50;"></i>
+                </div>
+            </div>
+    
+            <!-- Shipping Address Section -->
+            <div class="checkout-section">
+                <div class="section-title">
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px; color: #0d5d56;"></i>
+                    Dirección de Envío
+                </div>
+                
+                <div class="address-card selected">
+                    <div style="font-weight: 600; margin-bottom: 5px;">María González</div>
+                    <div style="color: #666; font-size: 14px;">
+                        Calle Principal 123<br>
+                        Colonia Centro, Ciudad de México<br>
+                        CP 01000, México<br>
+                        Tel: +52 55 1234 5678
                     </div>
                 </div>
-            `;
-
-            // Internal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                #mobileFrameCtn {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-                #mobileFrameEl {
-                    width: 375px;
-                    height: 667px;
-                    border-radius: 36px;
-                    overflow: hidden;
-                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                }
-                #statusBarEl {
-                    height: 44px;
-                    background: #000;
-                    color: #fff;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 20px;
-                    font-size: 14px;
-                }
-                #screenContentEl {
-                    flex: 1;
-                    overflow-y: auto;
-                    background: #fff;
-                    padding-bottom: 60px;
-                }
-                #navBarEl {
-                    height: 60px;
-                    background: #fff;
-                    color: #333;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    border-top: 1px solid #ddd;
-                    z-index: 1;
-                }
-                .nav-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                    transition: color 0.3s;
-                }
-                .nav-item i {
-                    font-size: 20px;
-                    margin-bottom: 4px;
-                }
-                .nav-item span {
-                    font-size: 12px;
-                }
-                @media (max-width: 420px) {
-                    #mobileFrameEl {
-                        width: 100%;
-                        max-width: 375px;
-                        height: 100vh;
-                        max-height: 667px;
-                        border-radius: 0;
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button style="color: #0d5d56; background: none; border: none; text-decoration: underline; cursor: pointer;">
+                        + Agregar nueva dirección
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Payment Method Section -->
+            <div class="checkout-section">
+                <div class="section-title">
+                    <i class="fas fa-credit-card" style="margin-right: 8px; color: #0d5d56;"></i>
+                    Método de Pago
+                </div>
+                
+                <div class="payment-method selected" onclick="selectPayment('paypal')">
+                    <i class="fab fa-paypal" style="color: #003087;"></i>
+                    <div>
+                        <div style="font-weight: 600;">PayPal</div>
+                        <div style="color: #666; font-size: 14px;">maria.gonzalez@email.com</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="selectPayment('googlepay')">
+                    <i class="fab fa-google-pay" style="color: #4285F4;"></i>
+                    <div>
+                        <div style="font-weight: 600;">Google Pay</div>
+                        <div style="color: #666; font-size: 14px;">Pago rápido y seguro</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="selectPayment('stripe')">
+                    <i class="fas fa-credit-card" style="color: #635BFF;"></i>
+                    <div>
+                        <div style="font-weight: 600;">Stripe</div>
+                        <div style="color: #666; font-size: 14px;">Tarjeta de crédito/débito</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="section-title" style="margin-bottom: 15px;">Resumen del Pedido</div>
+                
+                <div class="summary-item">
+                    <span>Elegant Diamond Ring (1x)</span>
+                    <span>$2,450</span>
+                </div>
+                <div class="summary-item">
+                    <span>Pearl Necklace (1x)</span>
+                    <span>$1,890</span>
+                </div>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span>$4,340</span>
+                </div>
+                <div class="summary-item">
+                    <span>Envío:</span>
+                    <span style="color: #4CAF50;">Gratis</span>
+                </div>
+                <div class="summary-item">
+                    <span>Impuestos:</span>
+                    <span>$694</span>
+                </div>
+                <div class="summary-item summary-total">
+                    <span>Total:</span>
+                    <span>$5,034</span>
+                </div>
+            </div>
+    
+            <!-- Security Info -->
+            <div class="security-info">
+                <i class="fas fa-lock"></i>
+                <span>Transacción segura con encriptación SSL</span>
+            </div>
+    
+            <!-- Place Order Button -->
+            <button class="place-order-btn" onclick="placeOrder()">
+                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                Realizar Pedido
+            </button>
+        </div>
+    </mobile-view>
+    
+    <script>
+        class MobileView extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+    
+                // Add Font Awesome CDN to shadow DOM
+                const fontAwesomeLink = document.createElement('link');
+                fontAwesomeLink.setAttribute('rel', 'stylesheet');
+                fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+                shadow.appendChild(fontAwesomeLink);
+    
+                // Main container
+                const wrapper = document.createElement('div');
+                wrapper.id = 'mobileFrameCtn';
+                wrapper.innerHTML = `
+                    <div id="mobileFrameEl">
+                        <!-- Status Bar -->
+                        <div id="statusBarEl">
+                            <span>9:41</span>
+                            <div style="display: flex; gap: 6px;">
+                                <i class="fas fa-signal"></i>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- App Content Area -->
+                        <div id="screenContentEl">
+                            <slot></slot>
+                        </div>
+                        
+                        <!-- Bottom Navigation Bar -->
+                        <div id="navBarEl">
+                            <div class="nav-item" onclick="goToHome()">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </div>
+                            <div class="nav-item" onclick="goToCart()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Carrito</span>
+                            </div>
+                            <div class="nav-item" onclick="goToProfile()">
+                                <i class="fas fa-user"></i>
+                                <span>Perfil</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                // Internal styles
+                const style = document.createElement('style');
+                style.textContent = `
+                    #mobileFrameCtn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        background-color: #f5f5f5;
                     }
-                }
-            `;
-
-            shadow.appendChild(style);
-            shadow.appendChild(wrapper);
+                    #mobileFrameEl {
+                        width: 375px;
+                        height: 667px;
+                        border-radius: 36px;
+                        overflow: hidden;
+                        box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    #statusBarEl {
+                        height: 44px;
+                        background: #000;
+                        color: #fff;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 20px;
+                        font-size: 14px;
+                    }
+                    #screenContentEl {
+                        flex: 1;
+                        overflow-y: auto;
+                        background: #fff;
+                        padding-bottom: 60px;
+                    }
+                    #navBarEl {
+                        height: 60px;
+                        background: #fff;
+                        color: #333;
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        border-top: 1px solid #ddd;
+                        z-index: 1;
+                    }
+                    .nav-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+                    .nav-item i {
+                        font-size: 20px;
+                        margin-bottom: 4px;
+                    }
+                    .nav-item span {
+                        font-size: 12px;
+                    }
+                    @media (max-width: 420px) {
+                        #mobileFrameEl {
+                            width: 100%;
+                            max-width: 375px;
+                            height: 100vh;
+                            max-height: 667px;
+                            border-radius: 0;
+                        }
+                    }
+                `;
+    
+                shadow.appendChild(style);
+                shadow.appendChild(wrapper);
+            }
         }
-    }
-
-    customElements.define('mobile-view', MobileView);
-
-    let selectedPayment = 'card';
-
-    function selectPayment(method) {
-        selectedPayment = method;
-        // Remove selected class from all payment methods
-        document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
-        // Add selected class to clicked method
-        event.currentTarget.classList.add('selected');
-    }
-
-    function placeOrder() {
-        // Check selected payment method and redirect accordingly
-        if (selectedPayment === 'stripe') {
-            window.location.href = './stripe-payment.html';
-            return;
+    
+        customElements.define('mobile-view', MobileView);
+    
+        let selectedPayment = 'card';
+    
+        function selectPayment(method) {
+            selectedPayment = method;
+            // Remove selected class from all payment methods
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            // Add selected class to clicked method
+            event.currentTarget.classList.add('selected');
         }
-        
-        if (selectedPayment === 'paypal') {
-            window.location.href = './paypal-payment.html';
-            return;
+    
+        function placeOrder() {
+            // Check selected payment method and redirect accordingly
+            if (selectedPayment === 'stripe') {
+                window.location.href = './stripe-payment.html';
+                return;
+            }
+            
+            if (selectedPayment === 'paypal') {
+                window.location.href = './paypal-payment.html';
+                return;
+            }
+            
+            if (selectedPayment === 'googlepay') {
+                window.location.href = './googlepay-payment.html';
+                return;
+            }
+            
+            // This shouldn't happen as all payment methods now have dedicated flows
+            alert('Método de pago no implementado');
         }
-        
-        if (selectedPayment === 'googlepay') {
-            window.location.href = './googlepay-payment.html';
-            return;
+    
+        function goBack() {
+            window.history.back();
         }
-        
-        // This shouldn't happen as all payment methods now have dedicated flows
-        alert('Método de pago no implementado');
-    }
-
-    function goBack() {
-        window.history.back();
-    }
-
-    function goToHome() {
-        window.location.href = './index.html';
-    }
-
-    function goToCart() {
-        window.location.href = './cart.html';
-    }
-
-    function goToProfile() {
-        window.location.href = './profile.html';
-    }
-</script>
+    
+        function goToHome() {
+            window.location.href = './index.html';
+        }
+    
+        function goToCart() {
+            window.location.href = './cart.html';
+        }
+    
+        function goToProfile() {
+            window.location.href = './profile.html';
+        }
+    </script>
+   
+</body>
+</html>

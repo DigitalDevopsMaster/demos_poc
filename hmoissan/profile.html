@@ -1,479 +1,496 @@
-<!-- Added Font Awesome CDN for modern icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-    .profile-header {
-        background: linear-gradient(135deg, #0d5d56, #0a4742);
-        padding: 30px 20px;
-        text-align: center;
-        color: white;
-    }
-    .profile-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 15px;
-        font-size: 32px;
-    }
-    .profile-name {
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-    .profile-email {
-        font-size: 14px;
-        opacity: 0.9;
-    }
-    .menu-section {
-        padding: 20px;
-    }
-    .menu-item {
-        display: flex;
-        align-items: center;
-        padding: 15px 0;
-        border-bottom: 1px solid #f0f0f0;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .menu-item:hover {
-        background-color: #f9f9f9;
-        margin: 0 -20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .menu-item i {
-        width: 24px;
-        margin-right: 15px;
-        color: #0d5d56;
-        font-size: 18px;
-    }
-    .menu-item-text {
-        flex: 1;
-        font-weight: 500;
-    }
-    .menu-item-arrow {
-        color: #ccc;
-    }
-    .section-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 15px;
-        margin-top: 25px;
-    }
-    .section-title:first-child {
-        margin-top: 0;
-    }
-    .logout-btn {
-        background: #ff4444;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 20px;
-    }
-    .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 15px;
-        margin: 20px 0;
-    }
-    .stat-item {
-        text-align: center;
-        padding: 15px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-    }
-    .stat-number {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-    .stat-label {
-        font-size: 12px;
-        opacity: 0.9;
-    }
-</style>
-
-<mobile-view>
-    <div>
-        <!-- Header -->
-        <div style="background-color: #0d5d56; padding: 15px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
-                    <span style="font-weight: bold; font-size: 18px;">Mi Perfil</span>
-                </div>
-                <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
-                    <i class="fas fa-bell" style="font-size: 20px;"></i>
-                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
-                </div>
-                <i class="fas fa-cog" style="font-size: 18px; cursor: pointer;" onclick="goToSettings()"></i>
-            </div>
-        </div>
-
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="profile-name">María González</div>
-            <div class="profile-email">maria.gonzalez@email.com</div>
-            
-            <!-- User Stats -->
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Compras</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Favoritos</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">VIP</div>
-                    <div class="stat-label">Nivel</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Menu Sections -->
-        <div class="menu-section">
-            <div class="section-title">Mi Cuenta</div>
-            
-            <div class="menu-item" onclick="goToOrders()">
-                <i class="fas fa-shopping-bag"></i>
-                <span class="menu-item-text">Mis Pedidos</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToWishlist()">
-                <i class="fas fa-heart"></i>
-                <span class="menu-item-text">Lista de Deseos</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToAddresses()">
-                <i class="fas fa-map-marker-alt"></i>
-                <span class="menu-item-text">Direcciones</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToPaymentMethods()">
-                <i class="fas fa-credit-card"></i>
-                <span class="menu-item-text">Métodos de Pago</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-
-            <div class="section-title">Soporte</div>
-            
-            <div class="menu-item" onclick="goToHelp()">
-                <i class="fas fa-question-circle"></i>
-                <span class="menu-item-text">Centro de Ayuda</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="contactSupport()">
-                <i class="fas fa-headset"></i>
-                <span class="menu-item-text">Contactar Soporte</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToReviews()">
-                <i class="fas fa-star"></i>
-                <span class="menu-item-text">Mis Reseñas</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-
-            <div class="section-title">Configuración</div>
-            
-            <div class="menu-item" onclick="goToNotifications()">
-                <i class="fas fa-bell"></i>
-                <span class="menu-item-text">Notificaciones</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToPrivacy()">
-                <i class="fas fa-shield-alt"></i>
-                <span class="menu-item-text">Privacidad</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-            
-            <div class="menu-item" onclick="goToLanguage()">
-                <i class="fas fa-globe"></i>
-                <span class="menu-item-text">Idioma</span>
-                <i class="fas fa-chevron-right menu-item-arrow"></i>
-            </div>
-
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
-                Cerrar Sesión
-            </button>
-        </div>
-    </div>
-</mobile-view>
-
-<script>
-    class MobileView extends HTMLElement {
-        constructor() {
-            super();
-            const shadow = this.attachShadow({ mode: 'open' });
-
-            // Add Font Awesome CDN to shadow DOM
-            const fontAwesomeLink = document.createElement('link');
-            fontAwesomeLink.setAttribute('rel', 'stylesheet');
-            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-            shadow.appendChild(fontAwesomeLink);
-
-            // Main container
-            const wrapper = document.createElement('div');
-            wrapper.id = 'mobileFrameCtn';
-            wrapper.innerHTML = `
-                <div id="mobileFrameEl">
-                    <!-- Status Bar -->
-                    <div id="statusBarEl">
-                        <span>9:41</span>
-                        <div style="display: flex; gap: 6px;">
-                            <i class="fas fa-signal"></i>
-                            <i class="fas fa-battery-three-quarters"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- App Content Area -->
-                    <div id="screenContentEl">
-                        <slot></slot>
-                    </div>
-                    
-                    <!-- Bottom Navigation Bar -->
-                    <div id="navBarEl">
-                        <div class="nav-item" onclick="goToHome()">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </div>
-                        <div class="nav-item" onclick="goToCart()">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Carrito</span>
-                        </div>
-                        <div class="nav-item active">
-                            <i class="fas fa-user"></i>
-                            <span>Perfil</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Internal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                #mobileFrameCtn {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-                #mobileFrameEl {
-                    width: 375px;
-                    height: 667px;
-                    border-radius: 36px;
-                    overflow: hidden;
-                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                }
-                #statusBarEl {
-                    height: 44px;
-                    background: #000;
-                    color: #fff;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 20px;
-                    font-size: 14px;
-                }
-                #screenContentEl {
-                    flex: 1;
-                    overflow-y: auto;
-                    background: #fff;
-                    padding-bottom: 60px;
-                }
-                #navBarEl {
-                    height: 60px;
-                    background: #fff;
-                    color: #333;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    border-top: 1px solid #ddd;
-                    z-index: 1;
-                }
-                .nav-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                    transition: color 0.3s;
-                }
-                .nav-item.active {
-                    color: #0d5d56;
-                }
-                .nav-item i {
-                    font-size: 20px;
-                    margin-bottom: 4px;
-                }
-                .nav-item span {
-                    font-size: 12px;
-                }
-                @media (max-width: 420px) {
-                    #mobileFrameEl {
-                        width: 100%;
-                        max-width: 375px;
-                        height: 100vh;
-                        max-height: 667px;
-                        border-radius: 0;
-                    }
-                }
-            `;
-
-            shadow.appendChild(style);
-            shadow.appendChild(wrapper);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0d5d56">
+    
+    <title>Hmoissan - Joyería Fina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, #0d5d56, #0a4742);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
         }
-    }
-
-    customElements.define('mobile-view', MobileView);
-
-    // Navigation functions
-    function goBack() {
-        window.history.back();
-    }
-
-    function goToHome() {
-        window.location.href = './index.html';
-    }
-
-    function goToCategories() {
-        window.location.href = './categories.html';
-    }
-
-    function goToNotifications() {
-        window.location.href = './notifications.html';
-    }
-
-    // Detect if viewing on mobile device
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    }
-
-    // Update notification badge
-    window.addEventListener('DOMContentLoaded', function() {
-        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
-        const badge = document.getElementById('notificationBadge');
-        if (badge && unreadCount > 0) {
-            badge.textContent = unreadCount;
-            badge.style.display = 'flex';
-        } else if (badge) {
-            badge.style.display = 'none';
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 32px;
         }
-        
-        // If on mobile device, hide mobile-view frame and show full screen
-        if (isMobileDevice()) {
-            const mobileView = document.querySelector('mobile-view');
-            if (mobileView) {
-                mobileView.style.cssText = `
-                    display: block;
-                    width: 100vw;
-                    height: 100vh;
-                    margin: 0;
-                    border-radius: 0;
-                    box-shadow: none;
-                    background: white;
-                `;
+        .profile-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .profile-email {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .menu-section {
+            padding: 20px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .menu-item:hover {
+            background-color: #f9f9f9;
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .menu-item i {
+            width: 24px;
+            margin-right: 15px;
+            color: #0d5d56;
+            font-size: 18px;
+        }
+        .menu-item-text {
+            flex: 1;
+            font-weight: 500;
+        }
+        .menu-item-arrow {
+            color: #ccc;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        .logout-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+    </style>
+    
+    <mobile-view>
+        <div>
+            <!-- Header -->
+            <div style="background-color: #0d5d56; padding: 15px; color: white;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
+                        <span style="font-weight: bold; font-size: 18px;">Mi Perfil</span>
+                    </div>
+                    <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                        <i class="fas fa-bell" style="font-size: 20px;"></i>
+                        <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                    </div>
+                    <i class="fas fa-cog" style="font-size: 18px; cursor: pointer;" onclick="goToSettings()"></i>
+                </div>
+            </div>
+    
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name">María González</div>
+                <div class="profile-email">maria.gonzalez@email.com</div>
                 
-                // Override shadow DOM styles for mobile
-                const shadowRoot = mobileView.shadowRoot;
-                if (shadowRoot) {
-                    const style = shadowRoot.querySelector('style');
-                    if (style) {
-                        style.textContent += `
-                            #mobileFrameEl {
-                                width: 100vw !important;
-                                height: 100vh !important;
-                                border-radius: 0 !important;
-                                box-shadow: none !important;
-                            }
-                        `;
+                <!-- User Stats -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Compras</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Favoritos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">VIP</div>
+                        <div class="stat-label">Nivel</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Menu Sections -->
+            <div class="menu-section">
+                <div class="section-title">Mi Cuenta</div>
+                
+                <div class="menu-item" onclick="goToOrders()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="menu-item-text">Mis Pedidos</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToWishlist()">
+                    <i class="fas fa-heart"></i>
+                    <span class="menu-item-text">Lista de Deseos</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToAddresses()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="menu-item-text">Direcciones</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToPaymentMethods()">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="menu-item-text">Métodos de Pago</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+    
+                <div class="section-title">Soporte</div>
+                
+                <div class="menu-item" onclick="goToHelp()">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="menu-item-text">Centro de Ayuda</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="contactSupport()">
+                    <i class="fas fa-headset"></i>
+                    <span class="menu-item-text">Contactar Soporte</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToReviews()">
+                    <i class="fas fa-star"></i>
+                    <span class="menu-item-text">Mis Reseñas</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+    
+                <div class="section-title">Configuración</div>
+                
+                <div class="menu-item" onclick="goToNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="menu-item-text">Notificaciones</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToPrivacy()">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="menu-item-text">Privacidad</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+                
+                <div class="menu-item" onclick="goToLanguage()">
+                    <i class="fas fa-globe"></i>
+                    <span class="menu-item-text">Idioma</span>
+                    <i class="fas fa-chevron-right menu-item-arrow"></i>
+                </div>
+    
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </mobile-view>
+    
+    <script>
+        class MobileView extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+    
+                // Add Font Awesome CDN to shadow DOM
+                const fontAwesomeLink = document.createElement('link');
+                fontAwesomeLink.setAttribute('rel', 'stylesheet');
+                fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+                shadow.appendChild(fontAwesomeLink);
+    
+                // Main container
+                const wrapper = document.createElement('div');
+                wrapper.id = 'mobileFrameCtn';
+                wrapper.innerHTML = `
+                    <div id="mobileFrameEl">
+                        <!-- Status Bar -->
+                        <div id="statusBarEl">
+                            <span>9:41</span>
+                            <div style="display: flex; gap: 6px;">
+                                <i class="fas fa-signal"></i>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- App Content Area -->
+                        <div id="screenContentEl">
+                            <slot></slot>
+                        </div>
+                        
+                        <!-- Bottom Navigation Bar -->
+                        <div id="navBarEl">
+                            <div class="nav-item" onclick="goToHome()">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </div>
+                            <div class="nav-item" onclick="goToCart()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Carrito</span>
+                            </div>
+                            <div class="nav-item active">
+                                <i class="fas fa-user"></i>
+                                <span>Perfil</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                // Internal styles
+                const style = document.createElement('style');
+                style.textContent = `
+                    #mobileFrameCtn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        background-color: #f5f5f5;
                     }
-                }
+                    #mobileFrameEl {
+                        width: 375px;
+                        height: 667px;
+                        border-radius: 36px;
+                        overflow: hidden;
+                        box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    #statusBarEl {
+                        height: 44px;
+                        background: #000;
+                        color: #fff;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 20px;
+                        font-size: 14px;
+                    }
+                    #screenContentEl {
+                        flex: 1;
+                        overflow-y: auto;
+                        background: #fff;
+                        padding-bottom: 60px;
+                    }
+                    #navBarEl {
+                        height: 60px;
+                        background: #fff;
+                        color: #333;
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        border-top: 1px solid #ddd;
+                        z-index: 1;
+                    }
+                    .nav-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+                    .nav-item.active {
+                        color: #0d5d56;
+                    }
+                    .nav-item i {
+                        font-size: 20px;
+                        margin-bottom: 4px;
+                    }
+                    .nav-item span {
+                        font-size: 12px;
+                    }
+                    @media (max-width: 420px) {
+                        #mobileFrameEl {
+                            width: 100%;
+                            max-width: 375px;
+                            height: 100vh;
+                            max-height: 667px;
+                            border-radius: 0;
+                        }
+                    }
+                `;
+    
+                shadow.appendChild(style);
+                shadow.appendChild(wrapper);
             }
-            
-            // Also hide body margins on mobile
-            document.body.style.margin = '0';
-            document.body.style.padding = '0';
-            document.body.style.overflow = 'hidden';
         }
-    });
-
-    function goToSettings() {
-        alert('Configuración - Funcionalidad en desarrollo');
-    }
-
-    function goToOrders() {
-        window.location.href = './orders.html';
-    }
-
-    function goToWishlist() {
-        window.location.href = './wishlist.html';
-    }
-
-    function goToAddresses() {
-        alert('Direcciones - Funcionalidad en desarrollo');
-    }
-
-    function goToPaymentMethods() {
-        alert('Métodos de Pago - Funcionalidad en desarrollo');
-    }
-
-    function goToHelp() {
-        alert('Centro de Ayuda - Funcionalidad en desarrollo');
-    }
-
-    function contactSupport() {
-        alert('Contactar Soporte - Funcionalidad en desarrollo');
-    }
-
-    function goToReviews() {
-        alert('Mis Reseñas - Funcionalidad en desarrollo');
-    }
-
-    function goToNotifications() {
-        alert('Notificaciones - Funcionalidad en desarrollo');
-    }
-
-    function goToPrivacy() {
-        alert('Privacidad - Funcionalidad en desarrollo');
-    }
-
-    function goToLanguage() {
-        alert('Idioma - Funcionalidad en desarrollo');
-    }
-
-    function logout() {
-        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-            alert('Sesión cerrada exitosamente');
+    
+        customElements.define('mobile-view', MobileView);
+    
+        // Navigation functions
+        function goBack() {
+            window.history.back();
+        }
+    
+        function goToHome() {
             window.location.href = './index.html';
         }
-    }
-</script>
+    
+        function goToCategories() {
+            window.location.href = './categories.html';
+        }
+    
+        function goToNotifications() {
+            window.location.href = './notifications.html';
+        }
+    
+        // Detect if viewing on mobile device
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+    
+        // Update notification badge
+        window.addEventListener('DOMContentLoaded', function() {
+            const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+            const badge = document.getElementById('notificationBadge');
+            if (badge && unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else if (badge) {
+                badge.style.display = 'none';
+            }
+            
+            // If on mobile device, hide mobile-view frame and show full screen
+            if (isMobileDevice()) {
+                const mobileView = document.querySelector('mobile-view');
+                if (mobileView) {
+                    mobileView.style.cssText = `
+                        display: block;
+                        width: 100vw;
+                        height: 100vh;
+                        margin: 0;
+                        border-radius: 0;
+                        box-shadow: none;
+                        background: white;
+                    `;
+                    
+                    // Override shadow DOM styles for mobile
+                    const shadowRoot = mobileView.shadowRoot;
+                    if (shadowRoot) {
+                        const style = shadowRoot.querySelector('style');
+                        if (style) {
+                            style.textContent += `
+                                #mobileFrameEl {
+                                    width: 100vw !important;
+                                    height: 100vh !important;
+                                    border-radius: 0 !important;
+                                    box-shadow: none !important;
+                                }
+                            `;
+                        }
+                    }
+                }
+                
+                // Also hide body margins on mobile
+                document.body.style.margin = '0';
+                document.body.style.padding = '0';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    
+        function goToSettings() {
+            alert('Configuración - Funcionalidad en desarrollo');
+        }
+    
+        function goToOrders() {
+            window.location.href = './orders.html';
+        }
+    
+        function goToWishlist() {
+            window.location.href = './wishlist.html';
+        }
+    
+        function goToAddresses() {
+            alert('Direcciones - Funcionalidad en desarrollo');
+        }
+    
+        function goToPaymentMethods() {
+            alert('Métodos de Pago - Funcionalidad en desarrollo');
+        }
+    
+        function goToHelp() {
+            alert('Centro de Ayuda - Funcionalidad en desarrollo');
+        }
+    
+        function contactSupport() {
+            alert('Contactar Soporte - Funcionalidad en desarrollo');
+        }
+    
+        function goToReviews() {
+            alert('Mis Reseñas - Funcionalidad en desarrollo');
+        }
+    
+        function goToNotifications() {
+            alert('Notificaciones - Funcionalidad en desarrollo');
+        }
+    
+        function goToPrivacy() {
+            alert('Privacidad - Funcionalidad en desarrollo');
+        }
+    
+        function goToLanguage() {
+            alert('Idioma - Funcionalidad en desarrollo');
+        }
+    
+        function logout() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                alert('Sesión cerrada exitosamente');
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+   
+</body>
+</html>
+

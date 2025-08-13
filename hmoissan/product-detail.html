@@ -1,586 +1,603 @@
-<!-- Added Font Awesome CDN for modern icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-    .product-image-container {
-        position: relative;
-        height: 300px;
-        overflow: hidden;
-    }
-    .product-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .favorite-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: rgba(255, 255, 255, 0.9);
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .favorite-btn.active {
-        background: #ff4444;
-        color: white;
-    }
-    .product-info {
-        padding: 20px;
-    }
-    .product-title {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #333;
-    }
-    .product-price {
-        font-size: 28px;
-        font-weight: 800;
-        color: #0d5d56;
-        margin-bottom: 15px;
-    }
-    .product-description {
-        color: #666;
-        line-height: 1.6;
-        margin-bottom: 20px;
-    }
-    .product-specs {
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-    .spec-row {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-    }
-    .spec-label {
-        font-weight: 600;
-        color: #333;
-    }
-    .spec-value {
-        color: #666;
-    }
-    .quantity-selector {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-    .quantity-controls {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 5px;
-    }
-    .quantity-btn {
-        width: 35px;
-        height: 35px;
-        border: none;
-        background: #f5f5f5;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-    .quantity-btn:hover {
-        background: #e0e0e0;
-    }
-    .add-to-cart-btn {
-        width: 100%;
-        background: linear-gradient(145deg, #0d5d56, #0a4742);
-        color: white;
-        border: none;
-        padding: 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-bottom: 10px;
-    }
-    .add-to-cart-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(13, 93, 86, 0.3);
-    }
-    .buy-now-btn {
-        width: 100%;
-        background: white;
-        color: #0d5d56;
-        border: 2px solid #0d5d56;
-        padding: 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .buy-now-btn:hover {
-        background: #0d5d56;
-        color: white;
-    }
-    .related-products {
-        padding: 20px;
-        background: #f9f9f9;
-    }
-    .related-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-top: 15px;
-    }
-    .related-item {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        cursor: pointer;
-        transition: transform 0.2s;
-    }
-    .related-item:hover {
-        transform: translateY(-2px);
-    }
-    .related-item img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-    }
-    .related-item-info {
-        padding: 10px;
-        text-align: center;
-    }
-    .related-item-name {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    .related-item-price {
-        color: #0d5d56;
-        font-weight: 700;
-    }
-</style>
-
-<mobile-view>
-    <div>
-        <!-- Header -->
-        <div style="background-color: #0d5d56; padding: 15px; color: white;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center;">
-                    <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
-                    <span style="font-weight: bold; font-size: 18px;">Detalles del Producto</span>
-                </div>
-                <div style="display: flex; gap: 15px;">
-                    <i class="fas fa-share-alt" style="font-size: 18px; cursor: pointer;"></i>
-                    <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
-                    <i class="fas fa-bell" style="font-size: 20px;"></i>
-                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
-                </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Product Image -->
-        <div class="product-image-container">
-            <img id="productImage" class="product-image" src="https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640" alt="Product">
-            <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()">
-                <i class="fas fa-heart"></i>
-            </button>
-        </div>
-
-        <!-- Product Information -->
-        <div class="product-info">
-            <h1 id="productTitle" class="product-title">Elegant Diamond Ring</h1>
-            <div id="productPrice" class="product-price">$2,450</div>
-            
-            <p id="productDescription" class="product-description">
-                Exquisite diamond ring crafted with precision and elegance. This stunning piece features a brilliant cut diamond set in 18k white gold, perfect for special occasions or as an engagement ring.
-            </p>
-
-            <!-- Product Specifications -->
-            <div class="product-specs">
-                <h3 style="margin-bottom: 15px; color: #333;">Especificaciones</h3>
-                <div class="spec-row">
-                    <span class="spec-label">Material:</span>
-                    <span class="spec-value">Oro blanco 18k</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Piedra principal:</span>
-                    <span class="spec-value">Diamante 1.2ct</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Talla disponible:</span>
-                    <span class="spec-value">5-9 (ajustable)</span>
-                </div>
-                <div class="spec-row">
-                    <span class="spec-label">Garantía:</span>
-                    <span class="spec-value">Lifetime</span>
-                </div>
-            </div>
-
-            <!-- Quantity Selector -->
-            <div class="quantity-selector">
-                <span style="font-weight: 600;">Cantidad:</span>
-                <div class="quantity-controls">
-                    <button class="quantity-btn" onclick="updateQuantity(-1)">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <span id="quantity" style="min-width: 30px; text-align: center;">1</span>
-                    <button class="quantity-btn" onclick="updateQuantity(1)">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <button class="add-to-cart-btn" onclick="addToCart()">
-                <i class="fas fa-shopping-cart" style="margin-right: 8px;"></i>
-                Añadir al Carrito
-            </button>
-            <button class="buy-now-btn" onclick="buyNow()">
-                <i class="fas fa-bolt" style="margin-right: 8px;"></i>
-                Comprar Ahora
-            </button>
-        </div>
-
-        <!-- Related Products -->
-        <div class="related-products">
-            <h3 style="margin-bottom: 0; color: #333;">Productos Relacionados</h3>
-            <div class="related-grid">
-                <div class="related-item" onclick="loadProduct('pearl-necklace')">
-                    <img src="https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640" alt="Pearl Necklace">
-                    <div class="related-item-info">
-                        <div class="related-item-name">Pearl Necklace</div>
-                        <div class="related-item-price">$1,890</div>
-                    </div>
-                </div>
-                <div class="related-item" onclick="loadProduct('emerald-earrings')">
-                    <img src="https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640" alt="Emerald Earrings">
-                    <div class="related-item-info">
-                        <div class="related-item-name">Emerald Earrings</div>
-                        <div class="related-item-price">$1,250</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</mobile-view>
-
-<script>
-    class MobileView extends HTMLElement {
-        constructor() {
-            super();
-            const shadow = this.attachShadow({ mode: 'open' });
-
-            // Add Font Awesome CDN to shadow DOM
-            const fontAwesomeLink = document.createElement('link');
-            fontAwesomeLink.setAttribute('rel', 'stylesheet');
-            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-            shadow.appendChild(fontAwesomeLink);
-
-            // Main container
-            const wrapper = document.createElement('div');
-            wrapper.id = 'mobileFrameCtn';
-            wrapper.innerHTML = `
-                <div id="mobileFrameEl">
-                    <!-- Status Bar -->
-                    <div id="statusBarEl">
-                        <span>9:41</span>
-                        <div style="display: flex; gap: 6px;">
-                            <i class="fas fa-signal"></i>
-                            <i class="fas fa-battery-three-quarters"></i>
-                        </div>
-                    </div>
-                    
-                    <!-- App Content Area -->
-                    <div id="screenContentEl">
-                        <slot></slot>
-                    </div>
-                    
-                    <!-- Bottom Navigation Bar -->
-                    <div id="navBarEl">
-                        <div class="nav-item" onclick="goToHome()">
-                            <i class="fas fa-home"></i>
-                            <span>Home</span>
-                        </div>
-                        <div class="nav-item" onclick="goToCart()">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Carrito</span>
-                        </div>
-                        <div class="nav-item" onclick="goToProfile()">
-                            <i class="fas fa-user"></i>
-                            <span>Perfil</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Internal styles
-            const style = document.createElement('style');
-            style.textContent = `
-                #mobileFrameCtn {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 100vh;
-                    background-color: #f5f5f5;
-                }
-                #mobileFrameEl {
-                    width: 375px;
-                    height: 667px;
-                    border-radius: 36px;
-                    overflow: hidden;
-                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                }
-                #statusBarEl {
-                    height: 44px;
-                    background: #000;
-                    color: #fff;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 20px;
-                    font-size: 14px;
-                }
-                #screenContentEl {
-                    flex: 1;
-                    overflow-y: auto;
-                    background: #fff;
-                    padding-bottom: 60px;
-                }
-                #navBarEl {
-                    height: 60px;
-                    background: #fff;
-                    color: #333;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    border-top: 1px solid #ddd;
-                    z-index: 1;
-                }
-                .nav-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    padding: 5px 10px;
-                    cursor: pointer;
-                    transition: color 0.3s;
-                }
-                .nav-item i {
-                    font-size: 20px;
-                    margin-bottom: 4px;
-                }
-                .nav-item span {
-                    font-size: 12px;
-                }
-                @media (max-width: 420px) {
-                    #mobileFrameEl {
-                        width: 100%;
-                        max-width: 375px;
-                        height: 100vh;
-                        max-height: 667px;
-                        border-radius: 0;
-                    }
-                }
-            `;
-
-            shadow.appendChild(style);
-            shadow.appendChild(wrapper);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0d5d56">
+    
+    <title>Hmoissan - Joyería Fina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <style>
+        .product-image-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
         }
-    }
-
-    customElements.define('mobile-view', MobileView);
-
-    // Product data
-    const products = {
-        'diamond-ring': {
-            name: 'Elegant Diamond Ring',
-            price: 2450,
-            image: 'https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640',
-            description: 'Exquisite diamond ring crafted with precision and elegance. This stunning piece features a brilliant cut diamond set in 18k white gold, perfect for special occasions or as an engagement ring.',
-            specs: {
-                'Material': 'Oro blanco 18k',
-                'Piedra principal': 'Diamante 1.2ct',
-                'Talla disponible': '5-9 (ajustable)',
-                'Garantía': 'Lifetime'
-            }
-        },
-        'pearl-necklace': {
-            name: 'Pearl Necklace',
-            price: 1890,
-            image: 'https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640',
-            description: 'Elegant pearl necklace featuring lustrous cultured pearls. Each pearl is hand-selected for its exceptional quality and natural beauty.',
-            specs: {
-                'Material': 'Oro amarillo 14k',
-                'Perlas': 'Cultivadas AAA',
-                'Longitud': '45cm (ajustable)',
-                'Garantía': '2 años'
-            }
-        },
-        'emerald-earrings': {
-            name: 'Emerald Earrings',
-            price: 1250,
-            image: 'https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640',
-            description: 'Stunning emerald earrings that capture the essence of luxury. These earrings feature natural emeralds set in premium gold.',
-            specs: {
-                'Material': 'Oro amarillo 18k',
-                'Piedra principal': 'Esmeralda natural',
-                'Peso': '2.5g cada uno',
-                'Garantía': 'Lifetime'
-            }
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-    };
-
-    let currentQuantity = 1;
-    let isFavorite = false;
-
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id') || 'diamond-ring';
-        loadProductData(productId);
-    });
-
-    function loadProductData(productId) {
-        const product = products[productId];
-        if (!product) return;
-
-        document.getElementById('productImage').src = product.image;
-        document.getElementById('productTitle').textContent = product.name;
-        document.getElementById('productPrice').textContent = `$${product.price.toLocaleString()}`;
-        document.getElementById('productDescription').textContent = product.description;
-
-        // Update specs
-        const specsContainer = document.querySelector('.product-specs');
-        const specsHTML = Object.entries(product.specs).map(([label, value]) => `
-            <div class="spec-row">
-                <span class="spec-label">${label}:</span>
-                <span class="spec-value">${value}</span>
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .favorite-btn.active {
+            background: #ff4444;
+            color: white;
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0d5d56;
+            margin-bottom: 15px;
+        }
+        .product-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .product-specs {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .spec-value {
+            color: #666;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 5px;
+        }
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .quantity-btn:hover {
+            background: #e0e0e0;
+        }
+        .add-to-cart-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #0d5d56, #0a4742);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+        }
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 93, 86, 0.3);
+        }
+        .buy-now-btn {
+            width: 100%;
+            background: white;
+            color: #0d5d56;
+            border: 2px solid #0d5d56;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .buy-now-btn:hover {
+            background: #0d5d56;
+            color: white;
+        }
+        .related-products {
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .related-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .related-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .related-item:hover {
+            transform: translateY(-2px);
+        }
+        .related-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .related-item-info {
+            padding: 10px;
+            text-align: center;
+        }
+        .related-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .related-item-price {
+            color: #0d5d56;
+            font-weight: 700;
+        }
+    </style>
+    
+    <mobile-view>
+        <div>
+            <!-- Header -->
+            <div style="background-color: #0d5d56; padding: 15px; color: white;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
+                        <span style="font-weight: bold; font-size: 18px;">Detalles del Producto</span>
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <i class="fas fa-share-alt" style="font-size: 18px; cursor: pointer;"></i>
+                        <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                        <i class="fas fa-bell" style="font-size: 20px;"></i>
+                        <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                    </div>
+                    </div>
+                </div>
             </div>
-        `).join('');
-        specsContainer.innerHTML = `<h3 style="margin-bottom: 15px; color: #333;">Especificaciones</h3>${specsHTML}`;
-    }
-
-    function updateQuantity(change) {
-        currentQuantity = Math.max(1, currentQuantity + change);
-        document.getElementById('quantity').textContent = currentQuantity;
-    }
-
-    function toggleFavorite() {
-        isFavorite = !isFavorite;
-        const btn = document.getElementById('favoriteBtn');
-        if (isFavorite) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    }
-
-    function addToCart() {
-        // Simulate adding to cart
-        alert(`¡${currentQuantity} producto(s) añadido(s) al carrito!`);
-        
-        // Optional: redirect to cart
-        // window.location.href = './cart.html';
-    }
-
-    function buyNow() {
-        // Simulate immediate purchase
-        window.location.href = './checkout.html';
-    }
-
-    function loadProduct(productId) {
-        window.location.href = `./product-detail.html?id=${productId}`;
-    }
-
-    function goBack() {
-        window.history.back();
-    }
-
-    function goToHome() {
-        window.location.href = './index.html';
-    }
-
-    function goToCart() {
-        window.location.href = './cart.html';
-    }
-
-    function goToProfile() {
-        window.location.href = './profile.html';
-    }
-
-    function goToNotifications() {
-        window.location.href = './notifications.html';
-    }
-
-    // Detect if viewing on mobile device
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    }
-
-    // Update notification badge
-    window.addEventListener('DOMContentLoaded', function() {
-        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
-        const badge = document.getElementById('notificationBadge');
-        if (badge && unreadCount > 0) {
-            badge.textContent = unreadCount;
-            badge.style.display = 'flex';
-        } else if (badge) {
-            badge.style.display = 'none';
-        }
-        
-        // If on mobile device, hide mobile-view frame and show full screen
-        if (isMobileDevice()) {
-            const mobileView = document.querySelector('mobile-view');
-            if (mobileView) {
-                mobileView.style.cssText = `
-                    display: block;
-                    width: 100vw;
-                    height: 100vh;
-                    margin: 0;
-                    border-radius: 0;
-                    box-shadow: none;
-                    background: white;
-                `;
+    
+            <!-- Product Image -->
+            <div class="product-image-container">
+                <img id="productImage" class="product-image" src="https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640" alt="Product">
+                <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+    
+            <!-- Product Information -->
+            <div class="product-info">
+                <h1 id="productTitle" class="product-title">Elegant Diamond Ring</h1>
+                <div id="productPrice" class="product-price">$2,450</div>
                 
-                // Override shadow DOM styles for mobile
-                const shadowRoot = mobileView.shadowRoot;
-                if (shadowRoot) {
-                    const style = shadowRoot.querySelector('style');
-                    if (style) {
-                        style.textContent += `
-                            #mobileFrameEl {
-                                width: 100vw !important;
-                                height: 100vh !important;
-                                border-radius: 0 !important;
-                                box-shadow: none !important;
-                            }
-                        `;
+                <p id="productDescription" class="product-description">
+                    Exquisite diamond ring crafted with precision and elegance. This stunning piece features a brilliant cut diamond set in 18k white gold, perfect for special occasions or as an engagement ring.
+                </p>
+    
+                <!-- Product Specifications -->
+                <div class="product-specs">
+                    <h3 style="margin-bottom: 15px; color: #333;">Especificaciones</h3>
+                    <div class="spec-row">
+                        <span class="spec-label">Material:</span>
+                        <span class="spec-value">Oro blanco 18k</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Piedra principal:</span>
+                        <span class="spec-value">Diamante 1.2ct</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Talla disponible:</span>
+                        <span class="spec-value">5-9 (ajustable)</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Garantía:</span>
+                        <span class="spec-value">Lifetime</span>
+                    </div>
+                </div>
+    
+                <!-- Quantity Selector -->
+                <div class="quantity-selector">
+                    <span style="font-weight: 600;">Cantidad:</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(-1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span id="quantity" style="min-width: 30px; text-align: center;">1</span>
+                        <button class="quantity-btn" onclick="updateQuantity(1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Action Buttons -->
+                <button class="add-to-cart-btn" onclick="addToCart()">
+                    <i class="fas fa-shopping-cart" style="margin-right: 8px;"></i>
+                    Añadir al Carrito
+                </button>
+                <button class="buy-now-btn" onclick="buyNow()">
+                    <i class="fas fa-bolt" style="margin-right: 8px;"></i>
+                    Comprar Ahora
+                </button>
+            </div>
+    
+            <!-- Related Products -->
+            <div class="related-products">
+                <h3 style="margin-bottom: 0; color: #333;">Productos Relacionados</h3>
+                <div class="related-grid">
+                    <div class="related-item" onclick="loadProduct('pearl-necklace')">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640" alt="Pearl Necklace">
+                        <div class="related-item-info">
+                            <div class="related-item-name">Pearl Necklace</div>
+                            <div class="related-item-price">$1,890</div>
+                        </div>
+                    </div>
+                    <div class="related-item" onclick="loadProduct('emerald-earrings')">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640" alt="Emerald Earrings">
+                        <div class="related-item-info">
+                            <div class="related-item-name">Emerald Earrings</div>
+                            <div class="related-item-price">$1,250</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mobile-view>
+    
+    <script>
+        class MobileView extends HTMLElement {
+            constructor() {
+                super();
+                const shadow = this.attachShadow({ mode: 'open' });
+    
+                // Add Font Awesome CDN to shadow DOM
+                const fontAwesomeLink = document.createElement('link');
+                fontAwesomeLink.setAttribute('rel', 'stylesheet');
+                fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+                shadow.appendChild(fontAwesomeLink);
+    
+                // Main container
+                const wrapper = document.createElement('div');
+                wrapper.id = 'mobileFrameCtn';
+                wrapper.innerHTML = `
+                    <div id="mobileFrameEl">
+                        <!-- Status Bar -->
+                        <div id="statusBarEl">
+                            <span>9:41</span>
+                            <div style="display: flex; gap: 6px;">
+                                <i class="fas fa-signal"></i>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- App Content Area -->
+                        <div id="screenContentEl">
+                            <slot></slot>
+                        </div>
+                        
+                        <!-- Bottom Navigation Bar -->
+                        <div id="navBarEl">
+                            <div class="nav-item" onclick="goToHome()">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </div>
+                            <div class="nav-item" onclick="goToCart()">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Carrito</span>
+                            </div>
+                            <div class="nav-item" onclick="goToProfile()">
+                                <i class="fas fa-user"></i>
+                                <span>Perfil</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                // Internal styles
+                const style = document.createElement('style');
+                style.textContent = `
+                    #mobileFrameCtn {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        background-color: #f5f5f5;
                     }
+                    #mobileFrameEl {
+                        width: 375px;
+                        height: 667px;
+                        border-radius: 36px;
+                        overflow: hidden;
+                        box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    #statusBarEl {
+                        height: 44px;
+                        background: #000;
+                        color: #fff;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 20px;
+                        font-size: 14px;
+                    }
+                    #screenContentEl {
+                        flex: 1;
+                        overflow-y: auto;
+                        background: #fff;
+                        padding-bottom: 60px;
+                    }
+                    #navBarEl {
+                        height: 60px;
+                        background: #fff;
+                        color: #333;
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        border-top: 1px solid #ddd;
+                        z-index: 1;
+                    }
+                    .nav-item {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        transition: color 0.3s;
+                    }
+                    .nav-item i {
+                        font-size: 20px;
+                        margin-bottom: 4px;
+                    }
+                    .nav-item span {
+                        font-size: 12px;
+                    }
+                    @media (max-width: 420px) {
+                        #mobileFrameEl {
+                            width: 100%;
+                            max-width: 375px;
+                            height: 100vh;
+                            max-height: 667px;
+                            border-radius: 0;
+                        }
+                    }
+                `;
+    
+                shadow.appendChild(style);
+                shadow.appendChild(wrapper);
+            }
+        }
+    
+        customElements.define('mobile-view', MobileView);
+    
+        // Product data
+        const products = {
+            'diamond-ring': {
+                name: 'Elegant Diamond Ring',
+                price: 2450,
+                image: 'https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640',
+                description: 'Exquisite diamond ring crafted with precision and elegance. This stunning piece features a brilliant cut diamond set in 18k white gold, perfect for special occasions or as an engagement ring.',
+                specs: {
+                    'Material': 'Oro blanco 18k',
+                    'Piedra principal': 'Diamante 1.2ct',
+                    'Talla disponible': '5-9 (ajustable)',
+                    'Garantía': 'Lifetime'
+                }
+            },
+            'pearl-necklace': {
+                name: 'Pearl Necklace',
+                price: 1890,
+                image: 'https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640',
+                description: 'Elegant pearl necklace featuring lustrous cultured pearls. Each pearl is hand-selected for its exceptional quality and natural beauty.',
+                specs: {
+                    'Material': 'Oro amarillo 14k',
+                    'Perlas': 'Cultivadas AAA',
+                    'Longitud': '45cm (ajustable)',
+                    'Garantía': '2 años'
+                }
+            },
+            'emerald-earrings': {
+                name: 'Emerald Earrings',
+                price: 1250,
+                image: 'https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640',
+                description: 'Stunning emerald earrings that capture the essence of luxury. These earrings feature natural emeralds set in premium gold.',
+                specs: {
+                    'Material': 'Oro amarillo 18k',
+                    'Piedra principal': 'Esmeralda natural',
+                    'Peso': '2.5g cada uno',
+                    'Garantía': 'Lifetime'
                 }
             }
-            
-            // Also hide body margins on mobile
-            document.body.style.margin = '0';
-            document.body.style.padding = '0';
-            document.body.style.overflow = 'hidden';
+        };
+    
+        let currentQuantity = 1;
+        let isFavorite = false;
+    
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id') || 'diamond-ring';
+            loadProductData(productId);
+        });
+    
+        function loadProductData(productId) {
+            const product = products[productId];
+            if (!product) return;
+    
+            document.getElementById('productImage').src = product.image;
+            document.getElementById('productTitle').textContent = product.name;
+            document.getElementById('productPrice').textContent = `$${product.price.toLocaleString()}`;
+            document.getElementById('productDescription').textContent = product.description;
+    
+            // Update specs
+            const specsContainer = document.querySelector('.product-specs');
+            const specsHTML = Object.entries(product.specs).map(([label, value]) => `
+                <div class="spec-row">
+                    <span class="spec-label">${label}:</span>
+                    <span class="spec-value">${value}</span>
+                </div>
+            `).join('');
+            specsContainer.innerHTML = `<h3 style="margin-bottom: 15px; color: #333;">Especificaciones</h3>${specsHTML}`;
         }
-    });
-</script>
+    
+        function updateQuantity(change) {
+            currentQuantity = Math.max(1, currentQuantity + change);
+            document.getElementById('quantity').textContent = currentQuantity;
+        }
+    
+        function toggleFavorite() {
+            isFavorite = !isFavorite;
+            const btn = document.getElementById('favoriteBtn');
+            if (isFavorite) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+    
+        function addToCart() {
+            // Simulate adding to cart
+            alert(`¡${currentQuantity} producto(s) añadido(s) al carrito!`);
+            
+            // Optional: redirect to cart
+            // window.location.href = './cart.html';
+        }
+    
+        function buyNow() {
+            // Simulate immediate purchase
+            window.location.href = './checkout.html';
+        }
+    
+        function loadProduct(productId) {
+            window.location.href = `./product-detail.html?id=${productId}`;
+        }
+    
+        function goBack() {
+            window.history.back();
+        }
+    
+        function goToHome() {
+            window.location.href = './index.html';
+        }
+    
+        function goToCart() {
+            window.location.href = './cart.html';
+        }
+    
+        function goToProfile() {
+            window.location.href = './profile.html';
+        }
+    
+        function goToNotifications() {
+            window.location.href = './notifications.html';
+        }
+    
+        // Detect if viewing on mobile device
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+    
+        // Update notification badge
+        window.addEventListener('DOMContentLoaded', function() {
+            const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+            const badge = document.getElementById('notificationBadge');
+            if (badge && unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else if (badge) {
+                badge.style.display = 'none';
+            }
+            
+            // If on mobile device, hide mobile-view frame and show full screen
+            if (isMobileDevice()) {
+                const mobileView = document.querySelector('mobile-view');
+                if (mobileView) {
+                    mobileView.style.cssText = `
+                        display: block;
+                        width: 100vw;
+                        height: 100vh;
+                        margin: 0;
+                        border-radius: 0;
+                        box-shadow: none;
+                        background: white;
+                    `;
+                    
+                    // Override shadow DOM styles for mobile
+                    const shadowRoot = mobileView.shadowRoot;
+                    if (shadowRoot) {
+                        const style = shadowRoot.querySelector('style');
+                        if (style) {
+                            style.textContent += `
+                                #mobileFrameEl {
+                                    width: 100vw !important;
+                                    height: 100vh !important;
+                                    border-radius: 0 !important;
+                                    box-shadow: none !important;
+                                }
+                            `;
+                        }
+                    }
+                }
+                
+                // Also hide body margins on mobile
+                document.body.style.margin = '0';
+                document.body.style.padding = '0';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    </script>
+   
+</body>
+</html><!-- Added Font Awesome CDN for modern icons -->
