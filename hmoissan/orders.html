@@ -1,0 +1,393 @@
+<!-- Added Font Awesome CDN for modern icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    .order-item {
+        background: white;
+        margin: 10px 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .order-header {
+        background: #f9f9f9;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .order-number {
+        font-weight: 700;
+        color: #333;
+    }
+    .order-status {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .status-delivered {
+        background: #e8f5e8;
+        color: #4CAF50;
+    }
+    .status-shipped {
+        background: #e3f2fd;
+        color: #2196F3;
+    }
+    .status-processing {
+        background: #fff3e0;
+        color: #FF9800;
+    }
+    .order-content {
+        padding: 15px;
+    }
+    .order-product {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .order-product img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-right: 12px;
+    }
+    .product-info {
+        flex: 1;
+    }
+    .product-name {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+    .product-details {
+        color: #666;
+        font-size: 12px;
+    }
+    .order-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px solid #f0f0f0;
+    }
+    .order-total {
+        font-weight: 700;
+        color: #0d5d56;
+        font-size: 16px;
+    }
+    .order-actions {
+        display: flex;
+        gap: 8px;
+    }
+    .action-btn {
+        padding: 6px 12px;
+        border: 1px solid #0d5d56;
+        background: white;
+        color: #0d5d56;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+        background: #0d5d56;
+        color: white;
+    }
+    .empty-orders {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    .empty-orders i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        color: #ddd;
+    }
+</style>
+
+<mobile-view>
+    <div>
+        <!-- Header -->
+        <div style="background-color: #0d5d56; padding: 15px; color: white;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center;">
+                    <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="goBack()"></i>
+                    <span style="font-weight: bold; font-size: 18px;">Mis Pedidos</span>
+                </div>
+                <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                    <i class="fas fa-bell" style="font-size: 20px;"></i>
+                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div style="padding-top: 10px;">
+            <!-- Order 1 -->
+            <div class="order-item">
+                <div class="order-header">
+                    <div class="order-number">#HM-2024-001234</div>
+                    <div class="order-status status-delivered">Entregado</div>
+                </div>
+                <div class="order-content">
+                    <div class="order-product">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640" alt="Diamond Ring">
+                        <div class="product-info">
+                            <div class="product-name">Elegant Diamond Ring</div>
+                            <div class="product-details">Cantidad: 1 • Entregado el 8 Ago 2025</div>
+                        </div>
+                    </div>
+                    <div class="order-product">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640" alt="Pearl Necklace">
+                        <div class="product-info">
+                            <div class="product-name">Pearl Necklace</div>
+                            <div class="product-details">Cantidad: 1 • Entregado el 8 Ago 2025</div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">Total: $5,034</div>
+                        <div class="order-actions">
+                            <button class="action-btn" onclick="reorderItems(1)">Reordenar</button>
+                            <button class="action-btn" onclick="viewOrderDetails(1)">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order 2 -->
+            <div class="order-item">
+                <div class="order-header">
+                    <div class="order-number">#HM-2024-001189</div>
+                    <div class="order-status status-shipped">Enviado</div>
+                </div>
+                <div class="order-content">
+                    <div class="order-product">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640" alt="Emerald Earrings">
+                        <div class="product-info">
+                            <div class="product-name">Emerald Earrings</div>
+                            <div class="product-details">Cantidad: 1 • Llegada estimada: 15 Ago 2025</div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">Total: $1,450</div>
+                        <div class="order-actions">
+                            <button class="action-btn" onclick="trackOrder(2)">Rastrear</button>
+                            <button class="action-btn" onclick="viewOrderDetails(2)">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order 3 -->
+            <div class="order-item">
+                <div class="order-header">
+                    <div class="order-number">#HM-2024-001156</div>
+                    <div class="order-status status-processing">Procesando</div>
+                </div>
+                <div class="order-content">
+                    <div class="order-product">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/6_0bb32742-7575-4704-b9eb-cd8b893c4420.jpg?v=1702354356&width=770" alt="Gold Necklace">
+                        <div class="product-info">
+                            <div class="product-name">Collier Or</div>
+                            <div class="product-details">Cantidad: 2 • Procesando desde 10 Ago 2025</div>
+                        </div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-total">Total: $360</div>
+                        <div class="order-actions">
+                            <button class="action-btn" onclick="cancelOrder(3)">Cancelar</button>
+                            <button class="action-btn" onclick="viewOrderDetails(3)">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mobile-view>
+
+<script>
+    class MobileView extends HTMLElement {
+        constructor() {
+            super();
+            const shadow = this.attachShadow({ mode: 'open' });
+
+            // Add Font Awesome CDN to shadow DOM
+            const fontAwesomeLink = document.createElement('link');
+            fontAwesomeLink.setAttribute('rel', 'stylesheet');
+            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+            shadow.appendChild(fontAwesomeLink);
+
+            // Main container
+            const wrapper = document.createElement('div');
+            wrapper.id = 'mobileFrameCtn';
+            wrapper.innerHTML = `
+                <div id="mobileFrameEl">
+                    <!-- Status Bar -->
+                    <div id="statusBarEl">
+                        <span>9:41</span>
+                        <div style="display: flex; gap: 6px;">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-battery-three-quarters"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- App Content Area -->
+                    <div id="screenContentEl">
+                        <slot></slot>
+                    </div>
+                    
+                    <!-- Bottom Navigation Bar -->
+                    <div id="navBarEl">
+                        <div class="nav-item" onclick="goToHome()">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </div>
+                        <div class="nav-item" onclick="goToCart()">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Carrito</span>
+                        </div>
+                        <div class="nav-item" onclick="goToProfile()">
+                            <i class="fas fa-user"></i>
+                            <span>Perfil</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Internal styles
+            const style = document.createElement('style');
+            style.textContent = `
+                #mobileFrameCtn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    background-color: #f5f5f5;
+                }
+                #mobileFrameEl {
+                    width: 375px;
+                    height: 667px;
+                    border-radius: 36px;
+                    overflow: hidden;
+                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                }
+                #statusBarEl {
+                    height: 44px;
+                    background: #000;
+                    color: #fff;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 20px;
+                    font-size: 14px;
+                }
+                #screenContentEl {
+                    flex: 1;
+                    overflow-y: auto;
+                    background: #f5f5f5;
+                    padding-bottom: 60px;
+                }
+                #navBarEl {
+                    height: 60px;
+                    background: #fff;
+                    color: #333;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    border-top: 1px solid #ddd;
+                    z-index: 1;
+                }
+                .nav-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 5px 10px;
+                    cursor: pointer;
+                    transition: color 0.3s;
+                }
+                .nav-item i {
+                    font-size: 20px;
+                    margin-bottom: 4px;
+                }
+                .nav-item span {
+                    font-size: 12px;
+                }
+                @media (max-width: 420px) {
+                    #mobileFrameEl {
+                        width: 100%;
+                        max-width: 375px;
+                        height: 100vh;
+                        max-height: 667px;
+                        border-radius: 0;
+                    }
+                }
+            `;
+
+            shadow.appendChild(style);
+            shadow.appendChild(wrapper);
+        }
+    }
+
+    customElements.define('mobile-view', MobileView);
+
+    function reorderItems(orderId) {
+        alert('Productos añadidos al carrito para reordenar');
+        window.location.href = './cart.html';
+    }
+
+    function viewOrderDetails(orderId) {
+        alert(`Ver detalles del pedido #HM-2024-00${orderId + 1233}`);
+    }
+
+    function trackOrder(orderId) {
+        alert(`Rastreando pedido #HM-2024-00${orderId + 1187}...\nEstado: En tránsito\nLlegada estimada: 15 Ago 2025`);
+    }
+
+    function cancelOrder(orderId) {
+        if (confirm('¿Estás seguro de que quieres cancelar este pedido?')) {
+            alert('Pedido cancelado exitosamente');
+        }
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    function goToHome() {
+        window.location.href = './index.html';
+    }
+
+    function goToCart() {
+        window.location.href = './cart.html';
+    }
+
+    function goToProfile() {
+        window.location.href = './profile.html';
+    }
+
+    function goToNotifications() {
+        window.location.href = './notifications.html';
+    }
+
+    // Update notification badge
+    window.addEventListener('DOMContentLoaded', function() {
+        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+        const badge = document.getElementById('notificationBadge');
+        if (badge && unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'flex';
+        } else if (badge) {
+            badge.style.display = 'none';
+        }
+    });
+</script>

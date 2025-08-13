@@ -1,0 +1,570 @@
+<!-- Added Font Awesome CDN for modern icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    .paypal-container {
+        background: #f5f7fa;
+        min-height: 100vh;
+        font-family: "HelveticaNeue", "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+    }
+    .paypal-header {
+        background: #003087;
+        padding: 16px 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .paypal-logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+    }
+    .close-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .merchant-info {
+        background: white;
+        padding: 20px;
+        border-bottom: 1px solid #e5e5e5;
+        text-align: center;
+    }
+    .merchant-logo {
+        width: 60px;
+        height: 60px;
+        background: #0d5d56;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 24px;
+        margin: 0 auto 12px;
+    }
+    .merchant-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c2e2f;
+        margin-bottom: 4px;
+    }
+    .payment-amount {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c2e2f;
+    }
+    .login-section {
+        background: white;
+        margin: 16px;
+        border-radius: 8px;
+        padding: 24px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .login-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #2c2e2f;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .form-group {
+        margin-bottom: 16px;
+    }
+    .form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #2c2e2f;
+        font-size: 14px;
+    }
+    .paypal-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #c7c7c7;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: all 0.15s ease;
+        box-sizing: border-box;
+    }
+    .paypal-input:focus {
+        outline: none;
+        border-color: #0070ba;
+        box-shadow: 0 0 0 2px rgba(0, 112, 186, 0.2);
+    }
+    .login-btn {
+        width: 100%;
+        background: #0070ba;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        margin-bottom: 16px;
+    }
+    .login-btn:hover {
+        background: #005ea6;
+    }
+    .login-btn:disabled {
+        background: #c7c7c7;
+        cursor: not-allowed;
+    }
+    .divider {
+        text-align: center;
+        margin: 20px 0;
+        position: relative;
+        color: #6c7378;
+        font-size: 14px;
+    }
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #e5e5e5;
+        z-index: 1;
+    }
+    .divider span {
+        background: white;
+        padding: 0 16px;
+        position: relative;
+        z-index: 2;
+    }
+    .guest-checkout-btn {
+        width: 100%;
+        background: white;
+        color: #0070ba;
+        border: 1px solid #0070ba;
+        padding: 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .guest-checkout-btn:hover {
+        background: #f5f7fa;
+    }
+    .security-info {
+        text-align: center;
+        margin: 20px;
+        color: #6c7378;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .payment-review {
+        display: none;
+        background: white;
+        margin: 16px;
+        border-radius: 8px;
+        padding: 24px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .account-info {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        background: #f5f7fa;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    .account-avatar {
+        width: 48px;
+        height: 48px;
+        background: #0070ba;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        margin-right: 12px;
+    }
+    .payment-details {
+        background: #f5f7fa;
+        padding: 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    .detail-row:last-child {
+        margin-bottom: 0;
+        font-weight: 600;
+        border-top: 1px solid #e5e5e5;
+        padding-top: 8px;
+        margin-top: 8px;
+    }
+    .confirm-btn {
+        width: 100%;
+        background: #0070ba;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .confirm-btn:hover {
+        background: #005ea6;
+    }
+</style>
+
+<mobile-view>
+    <div class="paypal-container">
+        <!-- PayPal Header -->
+        <div class="paypal-header">
+            <div class="paypal-logo">PayPal</div>
+            <button class="close-btn" onclick="goBack()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Merchant Info -->
+        <div class="merchant-info">
+            <div class="merchant-logo">HM</div>
+            <div class="merchant-name">H.Moissan Jewelry</div>
+            <div class="payment-amount">$5,034.00 MXN</div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="login-section" id="loginSection">
+            <div class="login-title">Inicia sesión en tu cuenta de PayPal</div>
+            
+            <form id="paypalLoginForm">
+                <div class="form-group">
+                    <label class="form-label">Email o número de móvil</label>
+                    <input type="email" class="paypal-input" value="maria.gonzalez@email.com" id="emailInput">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="paypal-input" placeholder="Contraseña" id="passwordInput">
+                </div>
+                
+                <button type="button" class="login-btn" onclick="loginToPayPal()">
+                    Iniciar sesión
+                </button>
+                
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <a href="#" style="color: #0070ba; text-decoration: none; font-size: 14px;">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
+            
+            <div class="divider">
+                <span>o</span>
+            </div>
+            
+            <button class="guest-checkout-btn" onclick="guestCheckout()">
+                Pagar como invitado
+            </button>
+        </div>
+
+        <!-- Payment Review Section (hidden initially) -->
+        <div class="payment-review" id="paymentReview">
+            <div class="login-title">Revisar y confirmar</div>
+            
+            <!-- Account Info -->
+            <div class="account-info">
+                <div class="account-avatar">MG</div>
+                <div>
+                    <div style="font-weight: 600; color: #2c2e2f;">María González</div>
+                    <div style="color: #6c7378; font-size: 14px;">maria.gonzalez@email.com</div>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div style="margin-bottom: 20px;">
+                <div style="font-weight: 600; margin-bottom: 8px; color: #2c2e2f;">Método de pago</div>
+                <div style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e5e5; border-radius: 6px;">
+                    <i class="fas fa-credit-card" style="margin-right: 12px; color: #0070ba;"></i>
+                    <div>
+                        <div style="font-weight: 600;">Visa terminada en 4532</div>
+                        <div style="color: #6c7378; font-size: 14px;">Predeterminada</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="payment-details">
+                <div class="detail-row">
+                    <span>Subtotal:</span>
+                    <span>$4,340.00 MXN</span>
+                </div>
+                <div class="detail-row">
+                    <span>Envío:</span>
+                    <span>Gratis</span>
+                </div>
+                <div class="detail-row">
+                    <span>Impuestos:</span>
+                    <span>$694.00 MXN</span>
+                </div>
+                <div class="detail-row">
+                    <span>Total:</span>
+                    <span>$5,034.00 MXN</span>
+                </div>
+            </div>
+
+            <button class="confirm-btn" onclick="confirmPayPalPayment()">
+                <i class="fas fa-check" style="margin-right: 8px;"></i>
+                Confirmar y pagar
+            </button>
+
+            <div style="text-align: center; margin-top: 16px;">
+                <button style="background: none; border: none; color: #0070ba; text-decoration: underline; cursor: pointer;" onclick="goBackToLogin()">
+                    Cambiar método de pago
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Info -->
+        <div class="security-info">
+            <i class="fas fa-shield-alt"></i>
+            <span>Protegido por PayPal. Tu información financiera no se comparte con el comerciante.</span>
+        </div>
+    </div>
+</mobile-view>
+
+<script>
+    class MobileView extends HTMLElement {
+        constructor() {
+            super();
+            const shadow = this.attachShadow({ mode: 'open' });
+
+            // Add Font Awesome CDN to shadow DOM
+            const fontAwesomeLink = document.createElement('link');
+            fontAwesomeLink.setAttribute('rel', 'stylesheet');
+            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+            shadow.appendChild(fontAwesomeLink);
+
+            // Main container
+            const wrapper = document.createElement('div');
+            wrapper.id = 'mobileFrameCtn';
+            wrapper.innerHTML = `
+                <div id="mobileFrameEl">
+                    <!-- Status Bar -->
+                    <div id="statusBarEl">
+                        <span>9:41</span>
+                        <div style="display: flex; gap: 6px;">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-battery-three-quarters"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- App Content Area -->
+                    <div id="screenContentEl">
+                        <slot></slot>
+                    </div>
+                </div>
+            `;
+
+            // Internal styles
+            const style = document.createElement('style');
+            style.textContent = `
+                #mobileFrameCtn {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    background-color: #f5f5f5;
+                }
+                #mobileFrameEl {
+                    width: 375px;
+                    height: 667px;
+                    border-radius: 36px;
+                    overflow: hidden;
+                    box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                }
+                #statusBarEl {
+                    height: 44px;
+                    background: #000;
+                    color: #fff;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 20px;
+                    font-size: 14px;
+                }
+                #screenContentEl {
+                    flex: 1;
+                    overflow-y: auto;
+                    background: #f5f7fa;
+                }
+                @media (max-width: 420px) {
+                    #mobileFrameEl {
+                        width: 100%;
+                        max-width: 375px;
+                        height: 100vh;
+                        max-height: 667px;
+                        border-radius: 0;
+                    }
+                }
+            `;
+
+            shadow.appendChild(style);
+            shadow.appendChild(wrapper);
+        }
+    }
+
+    customElements.define('mobile-view', MobileView);
+
+    function loginToPayPal() {
+        const email = document.getElementById('emailInput').value;
+        const password = document.getElementById('passwordInput').value;
+        
+        if (!email || !password) {
+            alert('Por favor ingresa tu email y contraseña');
+            return;
+        }
+        
+        // Simulate login process
+        const loginBtn = document.querySelector('.login-btn');
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Iniciando sesión...';
+        
+        setTimeout(() => {
+            showPaymentReview();
+        }, 2000);
+    }
+
+    function guestCheckout() {
+        // Simulate guest checkout flow
+        alert('Redirigiendo a checkout como invitado...');
+        setTimeout(() => {
+            showPaymentReview();
+        }, 1000);
+    }
+
+    function showPaymentReview() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('paymentReview').style.display = 'block';
+    }
+
+    function goBackToLogin() {
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('paymentReview').style.display = 'none';
+        
+        // Reset login button
+        const loginBtn = document.querySelector('.login-btn');
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = 'Iniciar sesión';
+    }
+
+    function confirmPayPalPayment() {
+        const confirmBtn = document.querySelector('.confirm-btn');
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Procesando pago...';
+        
+        // Show processing overlay
+        const processingOverlay = document.createElement('div');
+        processingOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 48, 135, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 1000;
+        `;
+        processingOverlay.innerHTML = `
+            <div style="background: white; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                <i class="fab fa-paypal" style="font-size: 36px; color: #003087;"></i>
+            </div>
+            <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Procesando tu pago</div>
+            <div style="font-size: 14px; opacity: 0.9; text-align: center;">
+                PayPal está verificando tu información de pago<br>
+                Por favor no cierres esta ventana
+            </div>
+            <div style="margin-top: 24px;">
+                <div style="width: 40px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;">
+                    <div style="width: 100%; height: 100%; background: white; animation: loading 2s ease-in-out infinite;"></div>
+                </div>
+            </div>
+        `;
+        
+        // Add loading animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes loading {
+                0% { transform: translateX(-100%); }
+                50% { transform: translateX(0%); }
+                100% { transform: translateX(100%); }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(processingOverlay);
+        
+        // Simulate payment processing
+        setTimeout(() => {
+            document.body.removeChild(processingOverlay);
+            showPayPalSuccess();
+        }, 4000);
+    }
+
+    function showPayPalSuccess() {
+        const successOverlay = document.createElement('div');
+        successOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(76, 175, 80, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 1001;
+        `;
+        successOverlay.innerHTML = `
+            <div style="background: white; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                <i class="fas fa-check" style="font-size: 36px; color: #4CAF50;"></i>
+            </div>
+            <div style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">¡Pago Exitoso!</div>
+            <div style="font-size: 16px; text-align: center; margin-bottom: 8px;">
+                Tu pago de $5,034.00 MXN ha sido<br>
+                procesado correctamente por PayPal
+            </div>
+            <div style="font-size: 14px; opacity: 0.9; margin-bottom: 30px;">
+                ID de transacción: PP-${Math.random().toString(36).substr(2, 9).toUpperCase()}
+            </div>
+            <button style="background: white; color: #4CAF50; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer;" onclick="returnToApp()">
+                Regresar a H.Moissan
+            </button>
+        `;
+        document.body.appendChild(successOverlay);
+    }
+
+    function returnToApp() {
+        window.location.href = './order-confirmation.html';
+    }
+
+    function goBack() {
+        window.location.href = './checkout.html';
+    }
+</script>

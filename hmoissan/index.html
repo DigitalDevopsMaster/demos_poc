@@ -1,0 +1,613 @@
+<!-- Added Font Awesome CDN for modern icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Estilos del carrusel -->
+<style>
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        height: 250px;
+        overflow: hidden;
+    }
+    .carousel-slides {
+        display: flex;
+        transition: transform 0.5s ease;
+        height: 100%;
+    }
+    .carousel-slide {
+        min-width: 100%;
+        box-sizing: border-box;
+        position: relative;
+    }
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .slide-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 15px;
+        transition: all 0.3s ease;
+        background: linear-gradient(to top, rgba(0,0,0,0.35), rgba(0,0,0,0));
+    }
+    .slide-overlay h4 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        text-shadow: 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255);
+        outline: red 1px;
+        text-align: end;
+    }
+        
+    .slide-overlay .price {
+        margin: 0;
+        font-size: 18px;
+        color: #e0c090;
+        color: rgba(13, 93, 86, 0.85);
+        font-weight: 700;
+        text-align: end;
+    }
+    .carousel-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 5px;
+        z-index: 2;
+    }
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .dot.active {
+        background: white;
+    }
+    .category-btn {
+        padding: 8px 16px;
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 20px;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+    .category-btn:hover {
+        background-color: #e0e0e0;
+    }
+    
+    /* CTA Section Styles */
+    .cta-section {
+        background-size: cover;
+        background-position: center;
+        padding: 60px 20px;
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+    }
+    .cta-content {
+        position: relative;
+        z-index: 1;
+        max-width: 80%;
+        margin: 0 auto;
+    }
+    .cta-content h2 {
+        font-size: 28px;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    .cta-content p {
+        font-size: 16px;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    .cta-btn {
+        background-color: #0d5d56;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .cta-btn:hover {
+        background-color: #0a4742;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+    
+    /* Brand Card Styles */
+    .brand-card {
+        padding: 20px;
+        text-align: center;
+        background-color: #f9f9f9;
+    }
+    .brand-card img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+    .brand-card-content h3 {
+        color: #0d5d56;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .brand-card-content h4 {
+        color: #0d5d56;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    .brand-card-content p {
+        color: #333;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+</style>
+
+<mobile-view>
+    <div>
+        <!-- Header con color esmeralda oscuro -->
+        <div style="background-color: #0d5d56; padding: 15px; color: white;">
+            <!-- Barra de búsqueda e icono de notificación -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="position: relative; width: 75%;">
+                    <input type="text" placeholder="Buscar productos..." style="padding: 8px 8px 8px 40px; border-radius: 4px; border: none; width: 100%;" onclick="goToSearch()">
+                    <i class="fas fa-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #666;"></i>
+                </div>
+                <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                    <i class="fas fa-bell" style="font-size: 24px;"></i>
+                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                </div>
+            </div>
+            
+            <!-- Dirección de envío -->
+            <div style="display: flex; align-items: center; font-size: 14px;">
+                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                <span>Enviar a: Calle Principal 123, Ciudad</span>
+            </div>
+        </div>
+
+
+
+
+        <!-- Quick Actions Grid -->
+        <div style="padding: 15px; background: white;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                <div onclick="goToCategories('engagement-rings')" style="background: linear-gradient(135deg, #ffd700, #ffed4e); padding: 16px; border-radius: 12px; cursor: pointer; position: relative; overflow: hidden;">
+                    <i class="fas fa-ring" style="color: #b8860b; font-size: 24px; margin-bottom: 8px;"></i>
+                    <div style="color: #b8860b; font-weight: 700; font-size: 14px;">Anillos de</div>
+                    <div style="color: #b8860b; font-weight: 700; font-size: 14px;">Compromiso</div>
+                    <div style="position: absolute; top: -10px; right: -10px; background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%;"></div>
+                </div>
+                <div onclick="goToCategories('high-jewelry')" style="background: linear-gradient(135deg, #9c27b0, #e1bee7); padding: 16px; border-radius: 12px; cursor: pointer; position: relative; overflow: hidden;">
+                    <i class="fas fa-gem" style="color: #6a1b9a; font-size: 24px; margin-bottom: 8px;"></i>
+                    <div style="color: #6a1b9a; font-weight: 700; font-size: 14px;">Alta</div>
+                    <div style="color: #6a1b9a; font-weight: 700; font-size: 14px;">Joyería</div>
+                    <div style="position: absolute; top: -10px; right: -10px; background: rgba(255,255,255,0.3); width: 40px; height: 40px; border-radius: 50%;"></div>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div onclick="goToWishlist()" style="text-align: center; padding: 14px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-heart" style="color: #ff4444; font-size: 18px; margin-bottom: 6px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #495057;">Favoritos</div>
+                </div>
+                <div onclick="goToOrders()" style="text-align: center; padding: 14px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-box" style="color: #0d5d56; font-size: 18px; margin-bottom: 6px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #495057;">Pedidos</div>
+                </div>
+                <div onclick="goToCategories()" style="text-align: center; padding: 14px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-th-large" style="color: #6c757d; font-size: 18px; margin-bottom: 6px;"></i>
+                    <div style="font-size: 11px; font-weight: 600; color: #495057;">Todas</div>
+                </div>
+            </div>
+        </div>
+              
+        <!-- Productos Destacados -->
+        <div style="padding: 15px; background: white;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #0d5d56; font-size: 18px; font-weight: 600;">Para Ti</h3>
+                <span onclick="goToCategories()" style="color: #0d5d56; font-size: 14px; cursor: pointer; font-weight: 500;">Ver todo</span>
+            </div>
+            <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 5px;">
+                <div onclick="goToProductDetail('sapphire-ring')" style="min-width: 130px; background: #f8f9fa; border-radius: 8px; padding: 8px; cursor: pointer;">
+                    <div style="width: 114px; height: 114px; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/19.jpg?v=1702354507&width=640" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="font-weight: 600; font-size: 13px; color: #333;">Sapphire Ring</div>
+                    <div style="color: #0d5d56; font-weight: 700; font-size: 14px;">$2,450</div>
+                </div>
+                <div onclick="goToProductDetail('emerald-necklace')" style="min-width: 130px; background: #f8f9fa; border-radius: 8px; padding: 8px; cursor: pointer;">
+                    <div style="width: 114px; height: 114px; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/11.jpg?v=1702354238&width=640" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="font-weight: 600; font-size: 13px; color: #333;">Emerald Necklace</div>
+                    <div style="color: #0d5d56; font-weight: 700; font-size: 14px;">$1,890</div>
+                </div>
+                <div onclick="goToProductDetail('diamond-earrings')" style="min-width: 130px; background: #f8f9fa; border-radius: 8px; padding: 8px; cursor: pointer;">
+                    <div style="width: 114px; height: 114px; border-radius: 6px; overflow: hidden; margin-bottom: 6px;">
+                        <img src="https://hmoissan.com.mx/cdn/shop/files/4_2e0ed931-85fd-4655-83a3-ade437c68edc.jpg?v=1702354428&width=640" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="font-weight: 600; font-size: 13px; color: #333;">Diamond Earrings</div>
+                    <div style="color: #0d5d56; font-weight: 700; font-size: 14px;">$1,250</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorías Grid -->
+        <div style="padding: 15px; background: white;">
+            <h3 style="margin: 0 0 15px 0; color: #0d5d56; font-size: 18px; font-weight: 600;">Explorar</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+                <div onclick="goToCategories('rings')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-ring" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Anillos</div>
+                </div>
+                <div onclick="goToCategories('earrings')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-gem" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Aretes</div>
+                </div>
+                <div onclick="goToCategories('necklaces')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-circle" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Collares</div>
+                </div>
+                <div onclick="goToCategories('bracelets')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-circle-notch" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Pulseras</div>
+                </div>
+                <div onclick="goToCategories('watches')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-clock" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Relojes</div>
+                </div>
+                <div onclick="goToCategories('high-jewelry')" style="text-align: center; padding: 16px 8px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-crown" style="color: #0d5d56; font-size: 20px; margin-bottom: 8px;"></i>
+                    <div style="font-size: 12px; font-weight: 600; color: #495057;">Premium</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promoción Compacta -->
+        <div style="margin: 15px; padding: 16px; background: linear-gradient(135deg, #0d5d56, #1a7a6f); border-radius: 12px; color: white; text-align: center;">
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 6px;">💎 Oferta Especial</div>
+            <div style="font-size: 13px; margin-bottom: 12px; opacity: 0.9;">20% OFF en anillos de compromiso</div>
+            <button onclick="goToCategories('engagement-rings')" style="background: white; color: #0d5d56; border: none; padding: 8px 16px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer;">Ver Ofertas</button>
+        </div>
+
+        <!-- Acceso Rápido -->
+        <div style="padding: 15px; background: white;">
+            <h3 style="margin: 0 0 15px 0; color: #0d5d56; font-size: 18px; font-weight: 600;">Acceso Rápido</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div onclick="goToOrders()" style="display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-truck" style="color: #0d5d56; font-size: 18px; margin-right: 12px;"></i>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: #333;">Mis Pedidos</div>
+                        <div style="font-size: 11px; color: #666;">Rastrear envíos</div>
+                    </div>
+                </div>
+                <div onclick="goToWishlist()" style="display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 10px; cursor: pointer; border: 1px solid #e9ecef;">
+                    <i class="fas fa-heart" style="color: #ff4444; font-size: 18px; margin-right: 12px;"></i>
+                    <div>
+                        <div style="font-size: 13px; font-weight: 600; color: #333;">Favoritos</div>
+                        <div style="font-size: 11px; color: #666;">Lista de deseos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actividad Reciente -->
+        <div style="padding: 15px; background: white; border-top: 1px solid #f0f0f0;">
+            <h3 style="margin: 0 0 15px 0; color: #0d5d56; font-size: 18px; font-weight: 600;">Actividad Reciente</h3>
+            <div>
+                <div style="display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px;">
+                    <i class="fas fa-eye" style="color: #6c757d; font-size: 16px; margin-right: 12px;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-size: 13px; font-weight: 600; color: #333;">Viste Diamond Earrings</div>
+                        <div style="font-size: 11px; color: #666;">Hace 2 horas</div>
+                    </div>
+                    <button onclick="goToProductDetail('diamond-earrings')" style="background: #0d5d56; color: white; border: none; padding: 6px 12px; border-radius: 12px; font-size: 11px; cursor: pointer;">Ver</button>
+                </div>
+                <div style="display: flex; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px;">
+                    <i class="fas fa-heart" style="color: #ff4444; font-size: 16px; margin-right: 12px;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-size: 13px; font-weight: 600; color: #333;">Añadiste Sapphire Ring a favoritos</div>
+                        <div style="font-size: 11px; color: #666;">Ayer</div>
+                    </div>
+                    <button onclick="goToWishlist()" style="background: #0d5d56; color: white; border: none; padding: 6px 12px; border-radius: 12px; font-size: 11px; cursor: pointer;">Ver</button>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+</mobile-view>
+  
+
+<script>
+    class MobileView extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: 'open' });
+    
+        // Add Font Awesome CDN to shadow DOM
+        const fontAwesomeLink = document.createElement('link');
+        fontAwesomeLink.setAttribute('rel', 'stylesheet');
+        fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        shadow.appendChild(fontAwesomeLink);
+    
+        // Contenedor principal
+        const wrapper = document.createElement('div');
+        wrapper.id = 'mobileFrameCtn';
+        wrapper.innerHTML = `
+          <div id="mobileFrameEl">
+            <!-- Status Bar -->
+            <div id="statusBarEl">
+              <span>9:41</span>
+              <div style="display: flex; gap: 6px;">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+              </div>
+            </div>
+            
+            <!-- App Content Area -->
+            <div id="screenContentEl">
+              <slot></slot>
+            </div>
+            
+            <!-- Bottom Navigation Bar -->
+            <div id="navBarEl">
+              <div class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+              </div>
+              <div class="nav-item" onclick="goToCart()" style="position: relative;">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Carrito</span>
+                <span id="cartBadge" style="position: absolute; top: 5px; right: 8px; background: #ff4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+              </div>
+              <div class="nav-item" onclick="goToProfile()">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+              </div>
+            </div>
+          </div>
+        `;
+    
+        // Estilos internos
+        const style = document.createElement('style');
+        style.textContent = `
+          #mobileFrameCtn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+          }
+          #mobileFrameEl {
+            width: 375px;
+            height: 667px;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+          }
+          #statusBarEl {
+            height: 44px;
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+          }
+          #screenContentEl {
+            flex: 1;
+            overflow-y: auto;
+            background: #fff;
+            padding-bottom: 60px;
+          }
+          #navBarEl {
+            height: 60px;
+            background: #fff;
+            color: #333;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #ddd;
+            z-index: 1;
+          }
+          .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+          .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+          }
+          .nav-item span {
+            font-size: 12px;
+          }
+          @media (max-width: 420px) {
+            #mobileFrameEl {
+              width: 100%;
+              max-width: 375px;
+              height: 100vh;
+              max-height: 667px;
+              border-radius: 0;
+            }
+          }
+        `;
+    
+        shadow.appendChild(style);
+        shadow.appendChild(wrapper);
+      }
+    }
+    
+    customElements.define('mobile-view', MobileView);
+</script>
+
+<!-- Script del carrusel -->
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.dot');
+    const slidesContainer = document.querySelector('.carousel-slides');
+    
+    function showSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        currentSlide = index;
+        slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+    
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+    });
+
+    // Navigation functions
+    function goToSearch() {
+        window.location.href = './search.html';
+    }
+
+    function goToCart() {
+        window.location.href = './cart.html';
+    }
+
+    function goToProfile() {
+        window.location.href = './profile.html';
+    }
+
+    function goToProductDetail(productId) {
+        window.location.href = `./product-detail.html?id=${productId}`;
+    }
+
+    function goToWishlist() {
+        window.location.href = './wishlist.html';
+    }
+
+    function goToOrders() {
+        window.location.href = './orders.html';
+    }
+
+    function goToCategories(category = '') {
+        if (category) {
+            window.location.href = `./categories.html?category=${category}`;
+        } else {
+            window.location.href = './categories.html';
+        }
+    }
+
+    function goToNotifications() {
+        window.location.href = './notifications.html';
+    }
+
+    // Detect if viewing on mobile device
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    }
+
+    // Update notification badge based on localStorage
+    window.addEventListener('DOMContentLoaded', function() {
+        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+        const badge = document.getElementById('notificationBadge');
+        if (badge && unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'flex';
+        } else if (badge) {
+            badge.style.display = 'none';
+        }
+        
+        // If on mobile device, hide mobile-view frame and show full screen
+        if (isMobileDevice()) {
+            const mobileView = document.querySelector('mobile-view');
+            if (mobileView) {
+                mobileView.style.cssText = `
+                    display: block;
+                    width: 100vw;
+                    height: 100vh;
+                    margin: 0;
+                    border-radius: 0;
+                    box-shadow: none;
+                    background: white;
+                `;
+                
+                // Override shadow DOM styles for mobile
+                const shadowRoot = mobileView.shadowRoot;
+                if (shadowRoot) {
+                    const style = shadowRoot.querySelector('style');
+                    if (style) {
+                        style.textContent += `
+                            #mobileFrameEl {
+                                width: 100vw !important;
+                                height: 100vh !important;
+                                border-radius: 0 !important;
+                                box-shadow: none !important;
+                            }
+                        `;
+                    }
+                }
+            }
+            
+            // Also hide body margins on mobile
+            document.body.style.margin = '0';
+            document.body.style.padding = '0';
+            document.body.style.overflow = 'hidden';
+        }
+    });
+    
+    // Touch events para swipe
+    let startX = 0;
+    let endX = 0;
+    
+    slidesContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    slidesContainer.addEventListener('touchmove', (e) => {
+        endX = e.touches[0].clientX;
+    });
+    
+    slidesContainer.addEventListener('touchend', () => {
+        if (startX - endX > 50) { // Swipe left
+            showSlide(currentSlide + 1);
+        } else if (endX - startX > 50) { // Swipe right
+            showSlide(currentSlide - 1);
+        }
+    });
+    
+    // Auto-rotate cada 5 segundos
+    setInterval(() => {
+        showSlide(currentSlide + 1);
+    }, 5000);
+</script>

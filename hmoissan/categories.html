@@ -1,0 +1,437 @@
+<!-- Added Font Awesome CDN for modern icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<mobile-view>
+    <div>
+        <!-- Header con color esmeralda oscuro -->
+        <div style="background-color: #0d5d56; padding: 15px; color: white;">
+            <!-- Barra de búsqueda e icono de notificación -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="position: relative; width: 75%;">
+                    <input type="text" placeholder="Buscar productos..." style="padding: 8px 8px 8px 40px; border-radius: 4px; border: none; width: 100%;">
+                    <i class="fas fa-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #666;"></i>
+                </div>
+                <div onclick="goToNotifications()" style="position: relative; cursor: pointer;">
+                    <i class="fas fa-bell" style="font-size: 24px;"></i>
+                    <span id="notificationBadge" style="position: absolute; top: -8px; right: -8px; background: #ff4444; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                </div>
+            </div>
+            
+            <!-- Dirección de envío -->
+            <div style="display: flex; align-items: center; font-size: 14px;">
+                <i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i>
+                <span>Enviar a: Calle Principal 123, Ciudad</span>
+            </div>
+        </div>
+        <!-- Nueva barra superior con flecha de retroceso y título -->
+        <div style="background-color: #f8f8f8; padding: 12px; display: flex; align-items: center; border-bottom: 1px solid #ddd;">
+            <i class="fas fa-arrow-left" style="margin-right: 15px; cursor: pointer; font-size: 18px;" onclick="returnToCategories()"></i>
+            <span id="titleBarEl" style="font-weight: bold; font-size: 18px;">Collections</span>
+        </div>
+        
+        <!-- Categories Grid Container -->
+        <div id="categoriesGridCtn" style="padding: 20px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <!-- BRACELETS -->
+                <div onclick="selectCategory('BRACELETS')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/5_ba5c5a53-66c8-4bf4-9fb1-68c961ae1d93.jpg?v=1702354238&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">BRACELETS</div>
+                </div>
+                <!-- EARRINGS -->
+                <div onclick="selectCategory('EARRINGS')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/4_c9851639-c118-4220-8105-e1d9560c6e43.jpg?v=1702354507&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">EARRINGS</div>
+                </div>
+                <!-- RINGS -->
+                <div onclick="selectCategory('RINGS')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/17.jpg?v=1702354428&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">RINGS</div>
+                </div>
+                <!-- ENGAGEMENT RINGS -->
+                <div onclick="selectCategory('ENGAGEMENT RINGS')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/EmeraldCutEngagementRings2.jpg?v=1718135089&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">ENGAGEMENT RINGS</div>
+                </div>
+                <!-- NECKLACES -->
+                <div onclick="selectCategory('NECKLACES')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/6_0bb32742-7575-4704-b9eb-cd8b893c4420.jpg?v=1702354356&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">NECKLACES</div>
+                </div>
+                <!-- HIGH JEWERLY -->
+                <div onclick="selectCategory('HIGH JEWERLY')" style="cursor: pointer; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <img src="https://hmoissan.com.mx/cdn/shop/files/Aretes-7.jpg?v=1748563878&width=770" style="width: 100%; height: 150px; object-fit: cover;">
+                    <div style="padding: 10px; text-align: center; font-weight: bold; background: #fff;">HIGH JEWERLY</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product List Container (initially hidden) -->
+        <div id="productListCtn" style="padding: 20px; display: none;">
+            <div id="productGrid" style="display: flex; flex-direction: column; gap: 15px;"></div>
+        </div>
+    </div>
+</mobile-view>
+  
+
+<script>
+    class MobileView extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: 'open' });
+    
+        // Add Font Awesome CDN to shadow DOM
+        const fontAwesomeLink = document.createElement('link');
+        fontAwesomeLink.setAttribute('rel', 'stylesheet');
+        fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        shadow.appendChild(fontAwesomeLink);
+    
+        // Contenedor principal
+        const wrapper = document.createElement('div');
+        wrapper.id = 'mobileFrameCtn';
+        wrapper.innerHTML = `
+          <div id="mobileFrameEl">
+            <!-- Status Bar -->
+            <div id="statusBarEl">
+              <span>9:41</span>
+              <div style="display: flex; gap: 6px;">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+              </div>
+            </div>
+            
+            <!-- App Content Area -->
+            <div id="screenContentEl">
+              <slot></slot>
+            </div>
+            
+            <!-- Bottom Navigation Bar -->
+            <div id="navBarEl">
+              <div class="nav-item" onclick="goToHome()">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+              </div>
+              <div class="nav-item" onclick="goToCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Carrito</span>
+              </div>
+              <div class="nav-item" onclick="goToProfile()">
+                <i class="fas fa-user"></i>
+                <span>Perfil</span>
+              </div>
+            </div>
+          </div>
+        `;
+    
+        // Estilos internos
+        const style = document.createElement('style');
+        style.textContent = `
+          #mobileFrameCtn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+          }
+          #mobileFrameEl {
+            width: 375px;
+            height: 667px;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+          }
+          #statusBarEl {
+            height: 44px;
+            background: #000;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+          }
+          #screenContentEl {
+            flex: 1;
+            overflow-y: auto;
+            background: #fff;
+            padding-bottom: 60px;
+          }
+          #navBarEl {
+            height: 60px;
+            background: #fff;
+            color: #333;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #ddd;
+            z-index: 1;
+          }
+          .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px 10px;
+            cursor: pointer;
+          }
+          .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+          }
+          .nav-item span {
+            font-size: 12px;
+          }
+          @media (max-width: 420px) {
+            #mobileFrameEl {
+              width: 100%;
+              max-width: 375px;
+              height: 100vh;
+              max-height: 667px;
+              border-radius: 0;
+            }
+          }
+        `;
+    
+        shadow.appendChild(style);
+        shadow.appendChild(wrapper);
+      }
+    }
+    
+    customElements.define('mobile-view', MobileView);
+    
+    // Function to handle category selection
+    function selectCategory(category) {
+      // Update title in top bar
+      document.getElementById('titleBarEl').textContent = category;
+      
+      // Hide categories grid and show product list
+      document.getElementById('categoriesGridCtn').style.display = 'none';
+      document.getElementById('productListCtn').style.display = 'block';
+      
+      // Generate product list for selected category
+      generateProductList(category);
+    }
+    
+    // Function to return to categories view
+    function returnToCategories() {
+      // Reset title to Collections
+      document.getElementById('titleBarEl').textContent = 'Collections';
+      
+      // Show categories grid and hide product list
+      document.getElementById('categoriesGridCtn').style.display = 'block';
+      document.getElementById('productListCtn').style.display = 'none';
+    }
+    
+    // Function to generate 3-5 jewelry products for a category
+    function generateProductList(category) {
+      const productGrid = document.getElementById('productGrid');
+      productGrid.innerHTML = ''; // Clear previous products
+      
+      // Product data for each category (3-5 products per category) - using actual jewelry images
+      const productData = {
+        'BRACELETS': [
+          { name: 'Bracelet Émeraude', price: '$120', img: 'https://hmoissan.com.mx/cdn/shop/files/5_ba5c5a53-66c8-4bf4-9fb1-68c961ae1d93.jpg?v=1702354238&width=770' },
+          { name: 'Bracelet Rubis', price: '$150', img: 'https://hmoissan.com.mx/cdn/shop/files/5_ba5c5a53-66c8-4bf4-9fb1-68c961ae1d93.jpg?v=1702354238&width=770' },
+          { name: 'Bracelet Saphir', price: '$135', img: 'https://hmoissan.com.mx/cdn/shop/files/5_ba5c5a53-66c8-4bf4-9fb1-68c961ae1d93.jpg?v=1702354238&width=770' },
+          { name: 'Bracelet Diamant', price: '$200', img: 'https://hmoissan.com.mx/cdn/shop/files/5_ba5c5a53-66c8-4bf4-9fb1-68c961ae1d93.jpg?v=1702354238&width=770' }
+        ],
+        'EARRINGS': [
+          { name: 'Boucles Perles', price: '$85', img: 'https://hmoissan.com.mx/cdn/shop/files/4_c9851639-c118-4220-8105-e1d9560c6e43.jpg?v=1702354507&width=770' },
+          { name: 'Boucles Diamant', price: '$220', img: 'https://hmoissan.com.mx/cdn/shop/files/4_c9851639-c118-4220-8105-e1d9560c6e43.jpg?v=1702354507&width=770' },
+          { name: 'Boucles Émeraude', price: '$180', img: 'https://hmoissan.com.mx/cdn/shop/files/4_c9851639-c118-4220-8105-e1d9560c6e43.jpg?v=1702354507&width=770' }
+        ],
+        'RINGS': [
+          { name: 'Bague Or', price: '$95', img: 'https://hmoissan.com.mx/cdn/shop/files/17.jpg?v=1702354428&width=770' },
+          { name: 'Bague Argent', price: '$75', img: 'https://hmoissan.com.mx/cdn/shop/files/17.jpg?v=1702354428&width=770' },
+          { name: 'Bague Diamant', price: '$320', img: 'https://hmoissan.com.mx/cdn/shop/files/17.jpg?v=1702354428&width=770' },
+          { name: 'Bague Saphir', price: '$140', img: 'https://hmoissan.com.mx/cdn/shop/files/17.jpg?v=1702354428&width=770' }
+        ],
+        'ENGAGEMENT RINGS': [
+          { name: 'Baguette Émeraude', price: '$450', img: 'https://hmoissan.com.mx/cdn/shop/files/EmeraldCutEngagementRings2.jpg?v=1718135089&width=770' },
+          { name: 'Princesse Diamant', price: '$680', img: 'https://hmoissan.com.mx/cdn/shop/files/EmeraldCutEngagementRings2.jpg?v=1718135089&width=770' },
+          { name: 'Ovale Rubis', price: '$520', img: 'https://hmoissan.com.mx/cdn/shop/files/EmeraldCutEngagementRings2.jpg?v=1718135089&width=770' }
+        ],
+        'NECKLACES': [
+          { name: 'Collier Perles', price: '$200', img: 'https://hmoissan.com.mx/cdn/shop/files/6_0bb32742-7575-4704-b9eb-cd8b893c4420.jpg?v=1702354356&width=770' },
+          { name: 'Collier Diamant', price: '$420', img: 'https://hmoissan.com.mx/cdn/shop/files/6_0bb32742-7575-4704-b9eb-cd8b893c4420.jpg?v=1702354356&width=770' },
+          { name: 'Collier Or', price: '$180', img: 'https://hmoissan.com.mx/cdn/shop/files/6_0bb32742-7575-4704-b9eb-cd8b893c4420.jpg?v=1702354356&width=770' }
+        ],
+        'HIGH JEWERLY': [
+          { name: 'Parure Émeraude', price: '$1200', img: 'https://hmoissan.com.mx/cdn/shop/files/Aretes-7.jpg?v=1748563878&width=770' },
+          { name: 'Parure Diamant', price: '$2500', img: 'https://hmoissan.com.mx/cdn/shop/files/Aretes-7.jpg?v=1748563878&width=770' },
+          { name: 'Parure Rubis', price: '$1800', img: 'https://hmoissan.com.mx/cdn/shop/files/Aretes-7.jpg?v=1748563878&width=770' },
+          { name: 'Parure Saphir', price: '$1600', img: 'https://hmoissan.com.mx/cdn/shop/files/Aretes-7.jpg?v=1748563878&width=770' }
+        ]
+      };
+      
+      // Get products for selected category
+      const products = productData[category] || [];
+      
+      // Create product elements with list-style layout
+      products.forEach(product => {
+        const productEl = document.createElement('div');
+        // List-style layout with horizontal orientation
+        productEl.style.cssText = `
+          display: flex;
+          padding: 15px;
+          border-radius: 10px;
+          background: #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: all 0.3s ease;
+          cursor: pointer;
+          position: relative;
+        `;
+        
+        // Add hover effect
+        productEl.onmouseover = function() {
+          this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)';
+        };
+        productEl.onmouseout = function() {
+          this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+        };
+        
+        productEl.innerHTML = `
+          <div style="width: 90px; height: 90px; overflow: hidden; border-radius: 8px; margin-right: 15px;" onclick="goToProductDetail('${product.name.toLowerCase().replace(/\s+/g, '-')}')">
+            <img src="${product.img}" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div onclick="goToProductDetail('${product.name.toLowerCase().replace(/\s+/g, '-')}')">
+              <div style="font-weight: 700; font-size: 18px; color: #333; margin-bottom: 5px;">${product.name}</div>
+              <div style="color: #0d5d56; font-weight: 800; font-size: 20px;">${product.price}</div>
+            </div>
+            <button onclick="addToCart('${product.name}', '${product.price}')" style="
+              background: linear-gradient(145deg, #0d5d56, #0a4742); 
+              color: white; 
+              border: none; 
+              padding: 8px 18px; 
+              border-radius: 6px; 
+              font-weight: 600; 
+              font-size: 14px; 
+              cursor: pointer; 
+              transition: all 0.2s ease; 
+              box-shadow: 0 2px 6px rgba(13, 93, 86, 0.3);
+              max-width: 160px;
+            ">Añadir al carrito</button>
+          </div>
+          <div style="position: absolute; top: 10px; right: 10px; background: rgba(13, 93, 86, 0.1); color: #0d5d56; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="toggleWishlist('${product.name}')">
+            <i class="fas fa-heart" style="font-size: 14px;"></i>
+          </div>
+        `;
+        productGrid.appendChild(productEl);
+      });
+    }
+
+    // Navigation functions
+    function goToHome() {
+        window.location.href = './index.html';
+    }
+
+    function goToCart() {
+        window.location.href = './cart.html';
+    }
+
+    function goToProfile() {
+        window.location.href = './profile.html';
+    }
+
+    function goToProductDetail(productId) {
+        window.location.href = `./product-detail.html?id=${productId}`;
+    }
+
+    function addToCart(productName, price) {
+        alert(`${productName} añadido al carrito!`);
+    }
+
+    function toggleWishlist(productName) {
+        alert(`${productName} ${Math.random() > 0.5 ? 'añadido a' : 'removido de'} favoritos`);
+    }
+
+    function goToNotifications() {
+        window.location.href = './notifications.html';
+    }
+
+    // Detect if viewing on mobile device
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    }
+
+    // Function to get URL parameters
+    function getURLParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Auto-filter to category if URL parameter is present
+    window.addEventListener('DOMContentLoaded', function() {
+        const categoryParam = getURLParameter('category');
+        if (categoryParam) {
+            // Convert URL parameter to display format
+            const categoryMap = {
+                'bracelets': 'BRACELETS',
+                'earrings': 'EARRINGS', 
+                'necklaces': 'NECKLACES',
+                'rings': 'RINGS',
+                'watches': 'WATCHES',
+                'high-jewelry': 'HIGH JEWELRY',
+                'engagement-rings': 'ENGAGEMENT RINGS'
+            };
+            
+            const categoryName = categoryMap[categoryParam];
+            if (categoryName) {
+                selectCategory(categoryName);
+            }
+        }
+        
+        // Update notification badge
+        const unreadCount = localStorage.getItem('unreadNotifications') || '2';
+        const badge = document.getElementById('notificationBadge');
+        if (badge && unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'flex';
+        } else if (badge) {
+            badge.style.display = 'none';
+        }
+        
+        // If on mobile device, hide mobile-view frame and show full screen
+        if (isMobileDevice()) {
+            const mobileView = document.querySelector('mobile-view');
+            if (mobileView) {
+                mobileView.style.cssText = `
+                    display: block;
+                    width: 100vw;
+                    height: 100vh;
+                    margin: 0;
+                    border-radius: 0;
+                    box-shadow: none;
+                    background: white;
+                `;
+                
+                // Override shadow DOM styles for mobile
+                const shadowRoot = mobileView.shadowRoot;
+                if (shadowRoot) {
+                    const style = shadowRoot.querySelector('style');
+                    if (style) {
+                        style.textContent += `
+                            #mobileFrameEl {
+                                width: 100vw !important;
+                                height: 100vh !important;
+                                border-radius: 0 !important;
+                                box-shadow: none !important;
+                            }
+                        `;
+                    }
+                }
+            }
+            
+            // Also hide body margins on mobile
+            document.body.style.margin = '0';
+            document.body.style.padding = '0';
+            document.body.style.overflow = 'hidden';
+        }
+    });
+</script>
