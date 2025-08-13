@@ -121,7 +121,7 @@
           
           <!-- Bottom Navigation Bar -->
           <div id="navBarEl">
-            <div class="nav-item active">
+            <div class="nav-item active" onclick="goToHome()">
               <i class="fas fa-home"></i>
               <span>Home</span>
             </div>
@@ -429,7 +429,6 @@
                         style.textContent += `
                             #mobileFrameEl {
                                 width: 100vw !important;
-                                height: 100vh !important;
                                 border-radius: 0 !important;
                                 box-shadow: none !important;
                             }

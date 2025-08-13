@@ -349,7 +349,7 @@
                 
                 <!-- Bottom Navigation Bar -->
                 <div id="navBarEl">
-                  <div class="nav-item active">
+                  <div class="nav-item active" onclick="goToHome()">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                   </div>
@@ -544,6 +544,10 @@
         function goBack() {
             window.location.href = './checkout.html';
         }
+        
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
 
         // Detect if viewing on mobile device
         function isMobileDevice() {
@@ -564,8 +568,29 @@
                         margin: 0;
                         border-radius: 0;
                         box-shadow: none;
+                        background: white;
                     `;
+                    
+                    // Override shadow DOM styles for mobile
+                    const shadowRoot = mobileView.shadowRoot;
+                    if (shadowRoot) {
+                        const style = shadowRoot.querySelector('style');
+                        if (style) {
+                            style.textContent += `
+                                #mobileFrameEl {
+                                    width: 100vw !important;
+                                    border-radius: 0 !important;
+                                    box-shadow: none !important;
+                                }
+                            `;
+                        }
+                    }
                 }
+                
+                // Also hide body margins on mobile
+                document.body.style.margin = '0';
+                document.body.style.padding = '0';
+                document.body.style.overflow = 'hidden';
             }
         });
     </script>
