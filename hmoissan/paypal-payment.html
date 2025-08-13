@@ -571,6 +571,30 @@
         function goBack() {
             window.location.href = './checkout.html';
         }
+
+        // Detect if viewing on mobile device
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        }
+
+        // Mobile device optimization
+        window.addEventListener('DOMContentLoaded', function() {
+            if (isMobileDevice()) {
+                const mobileView = document.querySelector('mobile-view');
+                if (mobileView && mobileView.shadowRoot) {
+                    const statusBar = mobileView.shadowRoot.querySelector('#statusBarEl');
+                    if (statusBar) statusBar.style.display = 'none';
+                    mobileView.style.cssText = `
+                        display: block;
+                        width: 100vw;
+                        height: 100vh;
+                        margin: 0;
+                        border-radius: 0;
+                        box-shadow: none;
+                    `;
+                }
+            }
+        });
     </script>
    
 </body>

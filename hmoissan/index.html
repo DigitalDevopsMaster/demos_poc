@@ -443,6 +443,7 @@
             overflow-y: auto;
             background: #fff;
             padding-bottom: 60px;
+            max-height: 80vh;
           }
           #navBarEl {
             height: 60px;
@@ -542,6 +543,7 @@
 
     // Detect if viewing on mobile device
     function isMobileDevice() {
+        return true;
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     }
 
