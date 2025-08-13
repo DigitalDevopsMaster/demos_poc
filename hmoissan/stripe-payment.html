@@ -316,84 +316,131 @@
             </div>
         </div>
     </mobile-view>
-    
     <script>
         class MobileView extends HTMLElement {
-            constructor() {
-                super();
-                const shadow = this.attachShadow({ mode: 'open' });
+          constructor() {
+            super();
+            const shadow = this.attachShadow({ mode: 'open' });
+        
+            // Add Font Awesome CDN to shadow DOM
+            const fontAwesomeLink = document.createElement('link');
+            fontAwesomeLink.setAttribute('rel', 'stylesheet');
+            fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+            shadow.appendChild(fontAwesomeLink);
+        
+            // Contenedor principal
+            const wrapper = document.createElement('div');
+            wrapper.id = 'mobileFrameCtn';
+            wrapper.innerHTML = `
+              <div id="mobileFrameEl">
+                <!-- Status Bar -->
+                <div id="statusBarEl">
+                  <span>9:41</span>
+                  <div style="display: flex; gap: 6px;">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-battery-three-quarters"></i>
+                  </div>
+                </div>
+                
+                <!-- App Content Area -->
+                <div id="screenContentEl">
+                  <slot></slot>
+                </div>
+                
+                <!-- Bottom Navigation Bar -->
+                <div id="navBarEl">
+                  <div class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                  </div>
+                  <div class="nav-item" onclick="goToCart()" style="position: relative;">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Carrito</span>
+                    <span id="cartBadge" style="position: absolute; top: 5px; right: 8px; background: #ff4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</span>
+                  </div>
+                  <div class="nav-item" onclick="goToProfile()">
+                    <i class="fas fa-user"></i>
+                    <span>Perfil</span>
+                  </div>
+                </div>
+              </div>
+            `;
+        
+            // Estilos internos
+            const style = document.createElement('style');
+            style.textContent = `
+              #mobileFrameCtn {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                position: relative;
+                min-height: 100vh;
+              }
+              #mobileFrameEl {
+                border-radius: 36px;
+                overflow: hidden;
+                height: calc(100vh - 50px);
+                box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
+                position: relative;
+                display: flex;
+                flex-direction: column;
+              }
+              #statusBarEl {
+                height: 44px;
+                background: #000;
+                color: #fff;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 20px;
+                font-size: 14px;
+              }
+              #screenContentEl {
+                flex: 1;
+                overflow-y: auto;
+                background: #fff;
+                padding-bottom: 60px;
+                max-height: 100%;
+              }
+              #navBarEl {
+                height: 60px;
+                background: #fff;
+                color: #333;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-top: 1px solid #ddd;
+                z-index: 1;
+              }
+              .nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 5px 10px;
+                cursor: pointer;
+              }
+              .nav-item i {
+                font-size: 20px;
+                margin-bottom: 4px;
+              }
+              .nav-item span {
+                font-size: 12px;
+              }
     
-                // Add Font Awesome CDN to shadow DOM
-                const fontAwesomeLink = document.createElement('link');
-                fontAwesomeLink.setAttribute('rel', 'stylesheet');
-                fontAwesomeLink.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-                shadow.appendChild(fontAwesomeLink);
-    
-                // Main container
-                const wrapper = document.createElement('div');
-                wrapper.id = 'mobileFrameCtn';
-                wrapper.innerHTML = `
-                    <div id="mobileFrameEl">
-                        <!-- Status Bar -->
-                        <div id="statusBarEl">
-                            <span>9:41</span>
-                            <div style="display: flex; gap: 6px;">
-                                <i class="fas fa-signal"></i>
-                                <i class="fas fa-battery-three-quarters"></i>
-                            </div>
-                        </div>
-                        
-                        <!-- App Content Area -->
-                        <div id="screenContentEl">
-                            <slot></slot>
-                        </div>
-                    </div>
-                `;
-    
-                // Internal styles
-                const style = document.createElement('style');
-                style.textContent = `
-                    #mobileFrameCtn {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        min-height: 100vh;
-                        background-color: #f5f5f5;
-                    }
-                    #mobileFrameEl {
-                        width: 375px;
-                        height: 667px;
-                        border-radius: 36px;
-                        overflow: hidden;
-                        box-shadow: 0 0 0 14px #1a1a1a, 0 0 0 16px #2a2a2a, 0 20px 40px rgba(0,0,0,0.3);
-                        position: relative;
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    #statusBarEl {
-                        height: 44px;
-                        background: #000;
-                        color: #fff;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        padding: 0 20px;
-                        font-size: 14px;
-                    }
-                    #screenContentEl {
-                        flex: 1;
-                        overflow-y: auto;
-                        background: #f6f9fc;
-                    }
-                `;
-    
-                shadow.appendChild(style);
-                shadow.appendChild(wrapper);
-            }
+            `;
+        
+            shadow.appendChild(style);
+            shadow.appendChild(wrapper);
+          }
         }
-    
+        
         customElements.define('mobile-view', MobileView);
-    
+    </script>
+    <script>
         // Card number formatting
         function formatCardNumber(input) {
             let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
