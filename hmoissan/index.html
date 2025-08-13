@@ -472,15 +472,7 @@
           .nav-item span {
             font-size: 12px;
           }
-          @media (max-width: 420px) {
-            #mobileFrameEl {
-              width: 100%;
-              max-width: 375px;
-              height: 100vh;
-              max-height: 667px;
-              border-radius: 0;
-            }
-          }
+
         `;
     
         shadow.appendChild(style);
@@ -567,6 +559,7 @@
         // If on mobile device, hide mobile-view frame and show full screen
         if (isMobileDevice()) {
             const mobileView = document.querySelector('mobile-view');
+            mobileView.shadowRoot.querySelector('#statusBarEl').style.display = 'none';
             if (mobileView) {
                 mobileView.style.cssText = `
                     display: block;
