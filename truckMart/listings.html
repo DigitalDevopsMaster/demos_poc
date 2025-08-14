@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camionetas Disponibles - TruckMart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Component -->
+    <truck-navbar></truck-navbar>
+
+    <!-- Header -->
+    <section class="listings-header">
+        <div class="container">
+            <h1>Camionetas Disponibles</h1>
+            <p>Encuentra la camioneta perfecta para ti</p>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <section class="search-section">
+        <div class="container">
+            <truck-search-bar></truck-search-bar>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="listings-content">
+        <div class="listings-main">
+            <!-- Filters Sidebar -->
+            <aside class="filters-sidebar">
+                <filter-sidebar></filter-sidebar>
+            </aside>
+
+            <!-- Trucks List -->
+            <main class="trucks-list">
+                <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 30px;">
+                    <h2 style="color: #333;">Resultados (24 camionetas)</h2>
+                    <select style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        <option>Ordenar por precio: menor a mayor</option>
+                        <option>Ordenar por precio: mayor a menor</option>
+                        <option>Más recientes</option>
+                        <option>Menor kilometraje</option>
+                    </select>
+                </div>
+
+                <div class="trucks-grid">
+                    <truck-card 
+                        data-id="1"
+                        data-title="Ford F-150 XLT 2020"
+                        data-price="$450,000"
+                        data-year="2020"
+                        data-mileage="45,000 km"
+                        data-location="Ciudad de México"
+                        data-image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+                    
+                    <truck-card 
+                        data-id="2"
+                        data-title="Chevrolet Silverado 2019"
+                        data-price="$380,000"
+                        data-year="2019"
+                        data-mileage="62,000 km"
+                        data-location="Guadalajara"
+                        data-image="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+                    
+                    <truck-card 
+                        data-id="3"
+                        data-title="RAM 1500 Laramie 2021"
+                        data-price="$520,000"
+                        data-year="2021"
+                        data-mileage="28,000 km"
+                        data-location="Monterrey"
+                        data-image="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="4"
+                        data-title="Toyota Tacoma TRD 2022"
+                        data-price="$480,000"
+                        data-year="2022"
+                        data-mileage="15,000 km"
+                        data-location="Puebla"
+                        data-image="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="5"
+                        data-title="Nissan Frontier Pro-4X 2020"
+                        data-price="$390,000"
+                        data-year="2020"
+                        data-mileage="55,000 km"
+                        data-location="Tijuana"
+                        data-image="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="6"
+                        data-title="Ford Ranger Wildtrak 2021"
+                        data-price="$420,000"
+                        data-year="2021"
+                        data-mileage="38,000 km"
+                        data-location="Ciudad de México"
+                        data-image="https://images.unsplash.com/photo-1609521263047-f8f205293f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="7"
+                        data-title="Chevrolet Colorado Z71 2019"
+                        data-price="$350,000"
+                        data-year="2019"
+                        data-mileage="70,000 km"
+                        data-location="Guadalajara"
+                        data-image="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="8"
+                        data-title="RAM 2500 Heavy Duty 2020"
+                        data-price="$580,000"
+                        data-year="2020"
+                        data-mileage="42,000 km"
+                        data-location="Monterrey"
+                        data-image="https://images.unsplash.com/photo-1563720223185-11003d516935?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+
+                    <truck-card 
+                        data-id="9"
+                        data-title="Ford F-250 Super Duty 2021"
+                        data-price="$650,000"
+                        data-year="2021"
+                        data-mileage="25,000 km"
+                        data-location="Ciudad de México"
+                        data-image="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                    </truck-card>
+                </div>
+
+                <!-- Pagination -->
+                <div style="display: flex; justify-content: center; margin-top: 50px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button style="padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button style="padding: 10px 15px; border: 1px solid #667eea; background: #667eea; color: white; border-radius: 5px;">1</button>
+                        <button style="padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">2</button>
+                        <button style="padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">3</button>
+                        <button style="padding: 10px 15px; border: 1px solid #ddd; background: white; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <truck-footer></truck-footer>
+
+    <script src="components.js"></script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - TruckMart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Component -->
+    <truck-navbar></truck-navbar>
+
+    <!-- Header -->
+    <section class="listings-header">
+        <div class="container">
+            <h1>Contacto</h1>
+            <p>¿Tienes preguntas? Estamos aquí para ayudarte</p>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section style="padding: 80px 0; background: #f8f9fa;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto;">
+                
+                <!-- Contact Form -->
+                <div class="form-container" style="margin: 0;">
+                    <h2 style="color: #333; margin-bottom: 30px;">Envíanos un Mensaje</h2>
+                    
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">Nombre *</label>
+                                <input type="text" id="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Apellido *</label>
+                                <input type="text" id="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico *</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input type="tel" id="phone">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Asunto *</label>
+                            <select id="subject" required>
+                                <option value="">Selecciona un asunto</option>
+                                <option value="compra">Consulta sobre compra</option>
+                                <option value="venta">Consulta sobre venta</option>
+                                <option value="soporte">Soporte técnico</option>
+                                <option value="general">Consulta general</option>
+                                <option value="partnership">Alianzas comerciales</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Mensaje *</label>
+                            <textarea id="message" rows="6" placeholder="Cuéntanos cómo podemos ayudarte..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-paper-plane" style="margin-right: 10px;"></i>
+                            Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h2 style="color: #333; margin-bottom: 30px;">Información de Contacto</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 30px;">
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="
+                                width: 50px; 
+                                height: 50px; 
+                                background: #667eea; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                flex-shrink: 0;
+                            ">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: #333;">Oficina Principal</h4>
+                                <p style="color: #666; line-height: 1.6;">
+                                    Av. Insurgentes Sur 1234<br>
+                                    Col. Del Valle, CDMX<br>
+                                    C.P. 03100, México
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="
+                                width: 50px; 
+                                height: 50px; 
+                                background: #667eea; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                flex-shrink: 0;
+                            ">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: #333;">Teléfono</h4>
+                                <p style="color: #666; line-height: 1.6;">
+                                    +52 55 1234 5678<br>
+                                    +52 55 8765 4321<br>
+                                    <small>Lunes a Viernes: 9:00 AM - 7:00 PM</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="
+                                width: 50px; 
+                                height: 50px; 
+                                background: #667eea; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                flex-shrink: 0;
+                            ">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: #333;">Correo Electrónico</h4>
+                                <p style="color: #666; line-height: 1.6;">
+                                    info@truckmart.mx<br>
+                                    ventas@truckmart.mx<br>
+                                    soporte@truckmart.mx
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: flex-start; gap: 20px;">
+                            <div style="
+                                width: 50px; 
+                                height: 50px; 
+                                background: #667eea; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                flex-shrink: 0;
+                            ">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: #333;">Horarios de Atención</h4>
+                                <p style="color: #666; line-height: 1.6;">
+                                    <strong>Lunes - Viernes:</strong> 9:00 AM - 7:00 PM<br>
+                                    <strong>Sábados:</strong> 10:00 AM - 4:00 PM<br>
+                                    <strong>Domingos:</strong> Cerrado
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div style="margin-top: 40px;">
+                        <h4 style="margin-bottom: 20px; color: #333;">Síguenos en Redes Sociales</h4>
+                        <div style="display: flex; gap: 15px;">
+                            <a href="#" style="
+                                width: 45px; 
+                                height: 45px; 
+                                background: #3b5998; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                text-decoration: none;
+                                transition: transform 0.3s ease;
+                            " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" style="
+                                width: 45px; 
+                                height: 45px; 
+                                background: #1da1f2; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                text-decoration: none;
+                                transition: transform 0.3s ease;
+                            " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" style="
+                                width: 45px; 
+                                height: 45px; 
+                                background: #e4405f; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                text-decoration: none;
+                                transition: transform 0.3s ease;
+                            " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" style="
+                                width: 45px; 
+                                height: 45px; 
+                                background: #0077b5; 
+                                border-radius: 50%; 
+                                display: flex; 
+                                align-items: center; 
+                                justify-content: center;
+                                color: white;
+                                text-decoration: none;
+                                transition: transform 0.3s ease;
+                            " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section style="padding: 80px 0; background: white;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 60px; color: #333;">Preguntas Frecuentes</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                
+                <div style="margin-bottom: 30px; border: 1px solid #e1e5e9; border-radius: 10px; overflow: hidden;">
+                    <div style="background: #f8f9fa; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="color: #333; margin: 0;">¿Cómo funciona el proceso de compra?</h4>
+                        <i class="fas fa-chevron-down" style="color: #667eea;"></i>
+                    </div>
+                    <div style="padding: 20px; color: #666; line-height: 1.6;">
+                        El proceso es muy sencillo: busca la camioneta que te interese, revisa los detalles, 
+                        contacta al vendedor y programa una cita para verla. Nosotros te ayudamos con toda la documentación.
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px; border: 1px solid #e1e5e9; border-radius: 10px; overflow: hidden;">
+                    <div style="background: #f8f9fa; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="color: #333; margin: 0;">¿Ofrecen garantía en los vehículos?</h4>
+                        <i class="fas fa-chevron-down" style="color: #667eea;"></i>
+                    </div>
+                    <div style="padding: 20px; color: #666; line-height: 1.6; display: none;">
+                        Sí, todos nuestros vehículos incluyen una garantía básica de 3 meses. 
+                        También ofrecemos planes de garantía extendida opcionales.
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px; border: 1px solid #e1e5e9; border-radius: 10px; overflow: hidden;">
+                    <div style="background: #f8f9fa; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="color: #333; margin: 0;">¿Puedo financiar mi compra?</h4>
+                        <i class="fas fa-chevron-down" style="color: #667eea;"></i>
+                    </div>
+                    <div style="padding: 20px; color: #666; line-height: 1.6; display: none;">
+                        Por supuesto. Trabajamos con diferentes instituciones financieras para ofrecerte 
+                        las mejores opciones de crédito automotriz.
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px; border: 1px solid #e1e5e9; border-radius: 10px; overflow: hidden;">
+                    <div style="background: #f8f9fa; padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <h4 style="color: #333; margin: 0;">¿Cómo puedo vender mi camioneta?</h4>
+                        <i class="fas fa-chevron-down" style="color: #667eea;"></i>
+                    </div>
+                    <div style="padding: 20px; color: #666; line-height: 1.6; display: none;">
+                        Es muy fácil. Solo completa nuestro formulario en línea, programa una inspección gratuita 
+                        y recibe una oferta competitiva en menos de 24 horas.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <truck-footer></truck-footer>
+
+    <script src="components.js"></script>
+</body>
+</html>

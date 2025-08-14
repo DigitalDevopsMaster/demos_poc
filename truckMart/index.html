@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruckMart - Compra y Venta de Camionetas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Component -->
+    <truck-navbar></truck-navbar>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-particles"></div>
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <i class="fas fa-truck"></i>
+                    <span>Más de 5,000 camionetas vendidas</span>
+                </div>
+                <h1>
+                    Encuentra tu 
+                    <span class="hero-highlight">Camioneta Perfecta</span>
+                </h1>
+                <p>La plataforma más confiable para comprar y vender camionetas usadas en México. Conectamos compradores y vendedores con total seguridad y transparencia.</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="stat-number">15K+</div>
+                        <div class="stat-label">Usuarios</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfacción</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Soporte</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="listings.html" class="btn btn-primary btn-hero">
+                        <i class="fas fa-search"></i>
+                        Ver Camionetas
+                    </a>
+                    <a href="sell.html" class="btn btn-secondary btn-hero">
+                        <i class="fas fa-plus"></i>
+                        Vender mi Camioneta
+                    </a>
+                </div>
+                <div class="hero-trust">
+                    <div class="trust-icons">
+                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-handshake"></i>
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <span>Transacciones 100% seguras y verificadas</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <div class="hero-image-bg"></div>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Camioneta Ford F-150" class="hero-main-image">
+                    <div class="hero-floating-card hero-card-1">
+                        <div class="card-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">Mejor Precio</div>
+                            <div class="card-subtitle">Garantizado</div>
+                        </div>
+                    </div>
+                    <div class="hero-floating-card hero-card-2">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">Proceso Rápido</div>
+                            <div class="card-subtitle">En 24 horas</div>
+                        </div>
+                    </div>
+                    <div class="hero-floating-card hero-card-3">
+                        <div class="card-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">Verificado</div>
+                            <div class="card-subtitle">100% Confiable</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <truck-search-bar></truck-search-bar>
+        </div>
+    </section>
+
+    <!-- Featured Trucks -->
+    <section class="featured-section">
+        <div class="container">
+            <h2>Camionetas Destacadas</h2>
+            <div class="trucks-grid">
+                <truck-card 
+                    data-id="1"
+                    data-title="Ford F-150 XLT 2020"
+                    data-price="$450,000"
+                    data-year="2020"
+                    data-mileage="45,000 km"
+                    data-location="Ciudad de México"
+                    data-image="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+                
+                <truck-card 
+                    data-id="2"
+                    data-title="Chevrolet Silverado 2019"
+                    data-price="$380,000"
+                    data-year="2019"
+                    data-mileage="62,000 km"
+                    data-location="Guadalajara"
+                    data-image="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+                
+                <truck-card 
+                    data-id="3"
+                    data-title="RAM 1500 Laramie 2021"
+                    data-price="$520,000"
+                    data-year="2021"
+                    data-mileage="28,000 km"
+                    data-location="Monterrey"
+                    data-image="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+            </div>
+            <div class="text-center">
+                <a href="listings.html" class="btn btn-outline">Ver Todas las Camionetas</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2>¿Por qué elegir TruckMart?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Garantía de Calidad</h3>
+                    <p>Todas nuestras camionetas pasan por una inspección rigurosa</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Proceso Seguro</h3>
+                    <p>Transacciones seguras y documentación completa</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-tools"></i>
+                    <h3>Servicio Post-Venta</h3>
+                    <p>Soporte continuo después de tu compra</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Mejor Precio</h3>
+                    <p>Precios competitivos y opciones de financiamiento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <truck-footer></truck-footer>
+
+    <script src="components.js"></script>
+</body>
+</html>

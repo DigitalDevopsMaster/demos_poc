@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ford F-150 XLT 2020 - TruckMart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Component -->
+    <truck-navbar></truck-navbar>
+
+    <!-- Header -->
+    <section class="truck-detail-header">
+        <div class="container">
+            <nav style="margin-bottom: 20px;">
+                <a href="index.html" style="color: #bdc3c7; text-decoration: none;">Inicio</a>
+                <span style="margin: 0 10px; color: #bdc3c7;">/</span>
+                <a href="listings.html" style="color: #bdc3c7; text-decoration: none;">Camionetas</a>
+                <span style="margin: 0 10px; color: #bdc3c7;">/</span>
+                <span style="color: white;">Ford F-150 XLT 2020</span>
+            </nav>
+            <h1>Ford F-150 XLT 2020</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="truck-detail-content">
+        <div class="truck-detail-grid">
+            <!-- Images Section -->
+            <div class="truck-images">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                     alt="Ford F-150 XLT 2020" class="main-image" id="mainImage">
+                
+                <div class="thumbnail-images">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Vista frontal" class="thumbnail active" onclick="changeMainImage(this.src.replace('w=200', 'w=800'))">
+                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Vista lateral" class="thumbnail" onclick="changeMainImage(this.src.replace('w=200', 'w=800'))">
+                    <img src="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Vista trasera" class="thumbnail" onclick="changeMainImage(this.src.replace('w=200', 'w=800'))">
+                    <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                         alt="Interior" class="thumbnail" onclick="changeMainImage(this.src.replace('w=200', 'w=800'))">
+                </div>
+
+                <!-- Description -->
+                <div style="margin-top: 40px;">
+                    <h3 style="margin-bottom: 20px; color: #333;">Descripción</h3>
+                    <p style="line-height: 1.6; color: #666; margin-bottom: 20px;">
+                        Esta Ford F-150 XLT 2020 está en excelentes condiciones. Ha sido mantenida regularmente 
+                        y cuenta con todas las revisiones al día. Motor V8 5.0L con gran potencia y eficiencia. 
+                        Perfecta para trabajo y uso familiar.
+                    </p>
+                    <p style="line-height: 1.6; color: #666; margin-bottom: 20px;">
+                        Incluye: Sistema de navegación, cámara de reversa, sensores de estacionamiento, 
+                        control de crucero, asientos de cuero, aire acondicionado dual, y mucho más.
+                    </p>
+                    
+                    <h4 style="margin: 30px 0 15px; color: #333;">Características Destacadas:</h4>
+                    <ul style="color: #666; line-height: 1.8; margin-left: 20px;">
+                        <li>Motor V8 5.0L Coyote</li>
+                        <li>Transmisión automática de 10 velocidades</li>
+                        <li>Tracción 4x4</li>
+                        <li>Capacidad de remolque: 5,000 kg</li>
+                        <li>Sistema SYNC 3 con pantalla táctil de 8"</li>
+                        <li>Asientos con calefacción</li>
+                        <li>Luces LED</li>
+                        <li>Llantas todo terreno</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="truck-info">
+                <div class="price">$450,000</div>
+                <p style="color: #666; margin-bottom: 30px;">
+                    <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i>
+                    Ciudad de México, México
+                </p>
+
+                <div class="truck-specs">
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Año:</span>
+                        <span>2020</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Kilometraje:</span>
+                        <span>45,000 km</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Combustible:</span>
+                        <span>Gasolina</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Transmisión:</span>
+                        <span>Automática</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Motor:</span>
+                        <span>V8 5.0L</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Tracción:</span>
+                        <span>4x4</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Color:</span>
+                        <span>Azul Metálico</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Puertas:</span>
+                        <span>4 puertas</span>
+                    </div>
+                    <div class="spec-item">
+                        <span style="font-weight: 600;">Asientos:</span>
+                        <span>5 pasajeros</span>
+                    </div>
+                </div>
+
+                <div style="margin: 30px 0;">
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: 15px;">
+                        <i class="fas fa-phone" style="margin-right: 10px;"></i>
+                        Llamar Vendedor
+                    </button>
+                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 15px;">
+                        <i class="fas fa-envelope" style="margin-right: 10px;"></i>
+                        Enviar Mensaje
+                    </button>
+                    <button class="btn btn-outline" style="width: 100%;">
+                        <i class="fas fa-heart" style="margin-right: 10px;"></i>
+                        Guardar en Favoritos
+                    </button>
+                </div>
+
+                <div class="contact-seller">
+                    <h4 style="margin-bottom: 20px; color: #333;">Información del Vendedor</h4>
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                        <div style="
+                            width: 60px; 
+                            height: 60px; 
+                            background: #667eea; 
+                            border-radius: 50%; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center;
+                            color: white;
+                            font-size: 1.5rem;
+                            font-weight: 600;
+                        ">JM</div>
+                        <div>
+                            <h5 style="margin-bottom: 5px; color: #333;">Juan Martínez</h5>
+                            <div style="color: #666; font-size: 0.9rem;">
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                <span style="margin-left: 8px;">4.9 (23 reseñas)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: #666; font-size: 0.9rem; line-height: 1.5;">
+                        Vendedor verificado con más de 5 años de experiencia en el mercado de camionetas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Trucks -->
+    <section style="padding: 80px 0; background: #f8f9fa;">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px; color: #333;">Camionetas Similares</h2>
+            <div class="trucks-grid">
+                <truck-card 
+                    data-id="2"
+                    data-title="Chevrolet Silverado 2019"
+                    data-price="$380,000"
+                    data-year="2019"
+                    data-mileage="62,000 km"
+                    data-location="Guadalajara"
+                    data-image="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+                
+                <truck-card 
+                    data-id="6"
+                    data-title="Ford Ranger Wildtrak 2021"
+                    data-price="$420,000"
+                    data-year="2021"
+                    data-mileage="38,000 km"
+                    data-location="Ciudad de México"
+                    data-image="https://images.unsplash.com/photo-1609521263047-f8f205293f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+                
+                <truck-card 
+                    data-id="4"
+                    data-title="Toyota Tacoma TRD 2022"
+                    data-price="$480,000"
+                    data-year="2022"
+                    data-mileage="15,000 km"
+                    data-location="Puebla"
+                    data-image="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80">
+                </truck-card>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <truck-footer></truck-footer>
+
+    <script src="components.js"></script>
+    <script>
+        function changeMainImage(src) {
+            document.getElementById('mainImage').src = src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

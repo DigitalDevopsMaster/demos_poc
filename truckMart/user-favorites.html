@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Favoritos - TruckMart</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Component -->
+    <truck-navbar></truck-navbar>
+
+    <!-- Header -->
+    <section class="listings-header">
+        <div class="container">
+            <h1>Mis Favoritos</h1>
+            <p>Camionetas que has guardado para revisar más tarde</p>
+        </div>
+    </section>
+
+    <!-- User Dashboard -->
+    <section style="padding: 60px 0; background: #f8f9fa;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 300px 1fr; gap: 40px; max-width: 1200px; margin: 0 auto;">
+                
+                <!-- Sidebar Navigation -->
+                <aside style="background: white; border-radius: 15px; padding: 30px; height: fit-content; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div style="
+                            width: 100px; 
+                            height: 100px; 
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border-radius: 50%; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center;
+                            color: white;
+                            font-size: 2.5rem;
+                            font-weight: 600;
+                            margin: 0 auto 15px;
+                        ">JD</div>
+                        <h3 style="color: #333; margin-bottom: 5px;">Juan Díaz</h3>
+                        <p style="color: #666; font-size: 0.9rem;">Miembro desde 2023</p>
+                    </div>
+
+                    <nav>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 10px;">
+                                <a href="profile.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: #666;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='transparent'">
+                                    <i class="fas fa-user" style="margin-right: 12px; width: 16px;"></i>
+                                    Mi Perfil
+                                </a>
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <a href="user-history.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: #666;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='transparent'">
+                                    <i class="fas fa-history" style="margin-right: 12px; width: 16px;"></i>
+                                    Historial
+                                </a>
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <a href="user-favorites.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: white;
+                                    background: #667eea;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                ">
+                                    <i class="fas fa-heart" style="margin-right: 12px; width: 16px;"></i>
+                                    Favoritos
+                                </a>
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <a href="user-settings.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: #666;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='transparent'">
+                                    <i class="fas fa-cog" style="margin-right: 12px; width: 16px;"></i>
+                                    Configuración
+                                </a>
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <a href="user-messages.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: #666;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='transparent'">
+                                    <i class="fas fa-envelope" style="margin-right: 12px; width: 16px;"></i>
+                                    Mensajes
+                                    <span style="background: #f5576c; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; margin-left: auto;">3</span>
+                                </a>
+                            </li>
+                            <li style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                                <a href="index.html" style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 12px 15px;
+                                    color: #f5576c;
+                                    text-decoration: none;
+                                    border-radius: 8px;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                                    <i class="fas fa-sign-out-alt" style="margin-right: 12px; width: 16px;"></i>
+                                    Cerrar Sesión
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main>
+                    <!-- Favorites Header -->
+                    <div style="background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                            <h2 style="color: #333; margin: 0;">Mis Camionetas Favoritas (8)</h2>
+                            <div style="display: flex; gap: 15px;">
+                                <select style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                                    <option>Ordenar por fecha agregada</option>
+                                    <option>Ordenar por precio: menor a mayor</option>
+                                    <option>Ordenar por precio: mayor a menor</option>
+                                    <option>Ordenar por año</option>
+                                </select>
+                                <button class="btn btn-outline" onclick="clearAllFavorites()">
+                                    <i class="fas fa-trash" style="margin-right: 8px;"></i>
+                                    Limpiar Todo
+                                </button>
+                            </div>
+                        </div>
+                        <p style="color: #666; margin: 0;">Estas son las camionetas que has marcado como favoritas. Puedes contactar a los vendedores directamente desde aquí.</p>
+                    </div>
+
+                    <!-- Favorites Grid -->
+                    <div class="trucks-grid">
+                        <!-- Favorite 1 -->
+                        <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                <button onclick="removeFavorite(this)" style="
+                                    background: rgba(245, 87, 108, 0.9);
+                                    border: none;
+                                    padding: 8px;
+                                    border-radius: 50%;
+                                    color: white;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f5576c'" onmouseout="this.style.background='rgba(245, 87, 108, 0.9)'">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="RAM 1500" style="width: 100%; height: 250px; object-fit: cover;">
+                            <div style="padding: 25px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333; font-weight: 600;">RAM 1500 Laramie 2021</h3>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #667eea; margin-bottom: 20px;">$520,000</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>2021</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>28,000 km</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #666; margin-bottom: 20px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Monterrey</span>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-primary" style="flex: 1;" onclick="window.location.href='truck-detail.html?id=3'">
+                                        Ver Detalles
+                                    </button>
+                                    <button class="btn btn-outline" onclick="contactSeller()">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 0.8rem; color: #999;">
+                                    Agregado hace 3 días
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Favorite 2 -->
+                        <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                <button onclick="removeFavorite(this)" style="
+                                    background: rgba(245, 87, 108, 0.9);
+                                    border: none;
+                                    padding: 8px;
+                                    border-radius: 50%;
+                                    color: white;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f5576c'" onmouseout="this.style.background='rgba(245, 87, 108, 0.9)'">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="Toyota Tacoma" style="width: 100%; height: 250px; object-fit: cover;">
+                            <div style="padding: 25px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333; font-weight: 600;">Toyota Tacoma TRD 2022</h3>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #667eea; margin-bottom: 20px;">$480,000</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>2022</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>15,000 km</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #666; margin-bottom: 20px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Puebla</span>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-primary" style="flex: 1;" onclick="window.location.href='truck-detail.html?id=4'">
+                                        Ver Detalles
+                                    </button>
+                                    <button class="btn btn-outline" onclick="contactSeller()">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 0.8rem; color: #999;">
+                                    Agregado hace 1 semana
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Favorite 3 -->
+                        <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                <button onclick="removeFavorite(this)" style="
+                                    background: rgba(245, 87, 108, 0.9);
+                                    border: none;
+                                    padding: 8px;
+                                    border-radius: 50%;
+                                    color: white;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f5576c'" onmouseout="this.style.background='rgba(245, 87, 108, 0.9)'">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="Nissan Frontier" style="width: 100%; height: 250px; object-fit: cover;">
+                            <div style="padding: 25px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333; font-weight: 600;">Nissan Frontier Pro-4X 2020</h3>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #667eea; margin-bottom: 20px;">$390,000</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>2020</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>55,000 km</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #666; margin-bottom: 20px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Tijuana</span>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-primary" style="flex: 1;" onclick="window.location.href='truck-detail.html?id=5'">
+                                        Ver Detalles
+                                    </button>
+                                    <button class="btn btn-outline" onclick="contactSeller()">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 0.8rem; color: #999;">
+                                    Agregado hace 2 semanas
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- More favorites... -->
+                        <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;">
+                            <div style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                <button onclick="removeFavorite(this)" style="
+                                    background: rgba(245, 87, 108, 0.9);
+                                    border: none;
+                                    padding: 8px;
+                                    border-radius: 50%;
+                                    color: white;
+                                    cursor: pointer;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='#f5576c'" onmouseout="this.style.background='rgba(245, 87, 108, 0.9)'">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" 
+                                 alt="Ford Ranger" style="width: 100%; height: 250px; object-fit: cover;">
+                            <div style="padding: 25px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 15px; color: #333; font-weight: 600;">Ford Ranger Wildtrak 2021</h3>
+                                <div style="font-size: 1.8rem; font-weight: 700; color: #667eea; margin-bottom: 20px;">$420,000</div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>2021</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px; color: #666;">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span>38,000 km</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #666; margin-bottom: 20px;">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Ciudad de México</span>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-primary" style="flex: 1;" onclick="window.location.href='truck-detail.html?id=6'">
+                                        Ver Detalles
+                                    </button>
+                                    <button class="btn btn-outline" onclick="contactSeller()">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                                <div style="margin-top: 15px; font-size: 0.8rem; color: #999;">
+                                    Agregado hace 1 mes
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty State (hidden by default) -->
+                    <div id="emptyState" style="display: none; text-align: center; padding: 80px 20px; background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <i class="fas fa-heart" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
+                        <h3 style="color: #333; margin-bottom: 15px;">No tienes favoritos aún</h3>
+                        <p style="color: #666; margin-bottom: 30px;">Explora nuestro catálogo y marca las camionetas que más te gusten</p>
+                        <a href="listings.html" class="btn btn-primary">
+                            <i class="fas fa-search" style="margin-right: 8px;"></i>
+                            Explorar Camionetas
+                        </a>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Component -->
+    <truck-footer></truck-footer>
+
+    <script src="components.js"></script>
+    <script>
+        function removeFavorite(button) {
+            if (confirm('¿Estás seguro de que quieres quitar esta camioneta de tus favoritos?')) {
+                const card = button.closest('.trucks-grid > div');
+                card.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    card.remove();
+                    updateFavoritesCount();
+                }, 300);
+            }
+        }
+
+        function clearAllFavorites() {
+            if (confirm('¿Estás seguro de que quieres quitar todas las camionetas de tus favoritos?')) {
+                const cards = document.querySelectorAll('.trucks-grid > div');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => {
+                            card.remove();
+                            if (index === cards.length - 1) {
+                                showEmptyState();
+                            }
+                        }, 300);
+                    }, index * 100);
+                });
+            }
+        }
+
+        function updateFavoritesCount() {
+            const remainingCards = document.querySelectorAll('.trucks-grid > div').length;
+            const header = document.querySelector('h2');
+            header.textContent = `Mis Camionetas Favoritas (${remainingCards})`;
+            
+            if (remainingCards === 0) {
+                showEmptyState();
+            }
+        }
+
+        function showEmptyState() {
+            document.querySelector('.trucks-grid').style.display = 'none';
+            document.getElementById('emptyState').style.display = 'block';
+        }
+
+        function contactSeller() {
+            alert('Funcionalidad de contacto no implementada en esta demo.');
+        }
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.8); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
