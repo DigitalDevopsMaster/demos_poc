@@ -84,7 +84,7 @@ class BottomNavigation extends HTMLElement {
         left: 0;
         right: 0;
         border-top: 1px solid #ddd;
-        z-index: 1;
+        z-index: 999;
       }
       
       .nav-item {
