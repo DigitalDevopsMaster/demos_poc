@@ -111,7 +111,7 @@ class HmoissanLayout extends HTMLElement {
       .layout-content {
         display: flex;
         flex-direction: column;
-        height: calc(100% - 60px);
+        height: calc(100% - 120px);
         position: relative;
       }
       
