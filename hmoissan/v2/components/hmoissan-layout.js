@@ -105,21 +105,23 @@ class HmoissanLayout extends HTMLElement {
     style.textContent = `
       .hmoissan-layout {
         width: 100%;
-        height: calc(100% - 60px);
-
+        height: 100%;
+        display: flex;
+        flex-direction: column;
       }
       
       .layout-content {
         display: flex;
         flex-direction: column;
-        height: 100%;
+        flex: 1;
+        min-height: 0;
         position: relative;
       }
       
       .page-content {
         flex: 1;
         overflow-y: auto;
-        padding-bottom: 60px; /* Space for bottom navigation */
+        padding-bottom: 70px; /* Space for bottom navigation + extra padding */
       }
       
       /* Ensure mobile-frame takes full space */
