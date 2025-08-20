@@ -118,6 +118,12 @@ class HmoissanLayout extends HTMLElement {
         position: relative;
       }
       
+      gradient-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
       .page-content {
         flex: 1;
         overflow-y: auto;
