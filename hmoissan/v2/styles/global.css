@@ -18,10 +18,9 @@ body {
 /* Desktop responsive frame */
 @media (min-width: 768px) {
     body {
-        width: 375px;
+        width: 768px;
         margin: 0 auto;
         background: #000;
-        padding: 25px 0;
     }
 }
 

@@ -86,6 +86,14 @@ class BottomNavigation extends HTMLElement {
         border-top: 1px solid #ddd;
         z-index: 999;
       }
+
+      @media (min-width: 768px) {
+        .bottom-nav {
+          width: 768px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
       
       .nav-item {
         display: flex;

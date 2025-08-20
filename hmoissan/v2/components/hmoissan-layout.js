@@ -79,7 +79,6 @@ class HmoissanLayout extends HTMLElement {
     layoutContainer.className = 'hmoissan-layout';
     
     layoutContainer.innerHTML = `
-      <mobile-frame>
         <div class="layout-content">
           <!-- Header with gradient -->
           <gradient-header 
@@ -97,7 +96,6 @@ class HmoissanLayout extends HTMLElement {
           <!-- Bottom navigation -->
           <bottom-navigation></bottom-navigation>
         </div>
-      </mobile-frame>
     `;
 
     // Styles
