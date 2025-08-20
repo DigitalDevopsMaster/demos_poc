@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0e2923">
+    
+    <title>Account - Hmoissan</title>
+    
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Importar componente principal -->
+    <script src="components/hmoissan-layout.js"></script>
+    <script src="components/cart-button.js"></script>
+    <script src="components/cart-modal.js"></script>
+    <script src="./components/address-book.js"></script>
+    <script src="./components/add-address-modal.js"></script>
+    <script src="./components/order-history.js"></script>
+    <script src="./components/profile-details.js"></script>
+    <script src="./components/payment-methods.js"></script>
+    <script src="./components/account-menu.js"></script>
+    <script src="./components/accordion-section.js"></script>
+
+</head>
+<body>
+    <hmoissan-layout 
+        right-component="<cart-button item-count='0' id='header-cart'></cart-button>"
+        left-component="<h4 style='margin: 0;'>Your Account</h4>"
+    >
+        
+        <div class="accordion-container">
+            <accordion-section title="My Profile" open>
+                <profile-details id="profileDetails"></profile-details>
+            </accordion-section>
+
+            <accordion-section title="Address Book">
+                <address-book id="addressBook"></address-book>
+            </accordion-section>
+
+            <accordion-section title="Order History">
+                <order-history id="orderHistory"></order-history>
+            </accordion-section>
+
+            <accordion-section title="Payment Methods">
+                <payment-methods></payment-methods>
+            </accordion-section>
+
+            <accordion-section title="Settings & Support">
+                <account-menu></account-menu>
+            </accordion-section>
+        </div>
+
+    </hmoissan-layout>
+    
+    <!-- Modales -->
+    <cart-modal></cart-modal>
+    <add-address-modal id="addAddressModal"></add-address-modal>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addressBook = document.getElementById('addressBook');
+            const addAddressModal = document.getElementById('addAddressModal');
+
+            // Mock data for addresses
+            let addresses = [
+                {
+                    id: 'addr_1',
+                    name: 'John Doe',
+                    street: '123 Main St',
+                    city: 'Anytown',
+                    zip: '12345',
+                    country: 'USA',
+                    isPrimary: true
+                },
+                {
+                    id: 'addr_2',
+                    name: 'Jane Smith',
+                    street: '456 Oak Ave',
+                    city: 'Someville',
+                    zip: '67890',
+                    country: 'USA',
+                    isPrimary: false
+                }
+            ];
+
+            function updateAddressBook() {
+                addressBook.setAttribute('addresses', JSON.stringify(addresses));
+            }
+
+            // Initial load
+            updateAddressBook();
+
+            // Event listeners for address book actions
+            addressBook.addEventListener('add-address', () => {
+                addAddressModal.removeAttribute('address-data');
+                addAddressModal.setAttribute('visible', 'true');
+            });
+
+            addressBook.addEventListener('edit-address', (e) => {
+                addAddressModal.setAttribute('address-data', JSON.stringify(e.detail));
+                addAddressModal.setAttribute('visible', 'true');
+            });
+
+            addressBook.addEventListener('delete-address', (e) => {
+                if (confirm('Are you sure you want to delete this address?')) {
+                    addresses = addresses.filter(addr => addr.id !== e.detail.id);
+                    updateAddressBook();
+                }
+            });
+
+            // Event listener for modal save
+            addAddressModal.addEventListener('save-address', (e) => {
+                const savedAddress = e.detail;
+                const existingIndex = addresses.findIndex(addr => addr.id === savedAddress.id);
+
+                if (existingIndex > -1) {
+                    addresses[existingIndex] = savedAddress;
+                } else {
+                    addresses.push(savedAddress);
+                }
+                updateAddressBook();
+            });
+
+            // --- Order History Logic ---
+            const orderHistory = document.getElementById('orderHistory');
+
+            // Mock data for past orders
+            const mockOrders = [
+                {
+                    id: 'ORD12345',
+                    date: '2023-10-26T10:00:00Z',
+                    status: 'Delivered',
+                    total: 3500.00,
+                    items: [
+                        { name: 'Emerald Cut Diamond Ring', price: 3500.00, quantity: 1, image: 'https://images.unsplash.com/photo-1611389932429-0b393a73a5b8?q=80&w=2940&auto=format&fit=crop' }
+                    ]
+                },
+                {
+                    id: 'ORD12346',
+                    date: '2023-09-15T14:30:00Z',
+                    status: 'Shipped',
+                    total: 7800.00,
+                    items: [
+                        { name: 'Sapphire and Diamond Necklace', price: 7800.00, quantity: 1, image: 'https://images.unsplash.com/photo-1611389932429-0b393a73a5b8?q=80&w=2940&auto=format&fit=crop' }
+                    ]
+                }
+            ];
+
+            orderHistory.setAttribute('orders', JSON.stringify(mockOrders));
+
+            orderHistory.addEventListener('view-order-details', (e) => {
+                console.log('View details for order:', e.detail.order);
+                // Here you would typically open a modal with the order details
+                alert(`Viewing details for Order #${e.detail.order.id}`);
+            });
+
+            // --- Profile Details Logic ---
+            const profileDetails = document.getElementById('profileDetails');
+
+            const mockUser = {
+                name: 'Alexandra Dubois',
+                email: 'alexandra.d@example.com'
+            };
+
+            profileDetails.setAttribute('user-data', JSON.stringify(mockUser));
+
+            profileDetails.addEventListener('profile-updated', (e) => {
+                console.log('Profile updated:', e.detail.userData);
+                // Here you would typically send the updated data to a server
+                alert('Profile updated successfully!');
+            });
+        });
+    </script>
+</body>
+</html>

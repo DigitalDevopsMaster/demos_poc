@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Meta tags para experiencia móvil completa -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0e2923">
+
+    <title>The Collection - Hmoissan</title>
+
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Importar componentes -->
+    <script src="components/hmoissan-layout.js"></script>
+    <script src="components/search-bar.js"></script>
+    <script src="components/cart-button.js"></script>
+    <script src="components/search-modal.js"></script>
+    <script src="components/cart-modal.js"></script>
+    <script src="components/hero-section.js"></script>
+    <script src="components/category-card.js"></script>
+    <script src="components/category-gallery.js"></script>
+    <script src="components/product-card.js"></script>
+    <script src="components/product-gallery.js"></script>
+    <script src="components/category-detail-view.js"></script>
+    <script src="components/product-detail-modal.js"></script>
+    <script src="components/checkout-view.js"></script>
+    <script src="components/order-confirmation-view.js"></script>
+
+</head>
+
+<body>
+    <hmoissan-layout
+        right-component="<cart-button item-count='1' show-badge id='header-cart'></cart-button>"
+        left-component="<search-bar placeholder='Buscar joyas, anillos, collares...' id='header-search'></search-bar>">
+        
+        <!-- Hero Section -->
+        <hero-section 
+            title="THE COLLECTION"
+            description="An array of elegant and subtle designs, the H.Moissan collection embraces the beauty of the classic jewelry throughout history.">
+        </hero-section>
+
+        <!-- Categories Gallery -->
+        <category-gallery>
+            <category-card
+                image-url="https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                title="Bracelets"
+                subtitle="Elegant wrist adornments"
+                category-id="bracelets">
+            </category-card>
+            
+            <category-card
+                image-url="https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                title="Earrings"
+                subtitle="Timeless ear jewelry"
+                category-id="earrings">
+            </category-card>
+            
+            <category-card
+                image-url="https://images.unsplash.com/photo-1611652022419-a9419f74343d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                title="Necklaces"
+                subtitle="Graceful neck pieces"
+                category-id="necklaces">
+            </category-card>
+            
+            <category-card
+                image-url="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                title="Rings"
+                subtitle="Symbolic finger jewelry"
+                category-id="rings">
+            </category-card>
+        </category-gallery>
+
+    </hmoissan-layout>
+    
+    <!-- Modales -->
+    <search-modal></search-modal>
+    <cart-modal></cart-modal>
+    
+    <!-- Category Detail View -->
+    <category-detail-view id="categoryDetailView"></category-detail-view>
+    <product-detail-modal id="productDetailModal"></product-detail-modal>
+    <checkout-view id="checkoutView"></checkout-view>
+    <order-confirmation-view id="orderConfirmationView"></order-confirmation-view>
+
+    <script>
+        // Listen for category interactions
+        document.addEventListener('gallery-category-clicked', function(event) {
+            const { categoryId, title, subtitle } = event.detail;
+            console.log(`Category clicked: ${title} (${categoryId}) - ${subtitle}`);
+            
+            // Show category detail view
+            const detailView = document.getElementById('categoryDetailView');
+            detailView.setAttribute('category-id', categoryId);
+            detailView.setAttribute('title', title);
+            detailView.setAttribute('subtitle', subtitle);
+            detailView.setAttribute('type', 'category');
+            detailView.setAttribute('visible', 'true');
+        });
+
+        // Listen for gallery ready event
+        document.addEventListener('gallery-ready', function(event) {
+            console.log('Categories gallery is ready');
+        });
+
+        // Listen for detail view close
+        document.addEventListener('view-closed', function(event) {
+            console.log('Detail view closed');
+        });
+
+        // Listen for product clicks from detail view
+        document.addEventListener('product-clicked', function(event) {
+            const { productId } = event.detail;
+            if (!productId) return;
+
+            console.log(`Product clicked: ${productId}`);
+            
+            const modal = document.getElementById('productDetailModal');
+            if (modal) {
+                modal.setAttribute('product-id', productId);
+                modal.setAttribute('visible', 'true');
+            }
+        });
+
+        // Listen for business logic events
+        document.addEventListener('search-performed', function(event) {
+            const { query, filters } = event.detail;
+            console.log('Search performed:', { query, filters });
+        });
+
+        document.addEventListener('checkout-requested', function(event) {
+            const { items } = event.detail;
+            console.log('Checkout requested with items:', items);
+
+            const checkoutView = document.getElementById('checkoutView');
+            const cartModal = document.querySelector('cart-modal');
+
+            if (checkoutView) {
+                checkoutView.setAttribute('cart-items', JSON.stringify(items));
+                checkoutView.setAttribute('visible', 'true');
+            }
+            
+            if (cartModal) {
+                cartModal.close();
+            }
+        });
+
+        // Listen for add-to-cart from product detail modal
+        document.addEventListener('add-to-cart', function(event) {
+            const product = event.detail;
+            console.log('Adding to cart:', product);
+            
+            const cartModal = document.querySelector('cart-modal');
+            if (cartModal) {
+                cartModal.addItem(product);
+            }
+        });
+
+        // Listen for cart updates to change header button
+        document.addEventListener('cart-updated', function(event) {
+            const { itemCount } = event.detail;
+            console.log(`Cart updated, item count: ${itemCount}`);
+
+            const cartButton = document.getElementById('header-cart');
+            if (cartButton) {
+                cartButton.setAttribute('item-count', itemCount);
+            }
+        });
+
+        // Listen for successful checkout to show confirmation
+        document.addEventListener('checkout-completed', function(event) {
+            console.log('Order successful!', event.detail);
+
+            const confirmationView = document.getElementById('orderConfirmationView');
+            if (confirmationView) {
+                confirmationView.setAttribute('visible', 'true');
+            }
+
+            // Clear the cart
+            const cartModal = document.querySelector('cart-modal');
+            if (cartModal) {
+                cartModal.clearCart(); 
+            }
+        });
+
+        // Listen for continue shopping to close confirmation
+        document.addEventListener('continue-shopping', function(event) {
+            const confirmationView = document.getElementById('orderConfirmationView');
+            if (confirmationView) {
+                confirmationView.removeAttribute('visible');
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+
