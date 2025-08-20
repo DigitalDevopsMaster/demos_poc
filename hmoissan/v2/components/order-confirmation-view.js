@@ -60,8 +60,9 @@ class OrderConfirmationView extends HTMLElement {
         .confirmation-container {
           position: fixed;
           top: 0;
-          left: 0;
           width: 100%;
+          margin: 0 auto;
+          max-width: 768px;
           height: 100%;
           background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(10px);

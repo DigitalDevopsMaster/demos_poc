@@ -18,6 +18,8 @@ class CheckoutView extends HTMLElement {
     this._cartItems = [];
     this._addresses = [];
     this._selectedAddressId = null;
+    this._paymentMethods = [];
+    this._selectedPaymentMethodId = null;
   }
 
   static get observedAttributes() {
@@ -65,22 +67,28 @@ class CheckoutView extends HTMLElement {
 
   placeOrder() {
     if (!this._selectedAddressId) {
-        alert('Please select a shipping address.');
-        return;
+      alert('Please select a shipping address.');
+      return;
+    }
+    if (!this._selectedPaymentMethodId) {
+      alert('Please select a payment method.');
+      return;
     }
 
     const selectedAddress = this._addresses.find(addr => addr.id === this._selectedAddressId);
+    const selectedPaymentMethod = this._paymentMethods.find(p => p.id === this._selectedPaymentMethodId);
 
     const orderDetails = {
-        items: this._cartItems,
-        total: this._cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        shippingInfo: selectedAddress
+      items: this._cartItems,
+      total: this._cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+      shippingInfo: selectedAddress,
+      paymentInfo: selectedPaymentMethod
     };
 
     this.dispatchEvent(new CustomEvent('checkout-completed', {
-        bubbles: true,
-        composed: true,
-        detail: orderDetails
+      bubbles: true,
+      composed: true,
+      detail: orderDetails
     }));
 
     console.log('Order placed:', orderDetails);
@@ -99,17 +107,20 @@ class CheckoutView extends HTMLElement {
         .checkout-container {
           position: fixed;
           top: 0;
-          left: 0;
           width: 100%;
+          margin: 0 auto;
+          max-width: 768px;
           height: 100%;
           background: #f4f4f4;
           z-index: 1100;
           transform: translateX(100%);
           transition: transform 0.4s ease-in-out;
           overflow-y: auto;
+          visibility: hidden;
         }
         .checkout-container.visible {
           transform: translateX(0);
+          visibility: visible;
         }
         .checkout-header {
           display: flex;
@@ -160,6 +171,10 @@ class CheckoutView extends HTMLElement {
             <address-book id="addressBook" selectable></address-book>
           </div>
 
+          <div class="form-section">
+            <payment-methods id="paymentMethods" selectable></payment-methods>
+          </div>
+
           <div class="summary-section">
             <h2>Order Summary</h2>
             <div class="order-summary">
@@ -187,12 +202,14 @@ class CheckoutView extends HTMLElement {
         </div>
       </div>
       <add-address-modal id="addAddressModal"></add-address-modal>
+      <add-payment-modal id="addPaymentModal"></add-payment-modal>
     `;
 
     this.shadowRoot.querySelector('.back-button').addEventListener('click', () => this.closeView());
     this.shadowRoot.querySelector('.place-order-btn').addEventListener('click', () => this.placeOrder());
 
     this.setupAddressBook();
+    this.setupPaymentMethods();
   }
 
   setupAddressBook() {
@@ -264,6 +281,69 @@ class CheckoutView extends HTMLElement {
     const primaryAddress = this._addresses.find(a => a.isPrimary);
     if (primaryAddress) {
         this._selectedAddressId = primaryAddress.id;
+    }
+  }
+
+  setupPaymentMethods() {
+    const paymentMethodsEl = this.shadowRoot.getElementById('paymentMethods');
+    const addPaymentModal = this.shadowRoot.getElementById('addPaymentModal');
+
+    // Mock data for payment methods
+    this._paymentMethods = [
+      {
+        id: 'payment_1',
+        cardholderName: 'John Doe',
+        cardNumber: '************4242',
+        expiryDate: '12/25',
+        cvv: '123',
+        cardType: 'visa',
+        isPrimary: true
+      }
+    ];
+
+    const updatePaymentMethods = () => {
+      paymentMethodsEl.setAttribute('methods', JSON.stringify(this._paymentMethods));
+    }
+
+    updatePaymentMethods();
+
+    paymentMethodsEl.addEventListener('add-payment', () => {
+      addPaymentModal.removeAttribute('payment-data');
+      addPaymentModal.setAttribute('visible', 'true');
+    });
+
+    paymentMethodsEl.addEventListener('edit-payment', (e) => {
+      addPaymentModal.setAttribute('payment-data', JSON.stringify(e.detail));
+      addPaymentModal.setAttribute('visible', 'true');
+    });
+
+    paymentMethodsEl.addEventListener('delete-payment', (e) => {
+      if (confirm('Are you sure you want to delete this payment method?')) {
+        this._paymentMethods = this._paymentMethods.filter(p => p.id !== e.detail.id);
+        updatePaymentMethods();
+      }
+    });
+
+    paymentMethodsEl.addEventListener('payment-selected', (e) => {
+      this._selectedPaymentMethodId = e.detail.paymentMethodId;
+    });
+
+    addPaymentModal.addEventListener('save-payment', (e) => {
+      const savedPayment = e.detail;
+      const existingIndex = this._paymentMethods.findIndex(p => p.id === savedPayment.id);
+
+      if (existingIndex > -1) {
+        this._paymentMethods[existingIndex] = savedPayment;
+      } else {
+        this._paymentMethods.push(savedPayment);
+      }
+      updatePaymentMethods();
+    });
+
+    // Pre-select the primary payment method
+    const primaryPayment = this._paymentMethods.find(p => p.isPrimary);
+    if (primaryPayment) {
+      this._selectedPaymentMethodId = primaryPayment.id;
     }
   }
 }

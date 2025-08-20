@@ -242,7 +242,7 @@ class BaseModal extends HTMLElement {
         .modal-overlay {
           left: 50%;
           transform: translateX(-50%);
-          width: 375px;
+          width: 768px;
         }
       }
     `;

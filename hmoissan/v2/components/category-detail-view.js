@@ -335,6 +335,9 @@ class CategoryDetailView extends HTMLElement {
         z-index: 1000;
         overflow-y: auto;
         animation: slideIn 0.3s ease-out;
+        width: 100%;
+        max-width: 768px;
+        margin: auto;
       }
       
       @keyframes slideIn {

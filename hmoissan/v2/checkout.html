@@ -5,18 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - H.Moissan</title>
   <link rel="stylesheet" href="styles/global.css">
-  <script src="components/hmoissan-layout.js"></script>
-  <script src="components/shipping-information.js"></script>
-  <script src="components/payment-information.js"></script>
-  <script src="components/order-summary.js"></script>
+  <script src="components/add-address-modal.js"></script>
+  <script src="components/address-book.js"></script>
+  <script src="components/add-payment-modal.js"></script>
+  <script src="components/payment-methods.js"></script>
+  <script src="components/checkout-view.js"></script>
 </head>
 <body>
 
-  <hmoissan-layout title="Checkout">
-    <order-summary></order-summary>
-    <shipping-information></shipping-information>
-    <payment-information></payment-information>
-  </hmoissan-layout>
+  <checkout-view></checkout-view>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const checkoutView = document.querySelector('checkout-view');
+      
+      // Mock cart items data
+      const cartItems = [
+        {
+          id: 'prod_1',
+          name: 'Classic Timepiece',
+          price: 250,
+          quantity: 1,
+          image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500&auto=format&fit=crop'
+        },
+        {
+          id: 'prod_2',
+          name: 'Modern Wristwatch',
+          price: 375,
+          quantity: 2,
+          image: 'https://images.unsplash.com/photo-1539874754764-5a96559d7f5c?w=500&auto=format&fit=crop'
+        }
+      ];
+
+      checkoutView.setAttribute('cart-items', JSON.stringify(cartItems));
+      checkoutView.setAttribute('visible', 'true');
+    });
+  </script>
 
 </body>
 </html>
