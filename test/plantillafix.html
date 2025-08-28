@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chedraui - Ofertas y Promociones</title>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+.email-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+}
+
+.content-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-text {
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #f5f5f5;
+}
+
+.header-text p {
+  color: #333;
+  font-size: 10px;
+  line-height: 15px;
+  margin: 0;
+}
+
+.image-section {
+  width: 100%;
+  text-align: center;
+}
+
+.image-section img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  display: block;
+}
+
+.greeting-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+.greeting-box {
+  background-color: #f86822;
+  padding: 12px 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.greeting-box p {
+  font-size: 26px;
+  color: #ffffff;
+  font-weight: bold;
+  margin: 0;
+}
+
+.two-column {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: white;
+}
+.two-column.offers {
+   background-color: #1ba361;
+}
+
+.column {
+  flex: 1;
+  min-width: 300px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.column img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  display: block;
+}
+
+.four-column {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  justify-content: center;
+}
+
+.quarter-column {
+  flex: 1;
+  min-width: 150px;
+  max-width: 150px;
+  text-align: center;
+}
+
+.quarter-column img {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  display: block;
+}
+
+.footer-section {
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-section img {
+  width: 100%;
+}
+
+.wallet-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.wallet-left, .wallet-right {
+  width: 70px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-center {
+  flex: 1;
+  max-width: 460px;
+  height: 50px;
+  background-color: #FF7400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-center p {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
+.social-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+
+.social-left {
+  width: 240px;
+  text-align: center;
+}
+
+.social-right {
+  flex: 1;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end ;
+}
+
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 60px;
+  text-align: center;
+}
+
+.social-icon img {
+  width: 60px;
+  height: auto;
+}
+
+.legal-section {
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.legal-section p {
+  color: #313E47;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.legal-section p:first-child {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.disclaimer-section {
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 15px 10px;
+  text-align: center;
+  border-top: solid 2px #ddd;
+}
+
+.disclaimer-section p {
+  color: #313E47;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.unsubscribe-section {
+  width: 100%;
+  background-color: #E67308;
+  padding: 10px;
+  text-align: center;
+}
+
+.unsubscribe-section p {
+  color: #FFFFFF;
+  font-size: 10px;
+  line-height: 15px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 580px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+.legal-additional {
+   background-color: #FFFFFF;
+}  
+.legal-additional p {
+   padding-top: 15px;
+   padding-bottom: 10px;
+   margin: auto;
+   font-size: 10px;
+   line-height: 14px;
+   color: #313E47;
+   font-family: sans-serif, arial;
+   text-align: center;
+   width: 100%;
+   font-weight: 600;
+   text-align: center;
+   max-width: 500px;
+   border-top: solid 2px #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .email-container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  .two-column {
+  }
+  
+  .column {
+   
+  }
+  
+  .four-column {
+  }
+  
+  .quarter-column {
+  }
+  
+  .social-section {
+    flex-direction: column;
+  }
+  
+  .social-left {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .social-right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+
+  
+  .wallet-section {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .wallet-left, .wallet-right {
+    width: 100%;
+    height: auto;
+    margin: 5px 0;
+  }
+  
+  .wallet-center {
+    width: 100%;
+    max-width: 100%;
+    margin: 5px 0;
+    padding: 15px;
+  }
+  
+  .greeting-box p {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+   .social-right img {
+   width: 100%;
+   }
+  .social-icons {
+      background-color: #fe7122;
+      width: 100%;
+  }
+  
+  .social-icon {
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  .greeting-box p {
+    font-size: 18px;
+  }
+  
+  .legal-section, .disclaimer-section {
+    padding: 15px 5px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="email-container">
+  <!-- Header text -->
+  <div class="header-text">
+    <p>
+      <!-- colores chedraui: e57308-naranja  0077c8-azul  ebebeb-grisclaro fondos PH --> 
+      Farmacia | Mochilas | Shampoo | Detergentes y más
+    </p>
+  </div>
+  <!-- Header logo -->
+  <div class="image-section">
+    <a href="https://www.michedraui.com.mx" target="_blank">
+      <img alt="Chedraui cuesta menos" src="imagenes/header.gif"/> 
+    </a>
+  </div>
+
+  <!-- App section -->
+  <div class="image-section">
+    <img alt="También en línea" src="imagenes/1_02.jpg"/>
+  </div>
+
+  <!-- Customer greeting -->
+  <div class="greeting-section">
+    <div class="greeting-box">
+      <p>Hola {Customer.FirstName}</p>
+    </div>
+  </div>
+  <!-- Health copy -->
+  <div class="image-section">
+    <img alt="Cuidar la salud de tu familia cuesta menos" src="imagenes/1_04.jpg"/>
+  </div>
+
+  <!-- Pharmacy offer -->
+  <div class="image-section">
+    <a href="https://www.chedraui.com.mx/farmacia?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+      <img alt="10% descuento En toda la farmacia (excepto fórmulas infantiles)" src="imagenes/1_05.jpg"/>
+    </a>
+  </div>
+
+  <!-- Back to school copy -->
+  <div class="image-section">
+    <img alt="Todo listo para el regreso a clases" src="imagenes/copy_01.jpg"/>
+  </div>
+
+  <!-- Stationery offer -->
+  <div class="image-section">
+    <a href="https://www.chedraui.com.mx/papeleria-y-oficina?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+      <img alt="30% de descuento En productos de papelería de las marcas Dixon, Mapita, Vinci, Azor, Pentel, Maped y más" src="imagenes/3.jpg"/>
+    </a>
+  </div>
+  <!-- Two column offers -->
+  <div class="two-column offers">
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/papeleria-y-oficina/mochilas-y-loncheras?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En mochilas, loncheras y lapiceras del departamento de papelería + 3 MSI" src="imagenes/2_01.jpg"/>
+      </a>
+    </div>
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/hogar-y-jardin/cocina/utensilios-de-cocina?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En botellines y herméticos de plástico" src="imagenes/2_02.jpg"/>
+      </a>
+    </div>
+  </div>
+  <!-- Play Doh offer -->
+  <div class="image-section">
+    <a href="https://www.chedraui.com.mx/play-doh?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+      <img alt="30% de descuento En Play Doh Hasbro" src="imagenes/4.jpg"/>
+    </a>
+  </div>
+
+  <!-- Discover more offers -->
+  <div class="image-section">
+    <img alt="Descubre más ofertas" src="imagenes/0_01.jpg"/>
+  </div>
+
+  <!-- Four column departments -->
+  <div class="four-column">
+    <div class="quarter-column">
+      <a href="https://www.chedraui.com.mx/supermercado/despensa?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="Despensa" src="imagenes/0_02.jpg"/>
+      </a>
+    </div>
+    <div class="quarter-column">
+      <a href="https://www.chedraui.com.mx/cuidado-e-higiene-personal/cuidado-corporal?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="Cuidado corporal" src="imagenes/0_03.jpg"/>
+      </a>
+    </div>
+    <div class="quarter-column">
+      <a href="https://www.chedraui.com.mx/electrodomesticos-y-linea-blanca?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="Electrodomésticos" src="imagenes/0_04.jpg"/>
+      </a>
+    </div>
+    <div class="quarter-column">
+      <a href="https://www.chedraui.com.mx/supermercado/limpieza-del-hogar?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="Limpieza del hogar" src="imagenes/0_05.jpg"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- Alpura ice cream offer -->
+  <div class="image-section">
+    <a href="https://www.chedraui.com.mx/alpura-selecta" target="_blank">
+      <img alt="20% de descuento en los nuevos Bites de helado Alpura Selecta 150g y Helados Alpura Selecta 900ml y 473ml" src="imagenes/BANNER-ALPURA-HELADOS.jpg"/>
+    </a>
+  </div>
+
+  <!-- Personal care copy -->
+  <div class="image-section">
+    <img alt="Disfruta del mejor cuidado personal" src="imagenes/copy_02.jpg"/>
+  </div>
+
+  <!-- Personal care products -->
+  <div class="two-column">
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/cuidado-e-higiene-personal/cuidado-capilar?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En todos los shampoos y acondicionadores Pert, Caprice, Dove y Herbal Essences" src="imagenes/5_01.jpg"/>
+      </a>
+    </div>
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/cuidado-e-higiene-personal/cuidado-corporal/desodorantes-y-antitranspirantes?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En todos los desodorantes en aerosol Lady Speed Stick, Speed Stick, Stefano y Obao" src="imagenes/5_02.jpg"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- Home cleaning copy -->
+  <div class="image-section">
+    <img alt="Limpieza para tu hogar" src="imagenes/copy_03.jpg"/>
+  </div>
+
+  <!-- Cleaning products -->
+  <div class="two-column">
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/supermercado/limpieza-del-hogar/lavanderia?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En detergentes Foca, Blanca Nieves y Carisma" src="imagenes/6_01.jpg"/>
+      </a>
+    </div>
+    <div class="column">
+      <a href="https://www.chedraui.com.mx/scotch-brite?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+        <img alt="30% descuento En jarciería de la marca Scotch-Brite" src="imagenes/6_02.jpg"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- Free shipping offer -->
+  <div class="image-section">
+    <a href="https://www.chedraui.com.mx/envio-gratis-comprando-productos-higiene-bucal-png-participantes?utm_source=email&utm_medium=performance&utm_campaign=08_25" target="_blank">
+      <img alt="Envío gratis en la compra mínima de $139 en productos de higiene bucal P&G participantes" src="imagenes/7.jpg"/>
+    </a>
+  </div>
+  <!-- Footer -->
+  <div class="footer-section">
+    <a href="https://api.whatsapp.com/send/?phone=5215543707075&text=SALDO&type=phone_number&app_absent=0" target="_blank">
+      <img alt="Recuerda siempre proporcionar tu monedero MiChedraui o número de celular para disfrutar sorpresas, retos y promociones exclusivas" src="imagenes/footer_01.jpg"/>
+    </a>
+  </div>
+
+  <!-- Wallet section -->
+  <div class="wallet-section">
+    <div class="wallet-left">
+      <img alt="MiChedraui" src="imagenes/footer_02.jpg"/>
+    </div>
+    <div class="wallet-center">
+      <p>XXXXXXXXXXXX{Customer.monederoVirtual}</p>
+    </div>
+    <div class="wallet-right">
+      <img alt="MiChedraui" src="imagenes/footer_04.jpg"/>
+    </div>
+  </div>
+
+  <div class="footer-section">
+    <a href="https://api.whatsapp.com/send/?phone=5215543707075&text=SALDO&type=phone_number&app_absent=0" target="_blank">
+      <img alt="¡Pagar con tu saldo MiChedraui es más fácil y rápido!" src="imagenes/footer_05.jpg"/>
+    </a>
+  </div>
+  <div class="footer-section">
+    <a href="https://www.chedraui.com.mx/folleto?utm_source=folleto&utm_medium=email+folleto&utm_campaign=mensual" target="_blank">
+      <img alt="Saldo Chedraui" src="imagenes/footer_06.jpg" />
+    </a>
+  </div>
+  <div class="footer-section">
+    <a href="https://www.chedraui.com.mx/?utm_source=email&utm_medium=CRM&utm_term=monedero&utm_content=chedraui&utm_campaign=footer_mailing_2024" target="_blank">
+      <img alt="App Chedraui" src="imagenes/footer_07.jpg"/>
+    </a>
+  </div>
+  <!-- Social media section -->
+  <div class="social-section">
+    <div class="social-left">
+      <img alt="Chedraui cuesta menos" src="imagenes/footer_08.jpg" />
+    </div>
+    <div class="social-right">
+      <img alt="Síguenos en nuestras redes sociales" src="imagenes/footer_09.jpg" />
+      <div class="social-icons">
+        <a href="https://www.facebook.com/CHEDRAUIOFICIAL?utm_source=mail&utm_medium=cpm&utm_campaign=crm_chedraui-fb&utm_content=2024" target="_blank">
+          <img alt="facebook" src="imagenes/redes_01.jpg" />
+        </a>
+        <a href="https://twitter.com/Chedrauioficial?utm_source=mail&utm_medium=cpm&utm_campaign=crm_chedraui-tw&utm_content=2024" target="_blank">
+          <img alt="Tw" src="imagenes/redes_02.jpg" />
+        </a>
+        <a href="https://www.youtube.com/user/ChedrauiOficial?utm_source=mail&utm_medium=cpm&utm_campaign=crm_chedraui-yt&utm_content=2024" target="_blank">
+          <img alt="yt" src="imagenes/redes_03.jpg" />
+        </a>
+        <a href="https://www.instagram.com/chedraui.oficial/?hl=es" target="_blank">
+          <img alt="Ig" src="imagenes/redes_04.jpg" />
+        </a>
+        <a href="https://www.tiktok.com/@chedrauioficial?_t=8rPBxtMSXzD&_r=1" target="_blank">
+          <img alt="tik" src="imagenes/redes_05.jpg" />
+        </a>
+        <a href="https://wa.me/message/GOYN675TIEXEP1?utm_source=mail&utm_medium=cpm&utm_campaign=crm_chedraui-tk&utm_content=2024" target="_blank">
+          <img alt="wa" src="imagenes/redes_06.jpg" />
+        </a>
+      </div>
+    </div>
+  </div>        
+  <!-- Legal section -->
+  <div class="legal-section">
+    <p class="legal-title">Nos reservamos el derecho de limitar la venta a menudeo.</p>
+    <p class="legal-text">El logotipo de Grupo Comercial Chedraui así como las marcas y nombres comerciales que aparezcan en este portal son propiedad de Grupo Comercial Chedraui. Chedraui es responsable del tratamiento de sus datos personales, con domicilio en Constituyentes 1150, Lomas Altas, 11950, Miguel Hidalgo, Ciudad de México. Los datos que le solicitamos serán utilizados para las siguientes finalidades: Ofrecer y otorgar productos, servicios y promociones. Si requiere mayor información puede acceder a nuestro aviso de privacidad completo <a href="https://www.chedraui.com.mx/terminos-y-condiciones/politica-privacidad" target="_blank">aquí</a>.<br>
+                       <br>
+                       En el mundo digital pueden existir estafas y fraudes, consulta nuestros canales oficiales en <a href="https://ayuda.chedraui.com.mx/hc/es-419/articles/300048712793-Canales-digitales-oficiales-de-Chedraui" style="font-family:arial,sans-serif;font-weight:bold;text-decoration:none;color:black">www.ayuda.chedraui.com.mx </a></p>
+  </div>
+  <!-- Additional legal -->
+  <div class="legal-additional">
+    <p>Válido hasta agotar existencias. Las características, especificaciones e imágenes pueden variar y están sujetos a disponibilidad.</p>
+  </div>            
+  <!-- Unsubscribe section -->
+  <div class="unsubscribe-section">
+    <p>Si deseas ser borrado de nuestro listado de suscriptores, da clic <a style="font-family:helvetica,arial,sans-serif;font-weight:bold;text-decoration:none;color:#FFFFFF;" href="[unsubscribe]"> aquí </a></p>
+  </div>
+</div>
+<!-- /CONTENEDOR --> 
+<!-- nada debe ir aqui excepto la tabla MAIL-->
+</body>
+</html>
